@@ -1,0 +1,34 @@
+{
+  "name": "nothing-card",
+  "version": "2.0.0",
+  "description": "Cartes Lovelace pour Home Assistant inspirées de l'esthétique Nothing OS : matrice de points, noir profond, blanc cassé, un seul rouge.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "homepage": "https://github.com/messtt/nothing-card",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/messtt/nothing-card.git"
+  },
+  "bugs": {
+    "url": "https://github.com/messtt/nothing-card/issues"
+  },
+  "keywords": [
+    "home-assistant",
+    "lovelace",
+    "custom-card",
+    "hacs",
+    "nothing"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c --watch",
+    "preview": "node scripts/serve.mjs",
+    "sync-version": "node scripts/sync-version.mjs",
+    "version": "npm run sync-version && npm run build && git add src/var/version.js dist"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.24.0"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Nothing Cards",
+  "render_readme": true,
+  "filename": "nothing-card.js",
+  "homeassistant": "2024.8.0"
+}
