@@ -21,7 +21,7 @@ ha-card {
   gap: 12px;
   height: 100%;
   max-height: 100%;
-  min-height: 150px;
+  min-height: 76px;
   box-sizing: border-box;
   padding: 16px;
   background: var(--nl-bg);
@@ -77,7 +77,9 @@ ha-card {
 .toggle, .bar {
   position: relative;
   flex: 1 1 0;
-  min-height: 40px;
+  /* 38, pas 40 : interrupteur + luminosité sans en-tête tombent alors
+     exactement dans les deux rangées de grille que la carte demande. */
+  min-height: 38px;
   max-height: 72px;
   border-radius: 18px;
   overflow: hidden;

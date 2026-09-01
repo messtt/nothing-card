@@ -26,13 +26,22 @@ export function updateChanges(card) {
 	const modes = supportedModes(st);
 	card.toggleAttribute("data-off", !on);
 
-	// Icône et nom
-	const icon = entityIcon(c, st);
-	if (el.badge.firstElementChild.getAttribute("icon") !== icon) {
-		el.badge.firstElementChild.setAttribute("icon", icon);
+	// En-tête : chaque morceau se coupe séparément, et l'en-tête entier
+	// disparaît quand il ne reste rien à y mettre.
+	el.badge.hidden = !c.show_icon;
+	el.name.hidden = !c.show_name;
+	el.value.hidden = !c.show_value;
+	el.head.hidden = !(c.show_icon || c.show_name || c.show_value);
+
+	if (c.show_icon) {
+		const icon = entityIcon(c, st);
+		if (el.badge.firstElementChild.getAttribute("icon") !== icon) {
+			el.badge.firstElementChild.setAttribute("icon", icon);
+		}
 	}
+
 	const name = entityName(c, st);
-	if (card.memo.name !== name) {
+	if (c.show_name && card.memo.name !== name) {
 		el.name.textContent = name;
 		el.name.title = name;
 		card.memo.name = name;
@@ -46,10 +55,18 @@ export function updateChanges(card) {
 	}
 	card.style.setProperty("--nl-live", live);
 
-	// Une barre par capacité réellement annoncée
-	el.bright.hidden = !modes.bright;
-	el.hue.hidden = !modes.color;
-	el.temp.hidden = !modes.white;
+	// Une barre par capacité annoncée, et seulement si la config la garde.
+	const bars = {
+		toggle: !!c.toggle,
+		bright: !!c.brightness && modes.bright,
+		color: !!c.color && modes.color,
+		white: !!c.white && modes.white,
+	};
+	el.toggle.hidden = !bars.toggle;
+	el.bright.hidden = !bars.bright;
+	el.hue.hidden = !bars.color;
+	el.temp.hidden = !bars.white;
+	el.rows.hidden = !(bars.toggle || bars.bright || bars.color || bars.white);
 
 	// Luminosité (l'affichage optimiste l'emporte le temps que la lampe suive)
 	const localB = card.optimisticValue("b");
@@ -59,11 +76,11 @@ export function updateChanges(card) {
 				: on ? 100 : 0;
 	paintBrightness(card, on || localB != null ? pct : 0, !on);
 
-	if (modes.color) {
+	if (bars.color) {
 		const hs = card.optimisticValue("hs") || st.attributes.hs_color || [0, 0];
 		paintHue(card, hs[0], hs[1]);
 	}
-	if (modes.white) {
+	if (bars.white) {
 		const k = card.optimisticValue("k") || st.attributes.color_temp_kelvin || kelvinRange(st).min;
 		paintTemp(card, k);
 	}
@@ -81,6 +98,8 @@ export function paintBrightness(card, pct, off) {
 	const el = card.el;
 	el.fill.style.width = (off ? 0 : pct) + "%";
 	card.style.setProperty("--nl-bright", (off ? 0 : pct) + "%");
+
+	if (!card._config.show_value) return;
 
 	const txt = off ? "OFF" : pct + "%";
 	if (card.memo.pct !== txt) {

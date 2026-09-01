@@ -5,6 +5,9 @@ rouge. Aucune dépendance à l'exécution — **un seul fichier** à déposer da
 
 ![Style](https://img.shields.io/badge/style-dot--matrix-E01F26) ![Dependencies](https://img.shields.io/badge/runtime%20deps-none-000) ![License](https://img.shields.io/badge/license-MIT-000)
 
+**[Voir les cartes en ligne](https://messtt.github.io/nothing-card/)** — la démonstration tourne sur le vrai bundle,
+avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se comportent comme chez vous.
+
 ---
 
 ## Les cartes
@@ -114,20 +117,46 @@ type: custom:nothing-light-card
 entity: light.salon
 ```
 
-| Option           | Défaut        | Description                                        |
-|------------------|---------------|----------------------------------------------------|
-| `entity`         | —             | **Requis.** Entité `light.*`.                      |
-| `name`           | nom convivial | Libellé affiché.                                   |
-| `tint`           | `true`        | Les barres prennent la couleur réelle de la lampe. |
-| `presets`        | `true`        | Rangée de raccourcis couleur / blanc.              |
-| `min_brightness` | `1`           | Luminosité minimale atteignable au glisser.        |
-| `accent`         | `#E01F26`     | Couleur de repli quand `tint` est désactivé.       |
-| `dots`           | `true`        | Pourcentage en matrice de points.                  |
+| Option                                   | Défaut        | Description                                        |
+|------------------------------------------|---------------|----------------------------------------------------|
+| `entity`                                 | —             | **Requis.** Entité `light.*`.                      |
+| `name`                                   | nom convivial | Libellé affiché.                                   |
+| `tint`                                   | `true`        | Les barres prennent la couleur réelle de la lampe. |
+| `min_brightness`                         | `1`           | Luminosité minimale atteignable au glisser.        |
+| `accent`                                 | `#E01F26`     | Couleur de repli quand `tint` est désactivé.       |
+| `dots`                                   | `true`        | Pourcentage en matrice de points.                  |
+| `show_icon` / `show_name` / `show_value` | `true`        | Les trois morceaux de l'en-tête, séparément.       |
+| `toggle`                                 | `true`        | Barre d'interrupteur.                              |
+| `brightness`                             | `true`        | Barre de luminosité.                               |
+| `color`                                  | `true`        | Bande de teintes.                                  |
+| `white`                                  | `true`        | Bande de température de blanc.                     |
+| `presets`                                | `true`        | Rangée de raccourcis couleur / blanc.              |
 
 La carte est une pile de barres, sans onglet : un **interrupteur** dont le pavé glisse d'un bord à l'autre, la
-**luminosité**, la **teinte**, le **blanc**, puis la rangée de **raccourcis**. Chaque barre n'apparaît que si
-`supported_color_modes` l'annonce — une ampoule simplement dimmable n'affiche que l'interrupteur et la luminosité,
-et ne réclame alors que trois rangées de grille au lieu de six.
+**luminosité**, la **teinte**, le **blanc**, puis la rangée de **raccourcis**.
+
+Chaque élément se coupe séparément, et la tuile se redimensionne toute seule : `getGridOptions()` mesure ce qui reste
+réellement à afficher. Une barre disparaît soit parce que `supported_color_modes` ne l'annonce pas, soit parce que vous
+l'avez mise à `false`.
+
+```yaml
+# une lampe réduite à son interrupteur et sa luminosité
+type: custom:nothing-light-card
+entity: light.salon
+show_icon: false
+show_name: false
+show_value: false
+color: false
+white: false
+presets: false
+```
+
+| Configuration                                   | Rangées de grille |
+|-------------------------------------------------|-------------------|
+| RGBWW complète                                  | 6 (376 px)        |
+| RGBWW sans teinte ni blanc                      | 4 (248 px)        |
+| Ampoule simplement dimmable                     | 3 (184 px)        |
+| Deux barres seules, sans en-tête (ci-dessus)    | 2 (120 px)        |
 
 La bande de teintes couvre les 360 degrés à saturation pleine : elle donne des couleurs franches, et les raccourcis
 apportent les teintes plus douces et les blancs. Les quatre premiers raccourcis sont des températures (2000, 2700,
@@ -311,8 +340,11 @@ Les sources vivent dans `src/`, découpées par carte, et sont assemblées en un
 ```bash
 npm install
 npm run build      # dist/nothing-card.js
-npm run preview    # banc d'essai sans Home Assistant
+npm run preview    # banc d'essai sans Home Assistant, sur http://localhost:8137/
 ```
+
+Le banc d'essai est la page `index.html` à la racine, servie telle quelle par GitHub Pages : c'est la même que la
+démonstration en ligne.
 
 Voir [DEVELOPERS.md](DEVELOPERS.md) pour la carte de l'arborescence et la marche à suivre pour ajouter une carte.
 

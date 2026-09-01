@@ -45,6 +45,7 @@ export const template = () => `
 /** @param {import("./index.js").NothingLightCard} card */
 export const collect = (card) => ({
 	card: card.$("ha-card"),
+	head: card.$(".head"),
 	badge: card.$(".badge"),
 	titles: card.$(".titles"),
 	name: card.$(".name"),

@@ -9,11 +9,14 @@ bundle unique livré dans `dist/`, et un banc d'essai qui charge ce bundle sans 
 npm install
 npm run build      # construit dist/nothing-card.js
 npm run watch      # reconstruit à chaque enregistrement
-npm run preview    # http://localhost:8137/preview/
+npm run preview    # http://localhost:8137/
 ```
 
-Le banc d'essai (`preview/`) monte les sept cartes avec un faux objet `hass` :
-états, `callService`, `callWS`. C'est le moyen le plus rapide de voir une modification sans redémarrer Home Assistant.
+Le banc d'essai monte les sept cartes avec un faux objet `hass` : états, `callService`, `callWS`. C'est le moyen le
+plus rapide de voir une modification sans redémarrer Home Assistant.
+
+La page vit à la racine (`index.html`) et ses accessoires dans `preview/` : c'est ce qui permet à GitHub Pages de la
+servir telle quelle, sans étape de construction, depuis la branche `main`.
 
 ## Carte de l'arborescence
 

@@ -66,6 +66,18 @@
             align-self: flex-start;
         }
 
+        .cell.light-min {
+            width: 300px;
+            height: 120px;     /* 2 rangees : barres seules, sans en-tete */
+            align-self: flex-start;
+        }
+
+        .cell.light-tint {
+            width: 300px;
+            height: 248px;     /* 4 rangees : sans teinte ni blanc */
+            align-self: flex-start;
+        }
+
         .cell.light-dim {
             width: 300px;
             height: 184px;     /* 3 rangees : ampoule simplement dimmable */
@@ -111,7 +123,8 @@
 
         .cell.tile {
             width: 210px;
-            height: 210px;
+            height: 248px;     /* 4 rangees : ce que la carte demande */
+            align-self: flex-start;
         }
 
         .cell.artwork {
@@ -164,13 +177,14 @@
 <div class="row" id="stats"></div>
 
 <p class="hint">
-    Les cartes sont les vraies : elles viennent du bundle construit par <code>npm run build</code>.<br>
-    Servez ce dossier depuis la racine du dépôt (<code>npx serve .</code>) puis ouvrez <code>/preview/</code>.
+    Les cartes sont les vraies : elles viennent de <code>dist/nothing-card.js</code>, le fichier même qu'installe
+    Home Assistant, monté ici sur un faux objet <code>hass</code>.<br>
+    En local : <code>npm run preview</code>, puis <code>http://localhost:8137/</code>.
 </p>
 
 <script type="module">
-	import {installStubs, makeCard} from "./mock-hass.js";
-	import "../dist/nothing-card.js";
+	import {installStubs, makeCard} from "./preview/mock-hass.js";
+	import "./dist/nothing-card.js";
 
 	installStubs();
 
@@ -194,6 +208,8 @@
 
 	add("light", "light", "nothing-light-card", {entity: "light.salon"});
 	add("light", "light-dim", "nothing-light-card", {entity: "light.bureau"});
+	add("light", "light-tint", "nothing-light-card", {entity: "light.salon", color: false, white: false});
+	add("light", "light-min", "nothing-light-card", {entity: "light.salon", show_icon: false, show_name: false, show_value: false, color: false, white: false, presets: false});
 
 	add("slider", "slider", "nothing-slider-card", {entity: "light.salon"});
 	add("slider", "slider", "nothing-slider-card", {entity: "cover.velux", variant: "light"});

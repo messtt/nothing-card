@@ -45,5 +45,5 @@ createServer(async (req, res) => {
 		res.end("Introuvable : " + path);
 	}
 }).listen(PORT, () => {
-	console.log(`Banc d'essai : http://localhost:${PORT}/preview/`);
+	console.log(`Banc d'essai : http://localhost:${PORT}/`);
 });

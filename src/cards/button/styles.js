@@ -29,7 +29,9 @@ ha-card {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 12px 18px;
+  /* 11 et non 12 : la pastille fait 34 px, et 34 + 22 tombe exactement sur
+     les 56 px d'une rangée de grille. À 12, la pilule dépassait de 2 px. */
+  padding: 11px 18px;
   box-sizing: border-box;
   font-family: var(--nothing-font);
   background: var(--nb-bg-dark);

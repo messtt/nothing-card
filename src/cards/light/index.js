@@ -20,7 +20,7 @@ import {OPTIMISTIC_MS, CALL_THROTTLE, supportedModes} from "./helpers.js";
 
 /** Hauteurs de référence, en pixels, pour dimensionner la tuile. */
 const HEAD = 36;
-const BAR = 40;
+const BAR = 38;
 const GAP = 12;
 const PRESETS = 46;
 const PADDING = 32;
@@ -34,8 +34,19 @@ export class NothingLightCard extends NothingBaseCard {
 		accent: ACCENT,
 		dots: true,           // pourcentage en matrice de points
 		tint: true,           // les barres prennent la couleur de la lampe
-		presets: true,        // rangée de raccourcis couleur / blanc
 		min_brightness: 1,
+
+		// en-tête, pièce par pièce
+		show_icon: true,
+		show_name: true,
+		show_value: true,
+
+		// une clé par rangée : la carte se réduit à ce qu'on lui laisse
+		toggle: true,         // interrupteur
+		brightness: true,     // luminosité
+		color: true,          // bande de teintes
+		white: true,          // température de blanc
+		presets: true,        // raccourcis couleur / blanc
 	};
 
 	static getConfigForm = configForm;
@@ -86,15 +97,23 @@ export class NothingLightCard extends NothingBaseCard {
 		let rows = 6;
 
 		if (st) {
+			const c = this._config;
 			const modes = supportedModes(st);
-			const bars = 1 + (modes.bright ? 1 : 0) + (modes.color ? 1 : 0) + (modes.white ? 1 : 0);
-			const presets =
-				this._config.presets && (modes.color || modes.white) ? GAP + PRESETS : 0;
-			const px = PADDING + HEAD + GAP + bars * BAR + (bars - 1) * GAP + presets;
-			rows = Math.max(3, Math.ceil((px + 8) / 64));
+
+			const bars =
+				(c.toggle ? 1 : 0) +
+				(c.brightness && modes.bright ? 1 : 0) +
+				(c.color && modes.color ? 1 : 0) +
+				(c.white && modes.white ? 1 : 0);
+
+			const head = c.show_icon || c.show_name || c.show_value ? HEAD + GAP : 0;
+			const presets = c.presets && (modes.color || modes.white) ? GAP + PRESETS : 0;
+
+			const px = PADDING + head + (bars ? bars * BAR + (bars - 1) * GAP : 0) + presets;
+			rows = Math.max(1, Math.ceil((px + 8) / 64));
 		}
 
-		return {rows, columns: 6, min_rows: 3, min_columns: 3};
+		return {rows, columns: 6, min_rows: Math.max(1, Math.min(2, rows)), min_columns: 3};
 	}
 
 	onDisconnect() {
