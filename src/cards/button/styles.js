@@ -8,13 +8,22 @@ export default `
   --ha-card-border-width: 0;
   --ha-card-box-shadow: none;
   display: block;
+  /* Hauteur de la tuile : sans elle, le cercle se dimensionnait sur la largeur
+     et débordait dès qu'une tuile était plus large que haute. */
+  height: 100%;
 }
 ha-card {
   background: transparent;
   border: none;
   box-shadow: none;
   overflow: visible;
+  /* conteneur flex : le bouton rond peut ainsi tirer sa largeur de sa hauteur */
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  height: 100%;
 }
+.btn { flex: 1 1 auto; }
 .btn {
   -webkit-tap-highlight-color: transparent;
   appearance: none;
@@ -75,8 +84,12 @@ ha-card {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  /* la hauteur commande, la largeur suit : un rond qui tient dans sa tuile */
+  flex: 0 0 auto;
+  width: auto;
+  height: 100%;
+  min-height: 108px;
   aspect-ratio: 1 / 1;
-  min-height: 0;
   padding: 10px;
 }
 

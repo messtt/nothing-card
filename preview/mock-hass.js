@@ -181,7 +181,30 @@ const states = {
 		entity_id: "cover.velux",
 		state: "open",
 		last_updated: now(),
-		attributes: {friendly_name: "Velux", current_position: 35, device_class: "shade"},
+		attributes: {
+			friendly_name: "Velux",
+			current_position: 35,
+			device_class: "shade",
+			supported_features: 1 + 2 + 4 + 8,
+		},
+	},
+	"cover.terrasse": {
+		entity_id: "cover.terrasse",
+		state: "open",
+		last_updated: now(),
+		attributes: {
+			friendly_name: "Raffstore terrasse",
+			current_position: 70,
+			current_tilt_position: 50,
+			device_class: "blind",
+			supported_features: 1 + 2 + 4 + 8 + 16 + 32 + 64 + 128,
+		},
+	},
+	"cover.garage": {
+		entity_id: "cover.garage",
+		state: "closed",
+		last_updated: now(),
+		attributes: {friendly_name: "Garage", device_class: "garage", supported_features: 1 + 2 + 8},
 	},
 	"sensor.temperature_bureau": {
 		entity_id: "sensor.temperature_bureau",
@@ -227,6 +250,44 @@ const LABELS = {
 	locked: "VERROUILLE",
 	unlocked: "OUVERT",
 };
+
+/** Le strict nécessaire pour que le banc d'essai réagisse comme un volet. */
+function coverService(s, service, data) {
+	const a = s.attributes;
+	const known = a.current_position != null;
+
+	switch (service) {
+		case "open_cover":
+			if (known) a.current_position = 100;
+			s.state = "open";
+			break;
+		case "close_cover":
+			if (known) a.current_position = 0;
+			s.state = "closed";
+			break;
+		case "stop_cover":
+			s.state = known && a.current_position > 0 ? "open" : "closed";
+			break;
+		case "toggle":
+			if (s.state === "closed") {
+				if (known) a.current_position = 100;
+				s.state = "open";
+			} else {
+				if (known) a.current_position = 0;
+				s.state = "closed";
+			}
+			break;
+		case "set_cover_position":
+			a.current_position = data.position;
+			s.state = data.position > 0 ? "open" : "closed";
+			break;
+		case "set_cover_tilt_position":
+			a.current_tilt_position = data.tilt_position;
+			break;
+		default:
+			break;
+	}
+}
 
 /** Position réelle d'une piste en cours, extrapolée comme le fait la carte. */
 function elapsed(s) {
@@ -317,6 +378,16 @@ export const hass = {
 
 		if (domain === "media_player") {
 			mediaService(s, service, data);
+			s.last_updated = now();
+			states[id] = s;
+			cards.forEach((c) => {
+				c.hass = hass;
+			});
+			return;
+		}
+
+		if (domain === "cover") {
+			coverService(s, service, data);
 			s.last_updated = now();
 			states[id] = s;
 			cards.forEach((c) => {

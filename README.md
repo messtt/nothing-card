@@ -21,8 +21,9 @@ avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se co
 | **Info**   | `custom:nothing-info-card`   | Affichage seul : pastille, valeur, libellé. Aucune commande.                        |
 | **Text**   | `custom:nothing-text-card`   | Titre en matrice de points, à poser entre deux sections.                            |
 | **Slider** | `custom:nothing-slider-card` | Grande barre à glisser. S'adapte au domaine de l'entité.                            |
+| **Cover**  | `custom:nothing-cover-card`  | Volet roulant : tablier dessiné, haut / stop / bas, position, inclinaison.           |
 
-Les sept cartes sont livrées dans le même fichier : une seule ressource à déclarer.
+Les huit cartes sont livrées dans le même fichier : une seule ressource à déclarer.
 
 La typographie en matrice de points est dessinée en SVG à partir d'une police 5×7 embarquée : rien à installer côté
 client, et le rendu est identique sur tous les appareils.
@@ -320,11 +321,52 @@ pilule des widgets Nothing, sur une seule rangée de grille.
 
 ---
 
+## Nothing Cover Card
+
+```yaml
+type: custom:nothing-cover-card
+entity: cover.volet_salon
+```
+
+| Option                       | Défaut                    | Description                                          |
+|------------------------------|---------------------------|------------------------------------------------------|
+| `entity`                     | —                         | **Requis.** Entité `cover.*`.                        |
+| `name` / `icon`              | ceux de l'entité          | Libellé et icône de la pastille.                     |
+| `variant`                    | `dark`                    | Fond anthracite ou blanc cassé.                      |
+| `dots`                       | `true`                    | Position en matrice de points.                       |
+| `show_icon` / `show_name` / `show_value` | `true`        | Les trois morceaux de l'en-tête, séparément.         |
+| `shutter`                    | `true`                    | Le tablier dessiné.                                  |
+| `buttons`                    | `true`                    | Colonne haut / stop / bas.                           |
+| `slider`                     | `true`                    | Curseur de position.                                 |
+| `tilt`                       | `true`                    | Curseur d'inclinaison des lamelles.                  |
+| `accent`                     | `#E01F26`                 | Couleur du remplissage et des flèches en mouvement.  |
+| `tap_action` / `hold_action` | `more-info` / `more-info` | Actions sur le libellé.                              |
+
+**Le tablier est dessiné, pas photographié** : un cadre, du vitrage en trame de points, et des lamelles en traits fins
+qui descendent du haut. Sa hauteur suit `current_position` — 30 % d'ouverture, 70 % de tablier. Pendant un mouvement,
+la flèche concernée passe au rouge et le tablier respire.
+
+Quand le moteur gère l'inclinaison, **l'épaisseur des lamelles la reproduit** : refermées elles se touchent et le volet
+devient opaque, à plat elles laissent passer le jour entre deux traits. Le second curseur les règle.
+
+Chaque bouton n'apparaît que si `supported_features` l'annonce, et chaque élément se coupe dans la config. Sans le
+tablier, la colonne de boutons se met à l'horizontale et la carte tient sur deux rangées de grille.
+
+| Configuration                                   | Rangées de grille |
+|-------------------------------------------------|-------------------|
+| Volet à lamelles orientables, tout affiché      | 5 (312 px)        |
+| Volet roulant avec position                     | 4 (248 px)        |
+| Boutons seuls, sans tablier ni position         | 2 (120 px)        |
+
+Le rendu est optimiste et les appels de service sont limités à un toutes les 180 ms, avec envoi final au relâchement.
+
+---
+
 ## Notes
 
 - **Dimensionnement** — chaque carte expose `getGridOptions()` pour la vue *sections* et ne déborde jamais de sa tuile,
   quelle que soit la taille demandée.
-- **Éditeur graphique** — les sept cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
+- **Éditeur graphique** — les huit cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
   par le YAML.
 - **Accents** — la police 5×7 ne comporte pas de caractères accentués (`É` devient `E`). Utilisez `dots: false` pour un
   rendu typographique classique.

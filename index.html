@@ -50,6 +50,7 @@
 
         .cell {
             width: 260px;
+            flex: 0 0 auto;    /* les tuiles gardent leur largeur et passent a la ligne */
         }
 
         .cell.sq {
@@ -87,6 +88,24 @@
         .cell.stats {
             width: 420px;
             height: 220px;
+        }
+
+        .cell.cover {
+            width: 260px;
+            height: 312px;     /* 5 rangees */
+            align-self: flex-start;
+        }
+
+        .cell.cover-sm {
+            width: 260px;
+            height: 248px;     /* 4 rangees */
+            align-self: flex-start;
+        }
+
+        .cell.cover-mini {
+            width: 260px;
+            height: 120px;     /* 2 rangees : boutons seuls, sans tablier */
+            align-self: flex-start;
         }
 
         .cell.slider {
@@ -158,6 +177,9 @@
 <h2>Light</h2>
 <div class="row" id="light"></div>
 
+<h2>Cover</h2>
+<div class="row" id="cover"></div>
+
 <h2>Slider</h2>
 <div class="row" id="slider"></div>
 
@@ -210,6 +232,10 @@
 	add("light", "light-dim", "nothing-light-card", {entity: "light.bureau"});
 	add("light", "light-tint", "nothing-light-card", {entity: "light.salon", color: false, white: false});
 	add("light", "light-min", "nothing-light-card", {entity: "light.salon", show_icon: false, show_name: false, show_value: false, color: false, white: false, presets: false});
+
+	add("cover", "cover", "nothing-cover-card", {entity: "cover.terrasse"});
+	add("cover", "cover-sm", "nothing-cover-card", {entity: "cover.velux", variant: "light"});
+	add("cover", "cover-mini", "nothing-cover-card", {entity: "cover.garage", shutter: false, show_value: false});
 
 	add("slider", "slider", "nothing-slider-card", {entity: "light.salon"});
 	add("slider", "slider", "nothing-slider-card", {entity: "cover.velux", variant: "light"});

@@ -9,6 +9,7 @@
  */
 
 import "./cards/button/index.js";
+import "./cards/cover/index.js";
 import "./cards/info/index.js";
 import "./cards/light/index.js";
 import "./cards/media/index.js";
@@ -17,6 +18,7 @@ import "./cards/stats/index.js";
 import "./cards/text/index.js";
 
 export {NothingButtonCard} from "./cards/button/index.js";
+export {NothingCoverCard} from "./cards/cover/index.js";
 export {NothingInfoCard} from "./cards/info/index.js";
 export {NothingLightCard} from "./cards/light/index.js";
 export {NothingMediaCard} from "./cards/media/index.js";
