@@ -62,12 +62,16 @@ variant: dark      # apparence à l'état éteint : dark | light
 | `shape`                            | `pill`                 | `pill`, `square` ou `circle`.                         |
 | `variant`                          | `dark`                 | Apparence éteinte : anthracite ou blanc cassé.        |
 | `dots`                             | `true`                 | Typographie en matrice de points.                     |
-| `show_state` / `show_icon` / `led` | `true`                 | Sous-titre d'état, pastille d'icône, témoin lumineux. |
+| `show_name` / `show_state`         | `true`                 | Libellé et sous-titre d'état.                         |
+| `show_icon` / `led`                | `true`                 | Pastille d'icône, témoin lumineux.                    |
 | `accent`                           | `#E01F26`              | Couleur de l'état allumé.                             |
 | `tap_action` / `hold_action`       | `toggle` / `more-info` | Actions standard Lovelace.                            |
 
 Le basculement s'adapte au domaine : `scene`, `script`, `button`, `lock`, `cover` et `media_player` reçoivent le bon
 service au lieu d'un `homeassistant.toggle` générique.
+
+`show_name: false` et `show_state: false` ensemble ne laissent que l'icône, recentrée dans le bouton — un raccourci
+carré ou rond, sans un mot.
 
 ---
 

@@ -13,6 +13,7 @@ export const configForm = () => ({
 			name: "",
 			schema: [
 				{name: "dots", selector: {boolean: {}}},
+				{name: "show_name", selector: {boolean: {}}},
 				{name: "show_state", selector: {boolean: {}}},
 				{name: "show_icon", selector: {boolean: {}}},
 				{name: "led", selector: {boolean: {}}},

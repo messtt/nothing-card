@@ -162,10 +162,13 @@
 	add("pill", "", "nothing-button-card", {entity: "light.salon"});
 	add("pill", "", "nothing-button-card", {entity: "light.bureau", variant: "light"});
 	add("pill", "", "nothing-button-card", {entity: "lock.entree", dots: false});
+	add("pill", "", "nothing-button-card", {entity: "light.salon", led: false});   // allumee, sans temoin
 
 	add("shapes", "sq", "nothing-button-card", {entity: "switch.hotspot", shape: "square"});
 	add("shapes", "sq", "nothing-button-card", {entity: "fan.chambre", shape: "square", variant: "light"});
 	add("shapes", "ci", "nothing-button-card", {entity: "script.cinema", shape: "circle"});
+	add("shapes", "ci", "nothing-button-card", {entity: "switch.hotspot", shape: "circle", show_name: false, show_state: false});
+	add("shapes", "sq", "nothing-button-card", {entity: "fan.chambre", shape: "square", show_name: false, show_state: false, led: false});
 
 	add("light", "light", "nothing-light-card", {entity: "light.salon"});
 	add("light", "light", "nothing-light-card", {entity: "light.bureau"});

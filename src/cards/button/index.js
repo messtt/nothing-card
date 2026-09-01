@@ -24,6 +24,7 @@ export class NothingButtonCard extends NothingBaseCard {
 		shape: "pill",        // pill | square | circle
 		variant: "dark",      // apparence à l'état éteint : dark | light
 		dots: true,           // typographie en matrice de points
+		show_name: true,
 		show_state: true,
 		show_icon: true,
 		led: true,            // petit point témoin

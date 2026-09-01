@@ -14,6 +14,9 @@ export function updateChanges(card) {
 	card.toggleAttribute("data-unavailable", isUnavailable(stateObj));
 
 	if (!stateObj) {
+		// message d'erreur : il passe avant le réglage show_name
+		card.removeAttribute("data-notext");
+		el.name.style.display = "";
 		paintText(el.name, "INTROUVABLE", c.dots);
 		el.state.innerHTML = "";
 		return;
@@ -21,7 +24,7 @@ export function updateChanges(card) {
 
 	const on = isOn(stateObj);
 	card.toggleAttribute("data-on", on);
-	card.toggleAttribute("data-led-idle", !!c.led && !on);
+	card.toggleAttribute("data-led", !!c.led);
 
 	// Icône
 	el.iconWrap.style.display = c.show_icon ? "" : "none";
@@ -29,8 +32,9 @@ export function updateChanges(card) {
 	if (el.icon.getAttribute("icon") !== icon) el.icon.setAttribute("icon", icon);
 
 	// Libellé — repeint seulement quand il change (le SVG coûte cher)
+	el.name.style.display = c.show_name ? "" : "none";
 	const name = entityName(c, stateObj);
-	if (card.memo.name !== name || card.memo.dots !== c.dots) {
+	if (c.show_name && (card.memo.name !== name || card.memo.dots !== c.dots)) {
 		paintText(el.name, name, c.dots);
 		card.memo.name = name;
 		card.memo.dots = c.dots;
@@ -43,6 +47,9 @@ export function updateChanges(card) {
 		paintText(el.state, sub, c.dots);
 		card.memo.sub = sub;
 	}
+
+	// Ni libellé ni sous-titre : le bouton n'est plus qu'une icône, centrée.
+	card.toggleAttribute("data-notext", !c.show_name && !sub);
 }
 
 function subtitle(card, stateObj, on) {

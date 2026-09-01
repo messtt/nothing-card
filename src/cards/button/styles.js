@@ -116,6 +116,10 @@ ha-card {
   gap: 5px;
   overflow: hidden;
 }
+/* sans libellé ni sous-titre, l'icône se recentre dans le bouton */
+:host([data-notext]) .labels { display: none; }
+:host([data-notext]) .btn { justify-content: center; }
+:host([data-notext][data-shape="square"]) .btn { align-items: center; }
 :host([data-shape="circle"]) .labels { align-items: center; text-align: center; }
 .name, .state { display: block; line-height: 1; }
 .name svg  { display: block; height: 13px; width: auto; max-width: 100%; }
@@ -126,7 +130,10 @@ ha-card {
              white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* --- témoin LED --- */
+/* Le témoin n'existe que si la config le demande : sans cette règle, l'état
+   allumé le rallumait quoi qu'il arrive. */
 .led {
+  display: none;
   position: absolute;
   top: 14px;
   right: 16px;
@@ -134,13 +141,13 @@ ha-card {
   height: 8px;
   border-radius: 50%;
   background: var(--nb-accent);
-  opacity: 0;
-  transition: opacity 180ms ease;
+  opacity: .35;
+  transition: opacity 180ms ease, background 180ms ease;
 }
+:host([data-led]) .led { display: block; }
 :host([data-shape="pill"]) .led { top: 50%; transform: translateY(-50%); }
 :host([data-shape="circle"]) .led {
   top: 11%; right: auto; left: 50%; transform: translateX(-50%);
 }
 :host([data-on]) .led { background: #ffffff; opacity: 1; }
-:host([data-led-idle]) .led { opacity: .35; }
 `;
