@@ -70,6 +70,18 @@
             height: 220px;
         }
 
+        .cell.slider {
+            width: 380px;
+            height: 120px;
+            align-self: flex-start;
+        }
+
+        .cell.compact {
+            width: 380px;
+            height: 56px;
+            align-self: flex-start;
+        }
+
         .cell.text {
             width: 420px;
         }
@@ -126,6 +138,9 @@
 <h2>Light</h2>
 <div class="row" id="light"></div>
 
+<h2>Slider</h2>
+<div class="row" id="slider"></div>
+
 <h2>Text</h2>
 <div class="row" id="text"></div>
 
@@ -172,6 +187,11 @@
 
 	add("light", "light", "nothing-light-card", {entity: "light.salon"});
 	add("light", "light", "nothing-light-card", {entity: "light.bureau"});
+
+	add("slider", "slider", "nothing-slider-card", {entity: "light.salon"});
+	add("slider", "slider", "nothing-slider-card", {entity: "cover.velux", variant: "light"});
+	add("slider", "compact", "nothing-slider-card", {entity: "fan.salon", layout: "compact"});
+	add("slider", "compact", "nothing-slider-card", {entity: "light.salon", layout: "compact", tint: false});
 
 	add("text", "text", "nothing-text-card", {text: "Salon", subtitle: "6 appareils", rule: true});
 	add("text", "text", "nothing-text-card", {text: "02\n22", size: "lg", align: "center"});

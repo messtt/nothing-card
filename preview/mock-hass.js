@@ -171,6 +171,18 @@ const states = {
 		last_updated: now(),
 		attributes: {friendly_name: "Cuisine", supported_features: MEDIA_FEATURES},
 	},
+	"fan.salon": {
+		entity_id: "fan.salon",
+		state: "on",
+		last_updated: now(),
+		attributes: {friendly_name: "Ventilateur", percentage: 60, percentage_step: 10, supported_features: 1},
+	},
+	"cover.velux": {
+		entity_id: "cover.velux",
+		state: "open",
+		last_updated: now(),
+		attributes: {friendly_name: "Velux", current_position: 35, device_class: "shade"},
+	},
 	"sensor.temperature_bureau": {
 		entity_id: "sensor.temperature_bureau",
 		state: "26.0",
@@ -312,6 +324,9 @@ export const hass = {
 			});
 			return;
 		}
+
+		if (data.percentage != null) s.attributes.percentage = data.percentage;
+		if (data.position != null) s.attributes.current_position = data.position;
 
 		if (service === "toggle") s.state = s.state === "on" ? "off" : "on";
 		else if (service === "lock") s.state = "locked";

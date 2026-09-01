@@ -12,7 +12,7 @@ npm run watch      # reconstruit à chaque enregistrement
 npm run preview    # http://localhost:8137/preview/
 ```
 
-Le banc d'essai (`preview/`) monte les six cartes avec un faux objet `hass` :
+Le banc d'essai (`preview/`) monte les sept cartes avec un faux objet `hass` :
 états, `callService`, `callWS`. C'est le moyen le plus rapide de voir une modification sans redémarrer Home Assistant.
 
 ## Carte de l'arborescence
@@ -43,6 +43,7 @@ src/
     ├── info/
     ├── light/
     ├── media/
+    ├── slider/
     ├── text/
     └── stats/
         ├── index.js         la classe : config par défaut, taille, cycle de vie

@@ -17,8 +17,9 @@ rouge. Aucune dépendance à l'exécution — **un seul fichier** à déposer da
 | **Media**  | `custom:nothing-media-card`  | Lecteur multimédia : pochette, progression, transport, trois dispositions.           |
 | **Info**   | `custom:nothing-info-card`   | Affichage seul : pastille, valeur, libellé. Aucune commande.                        |
 | **Text**   | `custom:nothing-text-card`   | Titre en matrice de points, à poser entre deux sections.                            |
+| **Slider** | `custom:nothing-slider-card` | Grande barre à glisser. S'adapte au domaine de l'entité.                            |
 
-Les six cartes sont livrées dans le même fichier : une seule ressource à déclarer.
+Les sept cartes sont livrées dans le même fichier : une seule ressource à déclarer.
 
 La typographie en matrice de points est dessinée en SVG à partir d'une police 5×7 embarquée : rien à installer côté
 client, et le rendu est identique sur tous les appareils.
@@ -237,11 +238,55 @@ long finit par se réduire pour tenir dans la largeur. Pour une phrase entière,
 
 ---
 
+## Nothing Slider Card
+
+```yaml
+type: custom:nothing-slider-card
+entity: light.salon
+```
+
+| Option                       | Défaut                    | Description                                             |
+|------------------------------|---------------------------|---------------------------------------------------------|
+| `entity`                     | —                         | **Requis.** Un domaine réglable (voir plus bas).        |
+| `name` / `icon`              | ceux de l'entité          | Libellé et icône de la pastille.                        |
+| `layout`                     | `bar`                     | `bar` (en-tête + barre) ou `compact` (barre seule).     |
+| `variant`                    | `dark`                    | Fond anthracite ou blanc cassé.                         |
+| `tint`                       | `true`                    | La jauge prend la couleur réelle de la lampe.           |
+| `min` / `max` / `step`       | ceux de l'entité          | Bornes et pas, quand ceux de l'entité ne conviennent pas. |
+| `unit`                       | celle de l'entité         | Remplace l'unité affichée.                              |
+| `dots`                       | `true`                    | Valeur en matrice de points.                            |
+| `show_icon` / `show_name` / `show_value` | `true`        | Masquer l'un ou l'autre.                                |
+| `accent`                     | `#E01F26`                 | Couleur de la jauge, quand `tint` ne s'applique pas.    |
+| `tap_action` / `hold_action` | `more-info` / `more-info` | Actions sur le libellé.                                 |
+
+Ce que le curseur règle dépend du domaine, et la carte va chercher les bornes au bon endroit :
+
+| Domaine                  | Ce qui est réglé      | Service appelé                 | Bornes                                  |
+|--------------------------|-----------------------|--------------------------------|-----------------------------------------|
+| `light`                  | Luminosité            | `light.turn_on`                | 1 – 100 %                               |
+| `fan`                    | Vitesse               | `fan.set_percentage`           | 0 – 100 %, au pas de `percentage_step`  |
+| `cover`                  | Ouverture             | `cover.set_cover_position`     | 0 – 100 %                               |
+| `media_player`           | Volume                | `media_player.volume_set`      | 0 – 100 %                               |
+| `number`, `input_number` | Valeur                | `<domaine>.set_value`          | `min`, `max`, `step` de l'entité        |
+| `climate`                | Consigne              | `climate.set_temperature`      | `min_temp`, `max_temp`, `target_temp_step` |
+
+Tout autre domaine est refusé à la configuration, avec un message qui dit lesquels sont acceptés.
+
+Un appui sur la **pastille** bascule l'entité, un appui sur le **libellé** ouvre sa fiche, et la **barre** se glisse.
+Le rendu est optimiste et les appels de service sont limités à un toutes les 180 ms, avec envoi final au relâchement :
+l'interface suit le doigt sans saturer le bus. La valeur est ramenée sur le pas de l'entité — un ventilateur au pas de
+10 s'arrête sur 40, jamais sur 44.
+
+`layout: compact` réduit la carte à la barre elle-même, pastille à gauche et pourcentage à droite posés dessus : la
+pilule des widgets Nothing, sur une seule rangée de grille.
+
+---
+
 ## Notes
 
 - **Dimensionnement** — chaque carte expose `getGridOptions()` pour la vue *sections* et ne déborde jamais de sa tuile,
   quelle que soit la taille demandée.
-- **Éditeur graphique** — les six cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
+- **Éditeur graphique** — les sept cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
   par le YAML.
 - **Accents** — la police 5×7 ne comporte pas de caractères accentués (`É` devient `E`). Utilisez `dots: false` pour un
   rendu typographique classique.
