@@ -1,6 +1,6 @@
 /** Construction du DOM de la carte button et branchement des évènements. */
 
-import { bindTapHold } from "../../tools/tap-actions.js";
+import {bindTapHold} from "../../tools/tap-actions.js";
 
 export const template = () => `
   <ha-card>
@@ -21,17 +21,17 @@ export const template = () => `
  * @returns {object} références DOM
  */
 export const collect = (card) => ({
-  btn: card.$(".btn"),
-  iconWrap: card.$(".icon"),
-  icon: card.$("ha-icon"),
-  name: card.$(".name"),
-  state: card.$(".state"),
+	btn: card.$(".btn"),
+	iconWrap: card.$(".icon"),
+	icon: card.$("ha-icon"),
+	name: card.$(".name"),
+	state: card.$(".state"),
 });
 
 /** @param {import("./index.js").NothingButtonCard} card */
 export function bind(card) {
-  bindTapHold(card.el.btn, {
-    onTap: () => card.runAction(card._config.tap_action),
-    onHold: () => card.runAction(card._config.hold_action),
-  });
+	bindTapHold(card.el.btn, {
+		onTap: () => card.runAction(card._config.tap_action),
+		onHold: () => card.runAction(card._config.hold_action),
+	});
 }

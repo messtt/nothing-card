@@ -7,6 +7,10 @@ export default `
   --nl-live: var(--nl-accent);
   --ha-card-border-width: 0;
   display: block;
+  /* Hauteur de la tuile : Home Assistant la donne au host, et c'est sur elle
+     que s'appuient les 100 % de ha-card. Sans cette ligne le host reste en
+     hauteur automatique, la carte grandit avec son contenu et déborde. */
+  height: 100%;
 }
 ha-card {
   background: var(--nl-bg);

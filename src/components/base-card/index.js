@@ -17,100 +17,111 @@
  *   onConnect()/onDisconnect()  cycle de vie (optionnel)
  */
 
-import { adoptStyles } from "../../tools/styles.js";
+import {adoptStyles} from "../../tools/styles.js";
 import base from "./styles.js";
-import { resolveColor } from "../../tools/utils.js";
-import { ACCENT } from "../../var/consts.js";
+import {resolveColor} from "../../tools/utils.js";
+import {ACCENT} from "../../var/consts.js";
 
 export class NothingBaseCard extends HTMLElement {
-  static cardType = "nothing-card";
-  static styles = "";
-  static defaults = {};
-  static accentVar = "--nb-accent";
+	static cardType = "nothing-card";
+	static styles = "";
+	static defaults = {};
+	static accentVar = "--nb-accent";
 
-  /** Lovelace appelle ceci à chaque modification de la configuration. */
-  setConfig(config) {
-    this.validateConfig(config);
+	/** Lovelace appelle ceci à chaque modification de la configuration. */
+	setConfig(config) {
+		this.validateConfig(config);
 
-    this._config = { ...this.constructor.defaults, ...config };
-    this.normalizeConfig(this._config);
+		this._config = {...this.constructor.defaults, ...config};
+		this.normalizeConfig(this._config);
 
-    if (!this.shadowRoot) {
-      this.attachShadow({ mode: "open" });
-      adoptStyles(this.shadowRoot, base, "nothing-base");
-      adoptStyles(this.shadowRoot, this.constructor.styles, this.constructor.cardType);
-    }
+		if (!this.shadowRoot) {
+			this.attachShadow({mode: "open"});
+			adoptStyles(this.shadowRoot, base, "nothing-base");
+			adoptStyles(this.shadowRoot, this.constructor.styles, this.constructor.cardType);
+		}
 
-    // Le DOM va être reconstruit : les mémos de rendu ne valent plus rien.
-    this.memo = {};
-    this.reset();
+		// Le DOM va être reconstruit : les mémos de rendu ne valent plus rien.
+		this.memo = {};
+		this.reset();
 
-    this.applyColors();
+		this.applyColors();
 
-    // Le gabarit est reconstruit à chaque setConfig : Lovelace ne rappelle
-    // cette méthode qu'en édition, jamais sur un changement d'état.
-    this.shadowRoot.innerHTML = this.template();
-    this.collect();
-    this.bind();
-    this.render();
-  }
+		// Le gabarit est reconstruit à chaque setConfig : Lovelace ne rappelle
+		// cette méthode qu'en édition, jamais sur un changement d'état.
+		this.shadowRoot.innerHTML = this.template();
+		this.collect();
+		this.bind();
+		this.render();
+	}
 
-  /** @param {object} hass */
-  set hass(hass) {
-    this._hass = hass;
-    this.render();
-  }
+	/** @param {object} hass */
+	set hass(hass) {
+		this._hass = hass;
+		this.render();
+	}
 
-  get hass() {
-    return this._hass;
-  }
+	get hass() {
+		return this._hass;
+	}
 
-  /** État de l'entité configurée, ou `undefined`. */
-  get stateObj() {
-    return this._hass && this._config ? this._hass.states[this._config.entity] : undefined;
-  }
+	/** État de l'entité configurée, ou `undefined`. */
+	get stateObj() {
+		return this._hass && this._config ? this._hass.states[this._config.entity] : undefined;
+	}
 
-  /** Raccourci de sélection dans le shadow root. */
-  $(selector) {
-    return this.shadowRoot.querySelector(selector);
-  }
+	/** Raccourci de sélection dans le shadow root. */
+	$(selector) {
+		return this.shadowRoot.querySelector(selector);
+	}
 
-  connectedCallback() {
-    this.onConnect();
-  }
+	connectedCallback() {
+		this.onConnect();
+	}
 
-  disconnectedCallback() {
-    this.onDisconnect();
-  }
+	disconnectedCallback() {
+		this.onDisconnect();
+	}
 
-  /* --- points d'extension ------------------------------------------- */
+	/* --- points d'extension ------------------------------------------- */
 
-  /** @param {object} config @throws si la configuration est inutilisable */
-  validateConfig(config) {
-    if (!config || !config.entity) throw new Error("Vous devez définir 'entity'");
-  }
+	/** @param {object} config @throws si la configuration est inutilisable */
+	validateConfig(config) {
+		if (!config || !config.entity) throw new Error("Vous devez définir 'entity'");
+	}
 
-  /** Borne les valeurs numériques, normalise les énumérations. */
-  normalizeConfig() {}
+	/** Borne les valeurs numériques, normalise les énumérations. */
+	normalizeConfig() {
+	}
 
-  /** Remet à zéro l'état interne propre à la carte (onglet actif, données…). */
-  reset() {}
+	/** Remet à zéro l'état interne propre à la carte (onglet actif, données…). */
+	reset() {
+	}
 
-  /** Reporte les couleurs de la config dans des variables CSS de l'hôte. */
-  applyColors() {
-    this.style.setProperty(
-      this.constructor.accentVar,
-      resolveColor(this._config.accent, ACCENT)
-    );
-  }
+	/** Reporte les couleurs de la config dans des variables CSS de l'hôte. */
+	applyColors() {
+		this.style.setProperty(
+			this.constructor.accentVar,
+			resolveColor(this._config.accent, ACCENT)
+		);
+	}
 
-  template() {
-    return "";
-  }
+	template() {
+		return "";
+	}
 
-  collect() {}
-  bind() {}
-  render() {}
-  onConnect() {}
-  onDisconnect() {}
+	collect() {
+	}
+
+	bind() {
+	}
+
+	render() {
+	}
+
+	onConnect() {
+	}
+
+	onDisconnect() {
+	}
 }

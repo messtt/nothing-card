@@ -9,9 +9,9 @@
  * @param {any} [detail]
  */
 export function fireEvent(node, type, detail) {
-  const event = new Event(type, { bubbles: true, composed: true, cancelable: false });
-  event.detail = detail === undefined ? {} : detail;
-  node.dispatchEvent(event);
+	const event = new Event(type, {bubbles: true, composed: true, cancelable: false});
+	event.detail = detail === undefined ? {} : detail;
+	node.dispatchEvent(event);
 }
 
 /** Retour haptique sur mobile (ignoré ailleurs). */
@@ -29,10 +29,10 @@ export const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
  * @returns {string} couleur CSS
  */
 export function resolveColor(value, fallback) {
-  if (!value) return fallback;
-  if (typeof value === "string") return value;
-  if (Array.isArray(value)) return `rgb(${value.join(",")})`;
-  return fallback;
+	if (!value) return fallback;
+	if (typeof value === "string") return value;
+	if (Array.isArray(value)) return `rgb(${value.join(",")})`;
+	return fallback;
 }
 
 /**
@@ -43,32 +43,35 @@ export function resolveColor(value, fallback) {
  * @param {number} delay
  */
 export function throttler(delay) {
-  let timer = null;
-  let pending = null;
-  return {
-    /** @param {Function} fn */
-    push(fn) {
-      pending = fn;
-      if (timer) return;
-      timer = setTimeout(() => {
-        timer = null;
-        if (pending) { pending(); pending = null; }
-      }, delay);
-    },
-    /** Envoi immédiat du dernier appel en attente (au relâchement du doigt). */
-    flush() {
-      if (!pending) return;
-      clearTimeout(timer);
-      timer = null;
-      pending();
-      pending = null;
-    },
-    cancel() {
-      clearTimeout(timer);
-      timer = null;
-      pending = null;
-    },
-  };
+	let timer = null;
+	let pending = null;
+	return {
+		/** @param {Function} fn */
+		push(fn) {
+			pending = fn;
+			if (timer) return;
+			timer = setTimeout(() => {
+				timer = null;
+				if (pending) {
+					pending();
+					pending = null;
+				}
+			}, delay);
+		},
+		/** Envoi immédiat du dernier appel en attente (au relâchement du doigt). */
+		flush() {
+			if (!pending) return;
+			clearTimeout(timer);
+			timer = null;
+			pending();
+			pending = null;
+		},
+		cancel() {
+			clearTimeout(timer);
+			timer = null;
+			pending = null;
+		},
+	};
 }
 
 /**
@@ -79,20 +82,26 @@ export function throttler(delay) {
  * @returns {{ disconnect: () => void }}
  */
 export function observeResize(el, onResize) {
-  if (!window.ResizeObserver || !el) return { disconnect() {} };
-  let raf = null;
-  const ro = new ResizeObserver(() => {
-    if (raf) return;
-    raf = requestAnimationFrame(() => { raf = null; onResize(); });
-  });
-  ro.observe(el);
-  return {
-    disconnect() {
-      ro.disconnect();
-      if (raf) cancelAnimationFrame(raf);
-      raf = null;
-    },
-  };
+	if (!window.ResizeObserver || !el) return {
+		disconnect() {
+		}
+	};
+	let raf = null;
+	const ro = new ResizeObserver(() => {
+		if (raf) return;
+		raf = requestAnimationFrame(() => {
+			raf = null;
+			onResize();
+		});
+	});
+	ro.observe(el);
+	return {
+		disconnect() {
+			ro.disconnect();
+			if (raf) cancelAnimationFrame(raf);
+			raf = null;
+		},
+	};
 }
 
 /**
@@ -103,10 +112,10 @@ export function observeResize(el, onResize) {
  * @param {number|null} [decimals] `null` = automatique selon l'ordre de grandeur
  */
 export function formatNumber(n, hass, decimals = null) {
-  const d = decimals != null ? decimals : Math.abs(n) >= 100 ? 0 : Math.abs(n) >= 10 ? 1 : 2;
-  const lang = hass && hass.locale ? hass.locale.language : "fr-FR";
-  return new Intl.NumberFormat(lang, {
-    minimumFractionDigits: d,
-    maximumFractionDigits: d,
-  }).format(n);
+	const d = decimals != null ? decimals : Math.abs(n) >= 100 ? 0 : Math.abs(n) >= 10 ? 1 : 2;
+	const lang = hass && hass.locale ? hass.locale.language : "fr-FR";
+	return new Intl.NumberFormat(lang, {
+		minimumFractionDigits: d,
+		maximumFractionDigits: d,
+	}).format(n);
 }

@@ -10,9 +10,11 @@
 
 import "./cards/button/index.js";
 import "./cards/light/index.js";
+import "./cards/media/index.js";
 import "./cards/stats/index.js";
 
-export { NothingButtonCard } from "./cards/button/index.js";
-export { NothingLightCard } from "./cards/light/index.js";
-export { NothingStatsCard } from "./cards/stats/index.js";
-export { VERSION } from "./var/version.js";
+export {NothingButtonCard} from "./cards/button/index.js";
+export {NothingLightCard} from "./cards/light/index.js";
+export {NothingMediaCard} from "./cards/media/index.js";
+export {NothingStatsCard} from "./cards/stats/index.js";
+export {VERSION} from "./var/version.js";

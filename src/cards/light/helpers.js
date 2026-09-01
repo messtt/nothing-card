@@ -2,8 +2,8 @@
 
 /** Raccourcis de couleur (teinte, saturation). */
 export const PRESETS = [
-  { hs: [0, 100] }, { hs: [28, 100] }, { hs: [50, 100] }, { hs: [110, 90] },
-  { hs: [180, 90] }, { hs: [225, 95] }, { hs: [280, 85] }, { hs: [320, 70] },
+	{hs: [0, 100]}, {hs: [28, 100]}, {hs: [50, 100]}, {hs: [110, 90]},
+	{hs: [180, 90]}, {hs: [225, 95]}, {hs: [280, 85]}, {hs: [320, 70]},
 ];
 
 /** Raccourcis de blanc, en kelvins. */
@@ -25,14 +25,14 @@ export const CALL_THROTTLE = 180;
  * @returns {{bright: boolean, color: boolean, white: boolean}}
  */
 export function supportedModes(stateObj) {
-  const sup = (stateObj && stateObj.attributes.supported_color_modes) || [];
-  return {
-    bright: sup.some((m) =>
-      ["brightness", "hs", "xy", "rgb", "rgbw", "rgbww", "color_temp", "white"].includes(m)
-    ),
-    color: sup.some((m) => ["hs", "xy", "rgb", "rgbw", "rgbww"].includes(m)),
-    white: sup.includes("color_temp"),
-  };
+	const sup = (stateObj && stateObj.attributes.supported_color_modes) || [];
+	return {
+		bright: sup.some((m) =>
+			["brightness", "hs", "xy", "rgb", "rgbw", "rgbww", "color_temp", "white"].includes(m)
+		),
+		color: sup.some((m) => ["hs", "xy", "rgb", "rgbw", "rgbww"].includes(m)),
+		white: sup.includes("color_temp"),
+	};
 }
 
 /**
@@ -40,9 +40,9 @@ export function supportedModes(stateObj) {
  * @param {object} stateObj
  */
 export const kelvinRange = (stateObj) => ({
-  min: (stateObj && stateObj.attributes.min_color_temp_kelvin) || 2000,
-  max: (stateObj && stateObj.attributes.max_color_temp_kelvin) || 6535,
+	min: (stateObj && stateObj.attributes.min_color_temp_kelvin) || 2000,
+	max: (stateObj && stateObj.attributes.max_color_temp_kelvin) || 6535,
 });
 
 /** Libellés des onglets, dans l'ordre d'affichage. */
-export const TAB_LABELS = { bright: "Lumin.", color: "Couleur", white: "Blanc" };
+export const TAB_LABELS = {bright: "Lumin.", color: "Couleur", white: "Blanc"};

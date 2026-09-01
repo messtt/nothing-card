@@ -11,9 +11,9 @@
 const cache = new Map();
 
 const supported =
-  typeof CSSStyleSheet !== "undefined" &&
-  "adoptedStyleSheets" in Document.prototype &&
-  "replaceSync" in CSSStyleSheet.prototype;
+	typeof CSSStyleSheet !== "undefined" &&
+	"adoptedStyleSheets" in Document.prototype &&
+	"replaceSync" in CSSStyleSheet.prototype;
 
 /**
  * @param {ShadowRoot} root
@@ -21,17 +21,17 @@ const supported =
  * @param {string} key identifiant stable de la feuille (nom de la carte)
  */
 export function adoptStyles(root, css, key) {
-  if (!supported) {
-    const style = document.createElement("style");
-    style.textContent = css;
-    root.appendChild(style);
-    return;
-  }
-  let sheet = cache.get(key);
-  if (!sheet) {
-    sheet = new CSSStyleSheet();
-    sheet.replaceSync(css);
-    cache.set(key, sheet);
-  }
-  root.adoptedStyleSheets = [...root.adoptedStyleSheets, sheet];
+	if (!supported) {
+		const style = document.createElement("style");
+		style.textContent = css;
+		root.appendChild(style);
+		return;
+	}
+	let sheet = cache.get(key);
+	if (!sheet) {
+		sheet = new CSSStyleSheet();
+		sheet.replaceSync(css);
+		cache.set(key, sheet);
+	}
+	root.adoptedStyleSheets = [...root.adoptedStyleSheets, sheet];
 }

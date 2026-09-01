@@ -1,76 +1,162 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nothing Cards — banc d'essai</title>
-<style>
-  :root { color-scheme: dark; }
-  body {
-    margin: 0; padding: 32px 24px 64px;
-    background: #000; color: #f0efeb;
-    font-family: "SF Mono", ui-monospace, "Roboto Mono", monospace;
-  }
-  h1 { font-size: 15px; letter-spacing: .22em; text-transform: uppercase; font-weight: 600; margin: 0 0 4px; }
-  p.sub { margin: 0 0 32px; font-size: 12px; letter-spacing: .08em; opacity: .45; }
-  h2 { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; opacity: .4;
-       font-weight: 500; margin: 34px 0 12px; }
-  .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: stretch; }
-  .cell { width: 260px; }
-  .cell.sq { width: 168px; }
-  .cell.ci { width: 138px; }
-  .cell.light { width: 300px; height: 420px; }
-  .cell.stats { width: 420px; height: 220px; }
-  .hint { margin-top: 40px; font-size: 11px; letter-spacing: .06em; opacity: .35; line-height: 1.7; }
-  code { color: #E01F26; }
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nothing Cards — banc d'essai</title>
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+
+        body {
+            margin: 0;
+            padding: 32px 24px 64px;
+            background: #000;
+            color: #f0efeb;
+            font-family: "SF Mono", ui-monospace, "Roboto Mono", monospace;
+        }
+
+        h1 {
+            font-size: 15px;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin: 0 0 4px;
+        }
+
+        p.sub {
+            margin: 0 0 32px;
+            font-size: 12px;
+            letter-spacing: .08em;
+            opacity: .45;
+        }
+
+        h2 {
+            font-size: 11px;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .4;
+            font-weight: 500;
+            margin: 34px 0 12px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: stretch;
+        }
+
+        .cell {
+            width: 260px;
+        }
+
+        .cell.sq {
+            width: 168px;
+        }
+
+        .cell.ci {
+            width: 138px;
+        }
+
+        .cell.light {
+            width: 300px;
+            height: 420px;
+        }
+
+        .cell.stats {
+            width: 420px;
+            height: 220px;
+        }
+
+        .cell.media {
+            width: 380px;
+        }
+
+        .cell.tile {
+            width: 210px;
+            height: 210px;
+        }
+
+        .cell.artwork {
+            width: 340px;
+            height: 190px;
+        }
+
+        .hint {
+            margin-top: 40px;
+            font-size: 11px;
+            letter-spacing: .06em;
+            opacity: .35;
+            line-height: 1.7;
+        }
+
+        code {
+            color: #E01F26;
+        }
+    </style>
 </head>
 <body>
-  <h1>Nothing Cards</h1>
-  <p class="sub">Banc d'essai local — charge <code>dist/nothing-card.js</code> avec un faux Home Assistant</p>
+<h1>Nothing Cards</h1>
+<p class="sub">Banc d'essai local — charge <code>dist/nothing-card.js</code> avec un faux Home Assistant</p>
 
-  <h2>Button · pill</h2>
-  <div class="row" id="pill"></div>
+<h2>Button · pill</h2>
+<div class="row" id="pill"></div>
 
-  <h2>Button · square / circle</h2>
-  <div class="row" id="shapes"></div>
+<h2>Button · square / circle</h2>
+<div class="row" id="shapes"></div>
 
-  <h2>Light</h2>
-  <div class="row" id="light"></div>
+<h2>Light</h2>
+<div class="row" id="light"></div>
 
-  <h2>Stats</h2>
-  <div class="row" id="stats"></div>
+<h2>Media · bar</h2>
+<div class="row" id="media"></div>
 
-  <p class="hint">
+<h2>Media · tile / art</h2>
+<div class="row" id="mediaShapes"></div>
+
+<h2>Stats</h2>
+<div class="row" id="stats"></div>
+
+<p class="hint">
     Les cartes sont les vraies : elles viennent du bundle construit par <code>npm run build</code>.<br>
     Servez ce dossier depuis la racine du dépôt (<code>npx serve .</code>) puis ouvrez <code>/preview/</code>.
-  </p>
+</p>
 
 <script type="module">
-import { installStubs, makeCard } from "./mock-hass.js";
-import "../dist/nothing-card.js";
+	import {installStubs, makeCard} from "./mock-hass.js";
+	import "../dist/nothing-card.js";
 
-installStubs();
+	installStubs();
 
-const add = (parent, cls, type, config) => {
-  const cell = document.createElement("div");
-  cell.className = "cell " + cls;
-  cell.appendChild(makeCard(type, config));
-  document.getElementById(parent).appendChild(cell);
-};
+	const add = (parent, cls, type, config) => {
+		const cell = document.createElement("div");
+		cell.className = "cell " + cls;
+		cell.appendChild(makeCard(type, config));
+		document.getElementById(parent).appendChild(cell);
+	};
 
-add("pill", "", "nothing-button-card", { entity: "light.salon" });
-add("pill", "", "nothing-button-card", { entity: "light.bureau", variant: "light" });
-add("pill", "", "nothing-button-card", { entity: "lock.entree", dots: false });
+	add("pill", "", "nothing-button-card", {entity: "light.salon"});
+	add("pill", "", "nothing-button-card", {entity: "light.bureau", variant: "light"});
+	add("pill", "", "nothing-button-card", {entity: "lock.entree", dots: false});
 
-add("shapes", "sq", "nothing-button-card", { entity: "switch.hotspot", shape: "square" });
-add("shapes", "sq", "nothing-button-card", { entity: "fan.chambre", shape: "square", variant: "light" });
-add("shapes", "ci", "nothing-button-card", { entity: "script.cinema", shape: "circle" });
+	add("shapes", "sq", "nothing-button-card", {entity: "switch.hotspot", shape: "square"});
+	add("shapes", "sq", "nothing-button-card", {entity: "fan.chambre", shape: "square", variant: "light"});
+	add("shapes", "ci", "nothing-button-card", {entity: "script.cinema", shape: "circle"});
 
-add("light", "light", "nothing-light-card", { entity: "light.salon" });
-add("light", "light", "nothing-light-card", { entity: "light.bureau" });
+	add("light", "light", "nothing-light-card", {entity: "light.salon"});
+	add("light", "light", "nothing-light-card", {entity: "light.bureau"});
 
-add("stats", "stats", "nothing-stats-card", { entity: "sensor.consommation", period: "hour", points: 24 });
+	add("media", "media", "nothing-media-card", {entity: "media_player.salon"});
+	add("media", "media", "nothing-media-card", {entity: "media_player.chambre", variant: "light", volume: true});
+	add("media", "media", "nothing-media-card", {entity: "media_player.cuisine"});
+
+	add("mediaShapes", "tile", "nothing-media-card", {entity: "media_player.salon", layout: "tile"});
+	add("mediaShapes", "tile", "nothing-media-card", {entity: "media_player.chambre", layout: "tile", variant: "light"});
+	add("mediaShapes", "artwork", "nothing-media-card", {entity: "media_player.salon", layout: "art"});
+
+	add("stats", "stats", "nothing-stats-card", {entity: "sensor.consommation", period: "hour", points: 24});
 </script>
 </body>
 </html>

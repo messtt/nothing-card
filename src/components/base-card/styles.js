@@ -3,7 +3,7 @@
  * Il ne pose que des variables : chaque carte reste libre de sa mise en page.
  */
 
-import { FONT_STACK, COLORS } from "../../var/consts.js";
+import {FONT_STACK, COLORS} from "../../var/consts.js";
 
 export default `
 :host {
