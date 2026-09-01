@@ -13,7 +13,7 @@ rouge. Aucune dépendance à l'exécution — **un seul fichier** à déposer da
 |------------|------------------------------|-------------------------------------------------------------------------------------|
 | **Button** | `custom:nothing-button-card` | Bouton on/off en pilule, carré ou cercle. Appui court / appui long configurables.   |
 | **Stats**  | `custom:nothing-stats-card`  | Histogramme en LED alimenté par le recorder, avec variation sur la période.         |
-| **Light**  | `custom:nothing-light-card`  | Contrôle complet d'une lumière : luminosité, roue de couleur, température de blanc. |
+| **Light**  | `custom:nothing-light-card`  | Lumière en barres empilées : allumage, luminosité, teinte, blanc, raccourcis.       |
 | **Media**  | `custom:nothing-media-card`  | Lecteur multimédia : pochette, progression, transport, trois dispositions.           |
 | **Info**   | `custom:nothing-info-card`   | Affichage seul : pastille, valeur, libellé. Aucune commande.                        |
 | **Text**   | `custom:nothing-text-card`   | Titre en matrice de points, à poser entre deux sections.                            |
@@ -114,21 +114,30 @@ type: custom:nothing-light-card
 entity: light.salon
 ```
 
-| Option           | Défaut        | Description                                   |
-|------------------|---------------|-----------------------------------------------|
-| `entity`         | —             | **Requis.** Entité `light.*`.                 |
-| `name`           | nom convivial | Libellé affiché.                              |
-| `wheel_max`      | `220`         | Diamètre maximal de la roue, en pixels.       |
-| `tint`           | `true`        | La jauge prend la couleur réelle de la lampe. |
-| `presets`        | `true`        | Rangée de raccourcis couleur / blanc.         |
-| `min_brightness` | `1`           | Luminosité minimale atteignable au glisser.   |
-| `accent`         | `#E01F26`     | Couleur de repli quand `tint` est désactivé.  |
-| `dots`           | `true`        | Typographie en matrice de points.             |
+| Option           | Défaut        | Description                                        |
+|------------------|---------------|----------------------------------------------------|
+| `entity`         | —             | **Requis.** Entité `light.*`.                      |
+| `name`           | nom convivial | Libellé affiché.                                   |
+| `tint`           | `true`        | Les barres prennent la couleur réelle de la lampe. |
+| `presets`        | `true`        | Rangée de raccourcis couleur / blanc.              |
+| `min_brightness` | `1`           | Luminosité minimale atteignable au glisser.        |
+| `accent`         | `#E01F26`     | Couleur de repli quand `tint` est désactivé.       |
+| `dots`           | `true`        | Pourcentage en matrice de points.                  |
 
-Les onglets ne s'affichent que pour ce que la lampe sait faire, d'après `supported_color_modes` : une ampoule simplement
-dimmable n'affiche que la grande pilule, une ampoule blanc réglable n'a pas de roue. Le rendu est optimiste et les
-appels de service sont limités à un toutes les 180 ms, avec envoi final au relâchement — l'interface suit le doigt sans
-saturer le bus.
+La carte est une pile de barres, sans onglet : un **interrupteur** dont le pavé glisse d'un bord à l'autre, la
+**luminosité**, la **teinte**, le **blanc**, puis la rangée de **raccourcis**. Chaque barre n'apparaît que si
+`supported_color_modes` l'annonce — une ampoule simplement dimmable n'affiche que l'interrupteur et la luminosité,
+et ne réclame alors que trois rangées de grille au lieu de six.
+
+La bande de teintes couvre les 360 degrés à saturation pleine : elle donne des couleurs franches, et les raccourcis
+apportent les teintes plus douces et les blancs. Les quatre premiers raccourcis sont des températures (2000, 2700,
+4000 et 6500 K), les quatre suivants des couleurs ; seuls ceux que la lampe sait rendre sont affichés.
+
+Le rendu est optimiste et les appels de service sont limités à un toutes les 180 ms, avec envoi final au relâchement —
+l'interface suit le doigt sans saturer le bus.
+
+> L'option `wheel_max` des versions précédentes n'a plus d'effet : la roue de couleur a laissé place à la bande de
+> teintes. Une configuration qui la mentionne encore reste valide.
 
 ---
 

@@ -62,7 +62,14 @@
 
         .cell.light {
             width: 300px;
-            height: 420px;
+            height: 376px;     /* 6 rangees de la vue sections */
+            align-self: flex-start;
+        }
+
+        .cell.light-dim {
+            width: 300px;
+            height: 184px;     /* 3 rangees : ampoule simplement dimmable */
+            align-self: flex-start;
         }
 
         .cell.stats {
@@ -186,7 +193,7 @@
 	add("shapes", "sq", "nothing-button-card", {entity: "fan.chambre", shape: "square", show_name: false, show_state: false, led: false});
 
 	add("light", "light", "nothing-light-card", {entity: "light.salon"});
-	add("light", "light", "nothing-light-card", {entity: "light.bureau"});
+	add("light", "light-dim", "nothing-light-card", {entity: "light.bureau"});
 
 	add("slider", "slider", "nothing-slider-card", {entity: "light.salon"});
 	add("slider", "slider", "nothing-slider-card", {entity: "cover.velux", variant: "light"});

@@ -1,13 +1,14 @@
 /** Constantes et lectures d'attributs propres à la carte light. */
 
-/** Raccourcis de couleur (teinte, saturation). */
+/**
+ * Rangée de raccourcis : quatre blancs, quatre couleurs.
+ * Chaque entrée porte soit une température (`k`), soit une teinte et une
+ * saturation (`hs`) — la carte n'affiche que celles que la lampe sait faire.
+ */
 export const PRESETS = [
-	{hs: [0, 100]}, {hs: [28, 100]}, {hs: [50, 100]}, {hs: [110, 90]},
-	{hs: [180, 90]}, {hs: [225, 95]}, {hs: [280, 85]}, {hs: [320, 70]},
+	{k: 2000}, {k: 2700}, {k: 4000}, {k: 6500},
+	{hs: [220, 80]}, {hs: [275, 60]}, {hs: [320, 65]}, {hs: [4, 72]},
 ];
-
-/** Raccourcis de blanc, en kelvins. */
-export const WHITE_PRESETS = [2200, 2700, 3500, 4500, 5500, 6500];
 
 /**
  * Durée pendant laquelle l'affichage optimiste l'emporte sur l'état remonté
@@ -18,6 +19,9 @@ export const OPTIMISTIC_MS = 1500;
 
 /** Intervalle minimal entre deux appels de service pendant un glisser (ms). */
 export const CALL_THROTTLE = 180;
+
+/** Saturation appliquée par la barre de teinte : une bande de teintes pures. */
+export const HUE_SATURATION = 100;
 
 /**
  * Ce que la lampe sait faire, d'après `supported_color_modes`.
@@ -43,6 +47,3 @@ export const kelvinRange = (stateObj) => ({
 	min: (stateObj && stateObj.attributes.min_color_temp_kelvin) || 2000,
 	max: (stateObj && stateObj.attributes.max_color_temp_kelvin) || 6535,
 });
-
-/** Libellés des onglets, dans l'ordre d'affichage. */
-export const TAB_LABELS = {bright: "Lumin.", color: "Couleur", white: "Blanc"};

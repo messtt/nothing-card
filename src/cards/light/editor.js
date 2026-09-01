@@ -12,7 +12,7 @@ export const configForm = () => ({
 				{name: "dots", selector: {boolean: {}}},
 				{name: "tint", selector: {boolean: {}}},
 				{name: "presets", selector: {boolean: {}}},
-				{name: "wheel_max", selector: {number: {min: 120, max: 320, mode: "box"}}},
+				{name: "min_brightness", selector: {number: {min: 1, max: 50, mode: "box"}}},
 			],
 		},
 	],

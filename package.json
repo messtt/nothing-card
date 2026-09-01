@@ -1,6 +1,6 @@
 {
   "name": "nothing-card",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Cartes Lovelace pour Home Assistant inspirées de l'esthétique Nothing OS : matrice de points, noir profond, blanc cassé, un seul rouge.",
   "type": "module",
   "private": true,

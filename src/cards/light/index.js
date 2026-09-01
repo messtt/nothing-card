@@ -1,7 +1,7 @@
 /**
- * Nothing Light Card — contrôle complet d'une lumière.
- * Luminosité, roue de couleur et température de blanc, selon ce que
- * `supported_color_modes` annonce.
+ * Nothing Light Card — contrôle complet d'une lumière, en barres empilées.
+ * Interrupteur, luminosité, teinte, température de blanc et raccourcis : chaque
+ * rangée n'apparaît que si `supported_color_modes` l'annonce.
  *
  *   type: custom:nothing-light-card
  *   entity: light.salon
@@ -9,14 +9,21 @@
 
 import {NothingBaseCard} from "../../components/base-card/index.js";
 import {registerCard} from "../../tools/register.js";
-import {observeResize, throttler} from "../../tools/utils.js";
+import {throttler} from "../../tools/utils.js";
 import {REPO} from "../../var/version.js";
 import {ACCENT} from "../../var/consts.js";
 import styles from "./styles.js";
 import {template, collect, bind} from "./create.js";
-import {updateChanges, paintBrightness, paintWheel, paintTemp} from "./changes.js";
+import {updateChanges, paintBrightness, paintHue, paintTemp} from "./changes.js";
 import {configForm, stubConfig} from "./editor.js";
-import {OPTIMISTIC_MS, CALL_THROTTLE} from "./helpers.js";
+import {OPTIMISTIC_MS, CALL_THROTTLE, supportedModes} from "./helpers.js";
+
+/** Hauteurs de référence, en pixels, pour dimensionner la tuile. */
+const HEAD = 36;
+const BAR = 40;
+const GAP = 12;
+const PRESETS = 46;
+const PADDING = 32;
 
 export class NothingLightCard extends NothingBaseCard {
 	static cardType = "nothing-light-card";
@@ -25,18 +32,15 @@ export class NothingLightCard extends NothingBaseCard {
 
 	static defaults = {
 		accent: ACCENT,
-		dots: true,           // typographie en matrice de points
-		tint: true,           // la jauge prend la couleur de la lampe
+		dots: true,           // pourcentage en matrice de points
+		tint: true,           // les barres prennent la couleur de la lampe
 		presets: true,        // rangée de raccourcis couleur / blanc
 		min_brightness: 1,
-		wheel_max: 220,       // diamètre maximal de la roue (px)
 	};
 
 	static getConfigForm = configForm;
 	static getStubConfig = stubConfig;
 
-	/** @type {"bright"|"color"|"white"|null} onglet actif */
-	_mode = null;
 	/** @type {{type: string, v: any, until: number}|null} valeur optimiste */
 	_local = null;
 	_throttler = throttler(CALL_THROTTLE);
@@ -49,9 +53,7 @@ export class NothingLightCard extends NothingBaseCard {
 	}
 
 	reset() {
-		this._mode = null;
 		this._local = null;
-		this._wheelSize = 0;
 	}
 
 	template() {
@@ -64,7 +66,6 @@ export class NothingLightCard extends NothingBaseCard {
 
 	bind() {
 		bind(this);
-		this.observeStage();
 	}
 
 	render() {
@@ -73,51 +74,31 @@ export class NothingLightCard extends NothingBaseCard {
 	}
 
 	getCardSize() {
-		return 6;
-	}
-
-	getGridOptions() {
-		return {rows: 7, columns: 6, min_rows: 5, min_columns: 3};
-	}
-
-	/* --- cycle de vie --------------------------------------------------- */
-	onConnect() {
-		this.observeStage();
-		this.fitWheel();
-	}
-
-	onDisconnect() {
-		if (this._resize) {
-			this._resize.disconnect();
-			this._resize = null;
-		}
-		this._throttler.cancel();
-	}
-
-	/** (Re)branche l'observateur : `setConfig` remplace le noeud observé. */
-	observeStage() {
-		if (!this.el || !this.isConnected) return;
-		if (this._resize) this._resize.disconnect();
-		this._resize = observeResize(this.el.stage, () => this.fitWheel());
+		return 5;
 	}
 
 	/**
-	 * La roue est un disque : son côté est le plus petit côté de l'espace libre,
-	 * borné par `wheel_max`. Sans cette mesure elle prendrait toute la largeur et
-	 * déborderait de la tuile, ou s'aplatirait en ellipse.
+	 * La tuile ne réclame que les rangées des barres réellement affichées :
+	 * une ampoule simplement dimmable est deux fois plus courte qu'une RGBWW.
 	 */
-	fitWheel() {
-		if (!this.el || this.el.wheel.hidden) return;
-		const stage = this.el.stage;
-		const w = stage.clientWidth;
-		if (w < 8) return;
-		// hauteur non résolue (carte à hauteur automatique) : on part de la largeur
-		const h = stage.clientHeight > 8 ? stage.clientHeight : w;
-		const size = Math.round(Math.max(72, Math.min(w, h, this._config.wheel_max)));
-		if (Math.abs(size - (this._wheelSize || 0)) < 2) return;
-		this._wheelSize = size;
-		this.el.wheel.style.width = size + "px";
-		this.el.wheel.style.height = size + "px";
+	getGridOptions() {
+		const st = this.stateObj;
+		let rows = 6;
+
+		if (st) {
+			const modes = supportedModes(st);
+			const bars = 1 + (modes.bright ? 1 : 0) + (modes.color ? 1 : 0) + (modes.white ? 1 : 0);
+			const presets =
+				this._config.presets && (modes.color || modes.white) ? GAP + PRESETS : 0;
+			const px = PADDING + HEAD + GAP + bars * BAR + (bars - 1) * GAP + presets;
+			rows = Math.max(3, Math.ceil((px + 8) / 64));
+		}
+
+		return {rows, columns: 6, min_rows: 3, min_columns: 3};
+	}
+
+	onDisconnect() {
+		this._throttler.cancel();
 	}
 
 	/* --- état optimiste -------------------------------------------------- */
@@ -151,8 +132,8 @@ export class NothingLightCard extends NothingBaseCard {
 		paintBrightness(this, pct, off);
 	}
 
-	paintWheel(h, s) {
-		paintWheel(this, h, s);
+	paintHue(h, s) {
+		paintHue(this, h, s);
 	}
 
 	paintTemp(k) {
@@ -163,7 +144,7 @@ export class NothingLightCard extends NothingBaseCard {
 registerCard({
 	type: NothingLightCard.cardType,
 	name: "Nothing Light Card",
-	description: "Contrôle de lumière style Nothing OS : luminosité, couleur, blanc",
+	description: "Contrôle de lumière style Nothing OS : barres et raccourcis",
 	element: NothingLightCard,
 	documentationURL: `${REPO}#nothing-light-card`,
 });
