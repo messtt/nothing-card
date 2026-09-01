@@ -35,6 +35,9 @@ export const DEFAULT_ICONS = {
 	input_boolean: "mdi:toggle-switch",
 	button: "mdi:gesture-tap-button",
 	media_player: "mdi:play-circle",
+	sensor: "mdi:gauge",
+	binary_sensor: "mdi:checkbox-blank-circle-outline",
+	person: "mdi:account",
 	climate: "mdi:thermostat",
 	vacuum: "mdi:robot-vacuum",
 };

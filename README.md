@@ -15,8 +15,10 @@ rouge. Aucune dépendance à l'exécution — **un seul fichier** à déposer da
 | **Stats**  | `custom:nothing-stats-card`  | Histogramme en LED alimenté par le recorder, avec variation sur la période.         |
 | **Light**  | `custom:nothing-light-card`  | Contrôle complet d'une lumière : luminosité, roue de couleur, température de blanc. |
 | **Media**  | `custom:nothing-media-card`  | Lecteur multimédia : pochette, progression, transport, trois dispositions.           |
+| **Info**   | `custom:nothing-info-card`   | Affichage seul : pastille, valeur, libellé. Aucune commande.                        |
+| **Text**   | `custom:nothing-text-card`   | Titre en matrice de points, à poser entre deux sections.                            |
 
-Les quatre cartes sont livrées dans le même fichier : une seule ressource à déclarer.
+Les six cartes sont livrées dans le même fichier : une seule ressource à déclarer.
 
 La typographie en matrice de points est dessinée en SVG à partir d'une police 5×7 embarquée : rien à installer côté
 client, et le rendu est identique sur tous les appareils.
@@ -161,11 +163,81 @@ saison et l'épisode ; la musique affiche le titre puis l'artiste.
 
 ---
 
+## Nothing Info Card
+
+La carte qui ne fait qu'afficher : une pastille, une valeur, un libellé. Pas de bouton, pas de curseur.
+
+```yaml
+type: custom:nothing-info-card
+entity: sensor.temperature_bureau
+```
+
+| Option                       | Défaut                | Description                                                    |
+|------------------------------|-----------------------|----------------------------------------------------------------|
+| `entity`                     | —                     | **Requis.** N'importe quel domaine.                            |
+| `name`                       | nom convivial         | Libellé sous la valeur.                                        |
+| `icon`                       | icône de l'entité     | Icône MDI de la pastille.                                      |
+| `attribute`                  | —                     | Affiche un attribut plutôt que l'état.                         |
+| `layout`                     | `bar`                 | `bar`, `tile` ou `pill`.                                       |
+| `variant`                    | `dark`                | Fond anthracite ou blanc cassé.                                |
+| `badge`                      | `filled`              | `filled` (pastille rouge), `plain` (icône seule), `none`.      |
+| `unit` / `decimals`          | ceux de l'entité      | Remplacent l'unité et l'arrondi.                               |
+| `dots`                       | `true`                | Valeur en matrice de points.                                   |
+| `show_value` / `show_name`   | `true`                | Masquer l'un ou l'autre.                                       |
+| `accent`                     | `#E01F26`             | Couleur de la pastille.                                        |
+| `tap_action` / `hold_action` | `more-info` / `none`  | Actions standard Lovelace.                                     |
+
+`bar` tient sur une rangée de grille : pastille à gauche, valeur puis libellé à droite. `tile` empile le tout dans un
+carré, valeur en grand. `pill` centre le groupe dans une pilule très arrondie — avec `show_value: false` et
+`badge: plain`, c'est le raccourci d'application des widgets Nothing.
+
+Une valeur numérique est mise en forme selon la locale de Home Assistant (`26.0` devient `26,0`) ; un état textuel
+passe par sa traduction (`on` devient `Allumé`). La police à points ne connaissant que les majuscules non accentuées,
+`dots: false` convient mieux aux états en toutes lettres.
+
+---
+
+## Nothing Text Card
+
+Un titre, rien d'autre. C'est la seule carte du lot qui n'observe aucune entité : son contenu vient de la configuration.
+
+```yaml
+type: custom:nothing-text-card
+text: Salon
+subtitle: 6 appareils
+rule: true
+```
+
+| Option                       | Défaut           | Description                                                       |
+|------------------------------|------------------|-------------------------------------------------------------------|
+| `text`                       | —                | **Requis.** Le titre. Un saut de ligne fait une ligne de plus.    |
+| `subtitle`                   | —                | Ligne secondaire, toujours en typographie ordinaire.              |
+| `align`                      | `left`           | `left`, `center` ou `right`.                                      |
+| `size`                       | `md`             | `sm`, `md` ou `lg`.                                               |
+| `variant`                    | `none`           | `none` (transparent), `dark`, `light` ou `accent`.                |
+| `color`                      | couleur du thème | Couleur du texte.                                                 |
+| `accent`                     | `#E01F26`        | Fond de la variante `accent`.                                     |
+| `dots`                       | `true`           | Matrice de points, sinon typographie ordinaire.                   |
+| `rule`                       | `false`          | Filet pointillé sous le titre.                                    |
+| `tap_action` / `hold_action` | `none`           | Sans action configurée, la carte ne reçoit aucun écouteur.        |
+
+En `variant: none` — le défaut — la carte est transparente et prend la couleur de texte du thème : elle se pose entre
+deux sections comme un intertitre, et reste lisible sur un tableau de bord clair comme sombre. Les autres variantes en
+font une vraie tuile pleine.
+
+`getGridOptions()` mesure le contenu (lignes, sous-titre, filet, rembourrage) et ne demande que les rangées
+nécessaires : une pour un titre simple, deux dès qu'il y a un sous-titre en grande taille.
+
+Deux réserves sur la police à points : elle ne connaît que les majuscules non accentuées (`É` devient `E`), et un titre
+long finit par se réduire pour tenir dans la largeur. Pour une phrase entière, `dots: false` reste plus lisible.
+
+---
+
 ## Notes
 
 - **Dimensionnement** — chaque carte expose `getGridOptions()` pour la vue *sections* et ne déborde jamais de sa tuile,
   quelle que soit la taille demandée.
-- **Éditeur graphique** — les quatre cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
+- **Éditeur graphique** — les six cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
   par le YAML.
 - **Accents** — la police 5×7 ne comporte pas de caractères accentués (`É` devient `E`). Utilisez `dots: false` pour un
   rendu typographique classique.

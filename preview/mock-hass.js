@@ -12,6 +12,9 @@ const MDI = {
 	"mdi:fan": "M12,11A1,1 0 0,0 11,12A1,1 0 0,0 12,13A1,1 0 0,0 13,12A1,1 0 0,0 12,11M12.5,2C17,2 17.11,5.57 14.75,6.75C13.76,7.24 13.32,8.29 13.13,9.22C13.61,9.42 14.03,9.73 14.35,10.13C18.05,8.13 22.03,8.92 22.03,12.5C22.03,17 18.46,17.1 17.28,14.73C16.78,13.74 15.72,13.3 14.79,13.11C14.59,13.59 14.28,14 13.88,14.34C15.87,18.03 15.08,22 11.5,22C7,22 6.91,18.42 9.27,17.24C10.25,16.75 10.69,15.71 10.89,14.79C10.4,14.59 9.97,14.27 9.65,13.87C5.96,15.85 2,15.07 2,11.5C2,7 5.56,6.89 6.74,9.26C7.24,10.25 8.29,10.68 9.22,10.87C9.41,10.39 9.73,9.97 10.14,9.65C8.15,5.96 8.94,2 12.5,2Z",
 	"mdi:lock": "M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z",
 	"mdi:play": "M8,5.14V19.14L19,12.14L8,5.14Z",
+	"mdi:thermometer": "M15,13V5A3,3 0 0,0 12,2A3,3 0 0,0 9,5V13A5,5 0 1,0 15,13M12,4A1,1 0 0,1 13,5V8H11V5A1,1 0 0,1 12,4Z",
+	"mdi:calculator": "M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,4V8H17V4H7M7,10V12H9V10H7M11,10V12H13V10H11M15,10V12H17V10H15M7,14V16H9V14H7M11,14V16H13V14H11M15,14V16H17V14H15M7,18V20H9V18H7M11,18V20H13V18H11M15,18V20H17V18H15Z",
+	"mdi:water-percent": "M12,20A6,6 0 0,1 6,14C6,10 12,3.25 12,3.25C12,3.25 18,10 18,14A6,6 0 0,1 12,20M12,18A4,4 0 0,0 16,14C16,12.5 14.5,9.5 12,6.5C9.5,9.5 8,12.5 8,14A4,4 0 0,0 12,18Z",
 	"mdi:toggle-switch-variant": "M7,7H17A5,5 0 0,1 22,12A5,5 0 0,1 17,17H7A5,5 0 0,1 2,12A5,5 0 0,1 7,7M17,9A3,3 0 0,0 14,12A3,3 0 0,0 17,15A3,3 0 0,0 20,12A3,3 0 0,0 17,9Z",
 };
 
@@ -167,6 +170,33 @@ const states = {
 		state: "off",
 		last_updated: now(),
 		attributes: {friendly_name: "Cuisine", supported_features: MEDIA_FEATURES},
+	},
+	"sensor.temperature_bureau": {
+		entity_id: "sensor.temperature_bureau",
+		state: "26.0",
+		last_updated: now(),
+		attributes: {
+			friendly_name: "Bureau",
+			icon: "mdi:thermometer",
+			unit_of_measurement: "°C",
+			device_class: "temperature",
+		},
+	},
+	"sensor.humidite_salon": {
+		entity_id: "sensor.humidite_salon",
+		state: "48",
+		last_updated: now(),
+		attributes: {
+			friendly_name: "Humidite salon",
+			icon: "mdi:water-percent",
+			unit_of_measurement: "%",
+		},
+	},
+	"sensor.calculatrice": {
+		entity_id: "sensor.calculatrice",
+		state: "0",
+		last_updated: now(),
+		attributes: {friendly_name: "Calculator", icon: "mdi:calculator"},
 	},
 	"sensor.consommation": {
 		entity_id: "sensor.consommation",

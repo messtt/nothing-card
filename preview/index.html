@@ -70,6 +70,22 @@
             height: 220px;
         }
 
+        .cell.text {
+            width: 420px;
+        }
+
+        .cell.info {
+            width: 300px;
+            height: 56px;      /* une rangée de la vue sections */
+            align-self: flex-start;
+        }
+
+        .cell.sq-info {
+            width: 168px;
+            height: 120px;     /* deux rangees de la vue sections */
+            align-self: flex-start;
+        }
+
         .cell.media {
             width: 380px;
         }
@@ -110,6 +126,12 @@
 <h2>Light</h2>
 <div class="row" id="light"></div>
 
+<h2>Text</h2>
+<div class="row" id="text"></div>
+
+<h2>Info</h2>
+<div class="row" id="info"></div>
+
 <h2>Media · bar</h2>
 <div class="row" id="media"></div>
 
@@ -147,6 +169,16 @@
 
 	add("light", "light", "nothing-light-card", {entity: "light.salon"});
 	add("light", "light", "nothing-light-card", {entity: "light.bureau"});
+
+	add("text", "text", "nothing-text-card", {text: "Salon", subtitle: "6 appareils", rule: true});
+	add("text", "text", "nothing-text-card", {text: "02\n22", size: "lg", align: "center"});
+	add("text", "text", "nothing-text-card", {text: "Bonne nuit", variant: "accent", size: "sm", align: "center"});
+	add("text", "text", "nothing-text-card", {text: "Sans les points", dots: false, subtitle: "typographie ordinaire"});
+
+	add("info", "info", "nothing-info-card", {entity: "sensor.temperature_bureau"});
+	add("info", "info", "nothing-info-card", {entity: "sensor.calculatrice", layout: "pill", variant: "light", badge: "plain", show_value: false});
+	add("info", "sq-info", "nothing-info-card", {entity: "sensor.humidite_salon", layout: "tile"});
+	add("info", "sq-info", "nothing-info-card", {entity: "sensor.temperature_bureau", layout: "tile", variant: "light"});
 
 	add("media", "media", "nothing-media-card", {entity: "media_player.salon"});
 	add("media", "media", "nothing-media-card", {entity: "media_player.chambre", variant: "light", volume: true});
