@@ -75,6 +75,8 @@
         .cell.sq-info { width: 168px; height: 120px; align-self: flex-start; }
 
         .cell.media   { width: 380px; }
+        .cell.wide    { width: 380px; height: 184px; align-self: flex-start; }
+
         .cell.tile    { width: 210px; height: 248px; align-self: flex-start; }
         .cell.artwork { width: 340px; height: 190px; align-self: flex-start; }
 
@@ -266,6 +268,7 @@
 	add("media", "media", "nothing-media-card", {entity: "media_player.chambre", variant: "light", volume: true});
 	add("media", "media", "nothing-media-card", {entity: "media_player.cuisine"});
 
+	add("mediaShapes", "wide", "nothing-media-card", {entity: "media_player.salon", layout: "wide"});
 	add("mediaShapes", "tile", "nothing-media-card", {entity: "media_player.salon", layout: "tile"});
 	add("mediaShapes", "tile", "nothing-media-card", {entity: "media_player.chambre", layout: "tile", variant: "light"});
 	add("mediaShapes", "artwork", "nothing-media-card", {entity: "media_player.salon", layout: "art"});

@@ -212,6 +212,8 @@ button svg { display: block; width: 18px; height: 18px; fill: currentColor; }
 .play svg { width: 20px; height: 20px; }
 .mute { width: 28px; height: 28px; background: transparent; color: var(--nm-dim); }
 .mute svg { width: 16px; height: 16px; }
+.plabel { display: none; }
+.i-alt { display: none; }
 .i-pause { display: none; }
 :host([data-playing]) .i-play { display: none; }
 :host([data-playing]) .i-pause { display: block; }
@@ -280,4 +282,57 @@ button svg { display: block; width: 18px; height: 18px; fill: currentColor; }
 :host([data-layout="art"]) .prev,
 :host([data-layout="art"]) .next { width: 32px; height: 32px; }
 :host([data-layout="art"]) .play { width: 38px; height: 38px; background: transparent; }
+
+/* =================== disposition « wide » =================== */
+/* Pochette en haut à droite, posée par-dessus : la barre de progression garde
+   ainsi toute la largeur de la carte, et seuls les titres lui cèdent la place. */
+:host([data-layout="wide"]) ha-card {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 24px;
+}
+:host([data-layout="wide"]) .art {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 68px;
+  height: 68px;
+  border-radius: 12px;
+}
+:host([data-layout="wide"]) .eq { right: 4px; bottom: 4px; }
+:host([data-layout="wide"]) .main { flex: 1 1 auto; gap: 12px; justify-content: space-between; }
+:host([data-layout="wide"]) .grip { padding-right: 80px; }
+:host([data-layout="wide"]) .title { font-size: 17px; }
+:host([data-layout="wide"]) .title svg { height: 15px; }
+:host([data-layout="wide"]) .times { display: none; }
+
+:host([data-layout="wide"]) .controls { width: 100%; justify-content: space-between; gap: 10px; }
+:host([data-layout="wide"]) .plabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  line-height: 1;
+}
+/* Le bouton principal devient une pilule libellée ; l'ordre place les pistes
+   à droite, comme sur la référence. */
+:host([data-layout="wide"]) .play {
+  order: -1;
+  width: auto;
+  height: 38px;
+  min-width: 84px;
+  padding: 0 22px;
+  margin-right: auto;
+  border-radius: 999px;
+  gap: 8px;
+  grid-auto-flow: column;
+}
+:host([data-layout="wide"]) .play svg { display: none; }
+:host([data-layout="wide"]) .prev,
+:host([data-layout="wide"]) .next { width: 38px; height: 38px; }
+:host([data-layout="wide"]) .i-one { display: none; }
+:host([data-layout="wide"]) .i-alt { display: block; }
 `;

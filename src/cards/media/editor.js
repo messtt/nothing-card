@@ -6,7 +6,7 @@ export const configForm = () => ({
 	schema: [
 		{name: "entity", required: true, selector: {entity: {domain: "media_player"}}},
 		{name: "name", selector: {text: {}}},
-		{name: "layout", selector: {select: {mode: "dropdown", options: ["bar", "tile", "art"]}}},
+		{name: "layout", selector: {select: {mode: "dropdown", options: ["bar", "tile", "art", "wide"]}}},
 		{name: "variant", selector: {select: {mode: "dropdown", options: ["dark", "light"]}}},
 		{name: "accent", selector: {color_rgb: {}}},
 		{
@@ -19,6 +19,8 @@ export const configForm = () => ({
 				{name: "progress", selector: {boolean: {}}},
 				{name: "times", selector: {boolean: {}}},
 				{name: "volume", selector: {boolean: {}}},
+				{name: "play_text", selector: {text: {}}},
+				{name: "pause_text", selector: {text: {}}},
 			],
 		},
 		NAME_DOTS,

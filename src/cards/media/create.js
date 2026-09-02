@@ -10,10 +10,10 @@ import {FEATURE, NOTE_GLYPH, progressOf, supports} from "./helpers.js";
  * Bouton de transport. Les boutons à deux états — lecture/pause, son/muet —
  * portent leurs deux pictogrammes ; la feuille de style montre le bon.
  */
-const iconButton = (cls, title, glyphs) => `
+const iconButton = (cls, title, glyphs, label = "") => `
       <button class="${cls}" type="button" title="${title}">${glyphs
 	.map((g) => `<span class="${g.cls}">${glyph(g.name)}</span>`)
-	.join("")}</button>`;
+	.join("")}${label}</button>`;
 
 export const template = () => `
   <ha-card>
@@ -45,12 +45,18 @@ export const template = () => `
     </div>
 
     <div class="controls">
-      ${iconButton("prev", "Piste précédente", [{cls: "i-one", name: "previous"}])}
+      ${iconButton("prev", "Piste précédente", [
+	{cls: "i-one", name: "previous"},
+	{cls: "i-alt", name: "rewind"},
+])}
       ${iconButton("play", "Lecture / pause", [
 	{cls: "i-play", name: "play"},
 	{cls: "i-pause", name: "pause"},
+], `<span class="plabel"></span>`)}
+      ${iconButton("next", "Piste suivante", [
+	{cls: "i-one", name: "next"},
+	{cls: "i-alt", name: "forward"},
 ])}
-      ${iconButton("next", "Piste suivante", [{cls: "i-one", name: "next"}])}
     </div>
   </ha-card>
 `;
@@ -80,6 +86,7 @@ export const collect = (card) => ({
 	controls: card.$(".controls"),
 	prev: card.$(".prev"),
 	play: card.$(".play"),
+	plabel: card.$(".plabel"),
 	next: card.$(".next"),
 });
 

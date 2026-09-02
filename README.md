@@ -17,7 +17,7 @@ avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se co
 | **Button** | `custom:nothing-button-card` | Bouton on/off en pilule, carré ou cercle. Appui court / appui long configurables.   |
 | **Stats**  | `custom:nothing-stats-card`  | Graphique alimenté par le recorder : matrice de LED, traits fins ou courbe.         |
 | **Light**  | `custom:nothing-light-card`  | Lumière en barres empilées : allumage, luminosité, teinte, blanc, raccourcis.       |
-| **Media**  | `custom:nothing-media-card`  | Lecteur multimédia : pochette, progression, transport, trois dispositions.           |
+| **Media**  | `custom:nothing-media-card`  | Lecteur multimédia : pochette, progression, transport, quatre dispositions.          |
 | **Info**   | `custom:nothing-info-card`   | Affichage seul : pastille, valeur, libellé. Aucune commande.                        |
 | **Text**   | `custom:nothing-text-card`   | Titre en matrice de points, à poser entre deux sections.                            |
 | **Slider** | `custom:nothing-slider-card` | Grande barre à glisser. S'adapte au domaine de l'entité.                            |
@@ -235,19 +235,24 @@ layout: bar        # bar | tile | art
 |------------------------------|---------------------------|-----------------------------------------------------------|
 | `entity`                     | —                         | **Requis.** Entité `media_player.*`.                      |
 | `name`                       | nom convivial             | Libellé affiché quand rien n'est en cours.                |
-| `layout`                     | `bar`                     | `bar`, `tile` ou `art`.                                   |
+| `layout`                     | `bar`                     | `bar`, `wide`, `tile` ou `art`.                           |
 | `variant`                    | `dark`                    | Fond anthracite ou blanc cassé.                           |
 | `art`                        | `true`                    | Pochette — note en matrice de points à défaut.            |
 | `controls`                   | `true`                    | Précédent / lecture / suivant.                            |
 | `progress` / `times`         | `true`                    | Barre de progression, position et durée.                  |
 | `volume`                     | `false`                   | Rangée de volume avec coupure du son.                     |
+| `play_text` / `pause_text`   | `Play` / `Pause`          | Libellé du bouton, en disposition `wide`.                 |
 | `dots`                       | `true`                    | Compteurs en matrice de points.                           |
 | `accent`                     | `#E01F26`                 | Couleur de la lecture et de la progression.               |
 | `tap_action` / `hold_action` | `more-info` / `more-info` | Actions sur la pochette et les titres.                    |
 
-Les trois dispositions reprennent les widgets Nothing : **`bar`** est la pilule large — pochette, titres et progression
-à gauche, transport à droite ; **`tile`** est la tuile carrée, pochette en haut et commandes en bas ; **`art`** étale la
-pochette en fond, texte et pilule rouge posés dessus.
+Les quatre dispositions reprennent les widgets Nothing : **`bar`** est la pilule large — pochette, titres et
+progression à gauche, transport à droite ; **`wide`** met la pochette en haut à droite, le titre à gauche, et pose en
+bas un bouton en pilule libellé avec les pistes en chevrons doubles ; **`tile`** est la tuile carrée, pochette en haut
+et commandes en bas ; **`art`** étale la pochette en fond, texte et pilule rouge posés dessus.
+
+En `wide`, la pochette est posée **par-dessus** la carte plutôt qu'insérée dans le flux : la barre de progression garde
+ainsi toute la largeur et passe sous elle, seuls les titres lui cèdent la place.
 
 Chaque bouton n'apparaît que si le lecteur annonce l'action dans `supported_features` : pas de flèche « suivant » sur
 une radio, pas de curseur de volume sur un lecteur qui n'en a pas. La barre ne devient glissable que si le lecteur sait

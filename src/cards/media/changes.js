@@ -75,6 +75,15 @@ function paintControls(card, st) {
 	el.prev.hidden = !supports(st, FEATURE.PREVIOUS);
 	el.next.hidden = !supports(st, FEATURE.NEXT);
 	el.play.hidden = !(supports(st, FEATURE.PLAY) || supports(st, FEATURE.PAUSE));
+
+	// Le libellé du bouton ne sert qu'à la disposition « wide », mais il se
+	// remplit toujours : la feuille de style décide seule de le montrer.
+	const c = card._config;
+	const label = st.state === "playing" ? c.pause_text : c.play_text;
+	if (card.memo.plabel !== label) {
+		card.memo.plabel = label;
+		el.plabel.textContent = label;
+	}
 }
 
 /**

@@ -18,7 +18,7 @@ import {updateChanges, paintProgress, paintVolume} from "./changes.js";
 import {configForm, stubConfig} from "./editor.js";
 import {CALL_THROTTLE, OPTIMISTIC_MS, TICK_MS} from "./helpers.js";
 
-const LAYOUTS = ["bar", "tile", "art"];
+const LAYOUTS = ["bar", "tile", "art", "wide"];
 const VARIANTS = ["dark", "light"];
 
 export class NothingMediaCard extends NothingBaseCard {
@@ -27,7 +27,7 @@ export class NothingMediaCard extends NothingBaseCard {
 	static accentVar = "--nm-accent";
 
 	static defaults = {
-		layout: "bar",        // bar | tile | art
+		layout: "bar",        // bar | tile | art | wide
 		variant: "dark",      // fond sombre ou blanc cassé
 		dots: true,           // compteurs en matrice de points
 		art: true,            // pochette (note en points à défaut)
@@ -35,6 +35,8 @@ export class NothingMediaCard extends NothingBaseCard {
 		progress: true,       // barre de progression (glisser si le lecteur sait chercher)
 		times: true,          // position et durée sous la barre
 		volume: false,        // rangée de volume
+		play_text: "Play",    // libellé du bouton en disposition « wide »
+		pause_text: "Pause",
 		accent: ACCENT,
 		tap_action: {action: "more-info"},
 		hold_action: {action: "more-info"},
@@ -83,7 +85,7 @@ export class NothingMediaCard extends NothingBaseCard {
 	/* --- dimensionnement ------------------------------------------------ */
 	getCardSize() {
 		const layout = this._config ? this._config.layout : "bar";
-		return layout === "bar" ? 2 : layout === "tile" ? 3 : 4;
+		return layout === "bar" ? 2 : layout === "wide" ? 3 : layout === "tile" ? 3 : 4;
 	}
 
 	getGridOptions() {
@@ -92,6 +94,8 @@ export class NothingMediaCard extends NothingBaseCard {
 				return {rows: 4, columns: 6, min_rows: 3, min_columns: 3};
 			case "art":
 				return {rows: 5, columns: 8, min_rows: 3, min_columns: 4};
+			case "wide":
+				return {rows: 3, columns: 8, min_rows: 3, min_columns: 5};
 			default:
 				return {rows: 2, columns: 12, min_rows: 2, min_columns: 6};
 		}
