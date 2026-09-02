@@ -27,6 +27,5 @@ export {NothingLightCard} from "./cards/light/index.js";
 export {NothingMediaCard} from "./cards/media/index.js";
 export {NothingSliderCard} from "./cards/slider/index.js";
 export {NothingStatsCard} from "./cards/stats/index.js";
-export {NothingStatsBarsCard, NothingStatsLineCard} from "./cards/stats/variants.js";
 export {NothingTextCard} from "./cards/text/index.js";
 export {VERSION} from "./var/version.js";
