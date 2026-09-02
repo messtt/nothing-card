@@ -81,19 +81,31 @@ export function formatEntity(hass, entityId, decimals) {
 	return `${formatNumber(v, hass, decimals)}${unit ? " " + unit : ""}`;
 }
 
+/** Bornes absolues d'une durée, une fois la vitesse appliquée (ms). */
+const FLOOR = 150;
+const CEIL = 20000;
+
 /**
  * Durée d'un aller sur la liaison : plus il passe de puissance, plus le point
  * file. L'échelle est logarithmique — sans quoi 10 W et 3000 W donneraient deux
  * animations impossibles à distinguer l'une de l'autre.
  *
- * @param {number} watts @param {number} scale puissance considérée comme « pleine »
- * @returns {number} millisecondes
+ * `speed` multiplie la vitesse : 2 va deux fois plus vite, 0,5 deux fois moins.
+ * Le résultat reste borné loin de zéro — une durée nulle signifie « liaison
+ * inactive », et un point immobile ne vaut pas mieux qu'un point invisible.
+ *
+ * @param {number} watts
+ * @param {number} scale puissance considérée comme « pleine »
+ * @param {number} [speed] multiplicateur de vitesse
+ * @returns {number} millisecondes, 0 si rien ne passe
  */
-export function flowDuration(watts, scale) {
+export function flowDuration(watts, scale, speed = 1) {
 	const w = Math.abs(watts);
 	if (w < IDLE_WATTS) return 0;
+
 	const ratio = clamp(Math.log10(1 + w) / Math.log10(1 + Math.max(scale, w)), 0, 1);
-	return Math.round(FLOW_SLOW - ratio * (FLOW_SLOW - FLOW_FAST));
+	const ms = FLOW_SLOW - ratio * (FLOW_SLOW - FLOW_FAST);
+	return Math.round(clamp(ms / (speed > 0 ? speed : 1), FLOOR, CEIL));
 }
 
 /**

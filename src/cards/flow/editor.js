@@ -16,6 +16,7 @@ export const configForm = () => ({
 			name: "",
 			schema: [
 				{name: "max_power", selector: {number: {min: 100, max: 30000, mode: "box"}}},
+				{name: "speed", selector: {number: {min: 0.1, max: 10, step: 0.1, mode: "box"}}},
 				{name: "dots_per_line", selector: {number: {min: 1, max: 5, mode: "box"}}},
 				{name: "ring_dots", selector: {number: {min: 12, max: 96, mode: "box"}}},
 				{name: "decimals", selector: {number: {min: 0, max: 3, mode: "box"}}},
@@ -27,7 +28,7 @@ export const configForm = () => ({
 			schema: [
 				{name: "dots", selector: {boolean: {}}},
 				{name: "footer", selector: {boolean: {}}},
-				{name: "brand", selector: {text: {}}},
+				{name: "footer_text", selector: {text: {}}},
 			],
 		},
 		NAME_DOTS,

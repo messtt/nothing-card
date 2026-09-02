@@ -40,10 +40,11 @@ export class NothingFlowCard extends NothingBaseCard {
 		decimals: 0,             // arrondi des puissances
 		energy_decimals: 1,      // arrondi des énergies
 		max_power: 3000,         // puissance considérée comme « pleine vitesse »
+		speed: 1,                // multiplicateur : 2 va deux fois plus vite
 		dots_per_line: 2,        // points en vol sur chaque liaison
 		ring_dots: 56,           // points de l'anneau central
 		footer: true,
-		brand: "NOTHING OS",
+		footer_text: "",         // texte libre à gauche du pied
 
 		accent: ACCENT,
 	};
@@ -68,6 +69,9 @@ export class NothingFlowCard extends NothingBaseCard {
 		config.dots_per_line = clamp(Math.round(config.dots_per_line), 1, 5);
 		config.ring_dots = clamp(Math.round(config.ring_dots), 12, 96);
 		config.max_power = Math.max(1, Number(config.max_power) || 3000);
+		config.speed = clamp(Number(config.speed) || 1, 0.1, 10);
+		// `brand` des premières versions : on l'accepte comme ancien nom.
+		if (config.footer_text == null && config.brand != null) config.footer_text = config.brand;
 	}
 
 	reset() {

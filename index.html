@@ -81,6 +81,11 @@
         .cell.batt    { width: 340px; height: 120px; align-self: flex-start; }
         .cell.batt-sq { width: 168px; height: 184px; align-self: flex-start; }
 
+        .cell.clk     { width: 260px; height: 120px; align-self: flex-start; }
+        .cell.clk-lg  { width: 300px; height: 184px; align-self: flex-start; }
+        .cell.clk-sq  { width: 220px; height: 248px; align-self: flex-start; }
+        .cell.clk-wide{ width: 420px; height: 184px; align-self: flex-start; }
+
         .cell.flow    { width: 620px; height: 504px; align-self: flex-start; }
 
         .cell.stats   { width: 420px; height: 220px; align-self: flex-start; }
@@ -119,6 +124,9 @@
 
 <h2>Text</h2>
 <div class="row" id="text"></div>
+
+<h2>Clock</h2>
+<div class="row" id="clock"></div>
 
 <h2>Flow</h2>
 <div class="row" id="flow"></div>
@@ -193,8 +201,18 @@
 	add("text", "text", "nothing-text-card", {text: "Bonne nuit", variant: "accent", size: "sm", align: "center"});
 	add("text", "text", "nothing-text-card", {text: "Sans les points", dots: false, subtitle: "typographie ordinaire"});
 
+	add("clock", "clk-lg", "nothing-clock-card", {layout: "digital", size: "lg"});
+	add("clock", "clk", "nothing-clock-card", {layout: "digital", size: "sm", seconds: true});
+	add("clock", "clk", "nothing-clock-card", {layout: "digital", size: "md", variant: "light", date: false});
+	add("clock", "clk-sq", "nothing-clock-card", {layout: "stack", size: "lg", date: false});
+	add("clock", "clk-sq", "nothing-clock-card", {layout: "ring"});
+	add("clock", "clk-wide", "nothing-clock-card", {layout: "progress"});
+	add("clock", "clk-wide", "nothing-clock-card", {layout: "week", days: 5});
+
 	add("flow", "flow", "nothing-flow-card", {
 		home: {entity: "sensor.maison", energy: "sensor.maison_kwh", ring: "sensor.autoconso"},
+		speed: 1.6,
+		footer_text: "MAISON",
 		sources: [
 			{entity: "sensor.grid_import", name: "Import grid", icon: "pylon", energy: "sensor.grid_import_kwh"},
 			{entity: "sensor.solaire", name: "Solaire", icon: "sun", energy: "sensor.solaire_kwh"},

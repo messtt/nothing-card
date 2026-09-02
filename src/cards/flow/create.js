@@ -17,7 +17,7 @@ export const template = () => `
         </div>
       </div>
     </div>
-    <div class="foot"><span class="brand">NOTHING OS</span><span class="clock"></span></div>
+    <div class="foot"><span class="label"></span><span class="clock"></span></div>
   </ha-card>
 `;
 
@@ -37,6 +37,7 @@ export const collect = (card) => ({
 	power: card.$(".power"),
 	energy: card.$(".energy"),
 	foot: card.$(".foot"),
+	label: card.$(".label"),
 	clock: card.$(".clock"),
 });
 

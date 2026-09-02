@@ -24,8 +24,9 @@ avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se co
 | **Cover**  | `custom:nothing-cover-card`  | Volet roulant : tablier dessiné, haut / stop / bas, position, inclinaison.           |
 | **Battery**| `custom:nothing-battery-card`| Niveau de charge : grand chiffre et jauge en pilule de points.                       |
 | **Flow**   | `custom:nothing-flow-card`   | Flux d'énergie : tuiles autour d'un anneau, points lumineux sur les liaisons.        |
+| **Clock**  | `custom:nothing-clock-card`  | Heure, jour et date, en cinq dispositions. Aucune entité requise.                    |
 
-Les dix cartes sont livrées dans le même fichier : une seule ressource à déclarer.
+Les onze cartes sont livrées dans le même fichier : une seule ressource à déclarer.
 
 La typographie en matrice de points est dessinée en SVG à partir d'une police 5×7 embarquée : rien à installer côté
 client, et le rendu est identique sur tous les appareils.
@@ -485,12 +486,13 @@ consumers:
 | `sources` / `consumers`   | —            | **Au moins une entrée.** Les listes de tuiles, avant et après le centre. |
 | `home`                    | —            | `{entity, energy, ring, icon}` du centre. Sans `entity`, la somme des sources. |
 | `max_power`               | `3000`       | Puissance considérée comme « pleine vitesse ».                    |
+| `speed`                   | `1`          | Vitesse des points : `2` va deux fois plus vite, `0.5` deux fois moins. |
 | `dots_per_line`           | `2`          | Points en vol sur chaque liaison.                                 |
 | `ring_dots`               | `56`         | Points de l'anneau central.                                       |
 | `decimals` / `energy_decimals` | `0` / `1` | Arrondi des puissances et des énergies.                          |
 | `variant`                 | `dark`       | Fond anthracite ou blanc cassé.                                   |
 | `dots`                    | `true`       | Valeurs en matrice de points.                                     |
-| `footer` / `brand`        | `true` / `NOTHING OS` | Le pied de carte et son libellé.                        |
+| `footer` / `footer_text`  | `true` / vide | Le pied de carte et le texte libre à gauche de l'heure.           |
 | `accent`                  | `#E01F26`    | Couleur des points qui circulent.                                 |
 
 Chaque tuile prend `entity` (la puissance), et facultativement `name`, `icon`, `energy` (la ligne en kWh) et `slot`.
@@ -504,6 +506,10 @@ sources se placent en haut puis à gauche, les consommateurs en bas puis à droi
 puissance, sur une échelle logarithmique — sans quoi 10 W et 3000 W donneraient deux animations impossibles à
 distinguer. En dessous de 1 W, la liaison est considérée comme inactive et les points s'effacent.
 
+`speed` règle l'allure d'ensemble sans toucher aux écarts entre liaisons : à `2`, toutes les durées sont divisées par
+deux, et la plus grosse puissance reste la plus rapide. La durée est bornée entre 150 ms et 20 s, pour qu'une valeur
+extrême ne fige pas les points ni ne les rende illisibles.
+
 Les tracés sont calculés **en pixels**, à partir des positions réellement mesurées des tuiles et de l'anneau : ils
 touchent le bord du cercle au lieu de s'arrêter sur son carré englobant, et se retracent au redimensionnement, jamais
 à chaque changement d'état. Les points suivent exactement le même chemin que le trait, via `offset-path`.
@@ -513,11 +519,53 @@ remplissent en YAML — `ha-form` ne sait pas éditer ce genre de structure.
 
 ---
 
+## Nothing Clock Card
+
+Elle n'observe aucune entité : l'heure vient de l'appareil qui affiche le tableau de bord.
+
+```yaml
+type: custom:nothing-clock-card
+layout: digital
+size: lg
+```
+
+| Option                       | Défaut               | Description                                                  |
+|------------------------------|----------------------|--------------------------------------------------------------|
+| `layout`                     | `digital`            | `digital`, `stack`, `ring`, `progress` ou `week`.            |
+| `size`                       | `md`                 | `sm`, `md`, `lg` — hauteur des chiffres.                     |
+| `variant`                    | `dark`               | Fond anthracite ou blanc cassé.                              |
+| `dots` / `date_dots`         | `true` / `false`     | Matrice de points sur les chiffres, et sur la ligne de date. |
+| `date` / `weekday`           | `true` / `true`      | La ligne de date, et le jour de la semaine dedans.           |
+| `seconds`                    | `false`              | Afficher les secondes.                                       |
+| `hour12`                     | selon la langue      | Forcer 12 h ou 24 h.                                         |
+| `periods`                    | jour, semaine, mois, année | Les jauges de la disposition `progress`.               |
+| `week_start`                 | `monday`             | `monday` ou `sunday`, pour la jauge de semaine.              |
+| `cells`                      | `20`                 | Points par jauge de période.                                 |
+| `days`                       | `5`                  | Jours de la bande `week`.                                    |
+| `accent`                     | `#E01F26`            | Repère de minutes, jour courant, point de tête des jauges.   |
+| `tap_action` / `hold_action` | `none`               | Sans action, la carte ne reçoit aucun écouteur.              |
+
+**Les cinq dispositions.** `digital` écrit l'heure sur une ligne avec la date au-dessus. `stack` empile les heures
+sur les minutes. `ring` dessine un cadran de soixante points, avec l'aiguille des minutes en rouge et celle des heures
+en blanc sur l'anneau intérieur. `progress` montre où en est le jour, la semaine, le mois et l'année, chaque jauge
+terminée par un point rouge — c'est là qu'on en est. `week` déroule une bande de jours, aujourd'hui en rouge sous son
+repère.
+
+**Le rafraîchissement se cale sur le prochain changement d'unité** — seconde ou minute — au lieu d'attendre un
+intervalle fixe : l'affichage bascule pile au bon moment, et une horloge sans secondes ne se réveille pas cinquante-neuf
+fois pour rien.
+
+Les noms de jours et de mois suivent la langue de Home Assistant, et le format 12 h ou 24 h s'en déduit sauf réglage
+contraire. Le numéro de semaine est celui d'ISO 8601 ; seul le jour de départ de la **jauge** suit `week_start`, parce
+qu'il change d'un pays à l'autre.
+
+---
+
 ## Notes
 
 - **Dimensionnement** — chaque carte expose `getGridOptions()` pour la vue *sections* et ne déborde jamais de sa tuile,
   quelle que soit la taille demandée.
-- **Éditeur graphique** — les dix cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
+- **Éditeur graphique** — les onze cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
   par le YAML.
 - **Pictogrammes** — les commandes internes des cartes (flèches, lecture, pause, volume) sont dessinées en matrice de
   points, sur la même trame que la typographie. Seules les icônes d'entité restent des icônes MDI : c'est vous qui les

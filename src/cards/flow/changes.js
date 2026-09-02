@@ -51,7 +51,7 @@ export function updateChanges(card) {
 
 	card.setAttribute("data-variant", c.variant);
 	el.foot.hidden = !c.footer;
-	if (c.footer) paintClock(card);
+	if (c.footer) paintFoot(card);
 
 	card._nodes.forEach((node) => {
 		const tile = el.stage.querySelector(`.node[data-slot="${node.slot}"]`);
@@ -169,14 +169,19 @@ function drawRing(card, ratio) {
 		`<g fill="var(--nf-ring-off)">${off}</g><g fill="var(--nf-ring-on)">${on}</g>`;
 }
 
-/** Heure du pied de carte. */
-function paintClock(card) {
+/** Pied de carte : le texte libre à gauche, l'heure à droite. */
+function paintFoot(card) {
+	const label = card._config.footer_text || "";
+	if (card.memo.label !== label) {
+		card.memo.label = label;
+		card.el.label.textContent = label;
+	}
+
 	const now = new Date();
 	const txt = now.getHours() + ":" + String(now.getMinutes()).padStart(2, "0");
 	if (card.memo.clock === txt) return;
 	card.memo.clock = txt;
 	card.el.clock.textContent = txt;
-	card.el.card.querySelector(".brand").textContent = card._config.brand;
 }
 
 /* ==================== liaisons ==================== */
@@ -250,9 +255,9 @@ export function layoutLinks(card) {
 export function updateFlows(card) {
 	if (!card._links) return;
 
-	const scale = card._config.max_power;
+	const {max_power: scale, speed} = card._config;
 	const key = card._links
-		.map(({node}) => flowDuration(numericState(card.hass, node.entity) || 0, scale))
+		.map(({node}) => flowDuration(numericState(card.hass, node.entity) || 0, scale, speed))
 		.join(",");
 	if (card.memo.flows === key) return;
 	card.memo.flows = key;

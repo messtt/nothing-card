@@ -10,6 +10,7 @@
 
 import "./cards/battery/index.js";
 import "./cards/button/index.js";
+import "./cards/clock/index.js";
 import "./cards/cover/index.js";
 import "./cards/flow/index.js";
 import "./cards/info/index.js";
@@ -21,6 +22,7 @@ import "./cards/text/index.js";
 
 export {NothingBatteryCard} from "./cards/battery/index.js";
 export {NothingButtonCard} from "./cards/button/index.js";
+export {NothingClockCard} from "./cards/clock/index.js";
 export {NothingCoverCard} from "./cards/cover/index.js";
 export {NothingFlowCard} from "./cards/flow/index.js";
 export {NothingInfoCard} from "./cards/info/index.js";
