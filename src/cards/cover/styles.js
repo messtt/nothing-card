@@ -149,8 +149,7 @@ button {
 }
 button:active { transform: scale(.9); }
 button:focus-visible { outline: 2px solid var(--nc-accent); outline-offset: 2px; }
-button svg { width: 19px; height: 19px; fill: currentColor; }
-.stop svg { width: 15px; height: 15px; }
+button svg { display: block; width: 21px; height: 21px; fill: currentColor; }
 :host([data-opening]) .up,
 :host([data-closing]) .down { background: var(--nc-accent); color: #ffffff; }
 

@@ -177,7 +177,7 @@ ha-card {
 .vfill { height: 100%; width: 0; border-radius: inherit; background: var(--nm-fg); opacity: .85; }
 .i-muted { display: none; }
 .vol.muted .i-vol { display: none; }
-.vol.muted .i-muted { display: inline; }
+.vol.muted .i-muted { display: block; }
 
 /* ---- commandes ---- */
 .controls {
@@ -204,7 +204,8 @@ button {
 }
 button:active { transform: scale(.9); }
 button:focus-visible { outline: 2px solid var(--nm-accent); outline-offset: 2px; }
-button svg { width: 18px; height: 18px; fill: currentColor; }
+button span { display: block; line-height: 0; }
+button svg { display: block; width: 18px; height: 18px; fill: currentColor; }
 .prev, .next { width: 36px; height: 36px; }
 .play { width: 46px; height: 46px; background: var(--nm-accent); color: #fff; }
 .play svg { width: 20px; height: 20px; }
@@ -212,7 +213,7 @@ button svg { width: 18px; height: 18px; fill: currentColor; }
 .mute svg { width: 16px; height: 16px; }
 .i-pause { display: none; }
 :host([data-playing]) .i-play { display: none; }
-:host([data-playing]) .i-pause { display: inline; }
+:host([data-playing]) .i-pause { display: block; }
 
 /* =================== disposition « tile » =================== */
 :host([data-layout="tile"]) ha-card {

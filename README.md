@@ -368,6 +368,9 @@ Le rendu est optimiste et les appels de service sont limités à un toutes les 1
   quelle que soit la taille demandée.
 - **Éditeur graphique** — les huit cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
   par le YAML.
+- **Pictogrammes** — les commandes internes des cartes (flèches, lecture, pause, volume) sont dessinées en matrice de
+  points, sur la même trame que la typographie. Seules les icônes d'entité restent des icônes MDI : c'est vous qui les
+  choisissez, l'inventaire ne peut pas être fermé.
 - **Accents** — la police 5×7 ne comporte pas de caractères accentués (`É` devient `E`). Utilisez `dots: false` pour un
   rendu typographique classique.
 - **Police NDot** — si la police *NDot 55* est installée sur l'appareil, les textes hors matrice l'utilisent

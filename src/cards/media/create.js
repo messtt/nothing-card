@@ -3,13 +3,17 @@
 import {bindTapHold, bindDrag} from "../../tools/tap-actions.js";
 import {haptic, clamp} from "../../tools/utils.js";
 import {dotGridSvg} from "../../tools/dot-matrix.js";
-import {FEATURE, ICONS, NOTE_GLYPH, progressOf, supports} from "./helpers.js";
+import {glyph} from "../../tools/glyphs.js";
+import {FEATURE, NOTE_GLYPH, progressOf, supports} from "./helpers.js";
 
-/** Bouton de transport : un `<svg>` par tracé, la couleur suit le texte. */
-const iconButton = (cls, title, paths) => `
-      <button class="${cls}" type="button" title="${title}">
-        <svg viewBox="0 0 24 24">${paths.map((p) => `<path class="${p.cls}" d="${p.d}"/>`).join("")}</svg>
-      </button>`;
+/**
+ * Bouton de transport. Les boutons à deux états — lecture/pause, son/muet —
+ * portent leurs deux pictogrammes ; la feuille de style montre le bon.
+ */
+const iconButton = (cls, title, glyphs) => `
+      <button class="${cls}" type="button" title="${title}">${glyphs
+	.map((g) => `<span class="${g.cls}">${glyph(g.name)}</span>`)
+	.join("")}</button>`;
 
 export const template = () => `
   <ha-card>
@@ -33,20 +37,20 @@ export const template = () => `
 
       <div class="vol">
         ${iconButton("mute", "Couper le son", [
-	{cls: "i-vol", d: ICONS.volume},
-	{cls: "i-muted", d: ICONS.muted},
+	{cls: "i-vol", name: "volume"},
+	{cls: "i-muted", name: "muted"},
 ])}
         <div class="vtrack"><div class="vfill"></div></div>
       </div>
     </div>
 
     <div class="controls">
-      ${iconButton("prev", "Piste précédente", [{cls: "", d: ICONS.previous}])}
+      ${iconButton("prev", "Piste précédente", [{cls: "i-one", name: "previous"}])}
       ${iconButton("play", "Lecture / pause", [
-	{cls: "i-play", d: ICONS.play},
-	{cls: "i-pause", d: ICONS.pause},
+	{cls: "i-play", name: "play"},
+	{cls: "i-pause", name: "pause"},
 ])}
-      ${iconButton("next", "Piste suivante", [{cls: "", d: ICONS.next}])}
+      ${iconButton("next", "Piste suivante", [{cls: "i-one", name: "next"}])}
     </div>
   </ha-card>
 `;

@@ -33,13 +33,6 @@ export const CALL_THROTTLE = 180;
 export const supports = (stateObj, bit) =>
 	!!stateObj && ((stateObj.attributes.supported_features || 0) & bit) === bit;
 
-/** Tracés MDI des commandes, dessinés en ligne (pas de `ha-icon`). */
-export const ICONS = {
-	up: "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z",
-	stop: "M18,18H6V6H18V18Z",
-	down: "M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z",
-};
-
 /**
  * Position du volet, de 0 (fermé) à 100 (ouvert), et inclinaison des lamelles.
  * `null` quand le moteur ne sait pas la rapporter : la carte se rabat alors

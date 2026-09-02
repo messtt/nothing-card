@@ -2,12 +2,10 @@
 
 import {bindDrag, bindTapHold} from "../../tools/tap-actions.js";
 import {clamp, haptic} from "../../tools/utils.js";
-import {ICONS} from "./helpers.js";
+import {glyph} from "../../tools/glyphs.js";
 
-const button = (cls, title, path) => `
-        <button class="${cls}" type="button" title="${title}">
-          <svg viewBox="0 0 24 24"><path d="${path}"/></svg>
-        </button>`;
+const button = (cls, title, name) => `
+        <button class="${cls}" type="button" title="${title}">${glyph(name)}</button>`;
 
 export const template = () => `
   <ha-card>
@@ -25,9 +23,9 @@ export const template = () => `
         <span class="shutter"></span>
       </div>
       <div class="buttons">
-        ${button("up", "Ouvrir", ICONS.up)}
-        ${button("stop", "Stop", ICONS.stop)}
-        ${button("down", "Fermer", ICONS.down)}
+        ${button("up", "Ouvrir", "up")}
+        ${button("stop", "Stop", "stop")}
+        ${button("down", "Fermer", "down")}
       </div>
     </div>
 

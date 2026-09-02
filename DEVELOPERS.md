@@ -29,7 +29,8 @@ src/
 │   └── consts.js            palette, pile typographique, états « allumé », icônes
 │
 ├── tools/                   code partagé, sans état, testable isolément
-│   ├── dot-matrix.js        police 5x7, glyphes et rendu SVG des points
+│   ├── dot-matrix.js        police 5x7 et rendu SVG des points
+│   ├── glyphs.js            pictogrammes des commandes, dessinés sur une grille 7x7
 │   ├── color.js             TSV -> RVB, Kelvin -> RVB, analyse de couleurs CSS
 │   ├── entity.js            état, nom, icône, bascule adaptée au domaine
 │   ├── tap-actions.js       actions Lovelace, appui court/long, glisser

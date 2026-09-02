@@ -114,7 +114,7 @@ ha-card {
   background: rgba(240,239,235,.22);
   color: var(--nl-fg);
 }
-.knob svg { width: 20px; height: 20px; fill: currentColor; }
+.knob svg { display: block; width: 21px; height: 21px; fill: currentColor; }
 
 /* luminosité */
 .bright { background: var(--nl-track); cursor: ew-resize; }
