@@ -63,6 +63,18 @@ export function installStubs() {
 	}
 }
 
+/** Horodatage a N heures d'ici, pour les previsions du banc d'essai. */
+const hourAt = (n) => new Date(Date.now() + n * 3600e3).toISOString();
+
+/** Previsions quotidiennes servies par l'abonnement simule. */
+const DAILY = [
+	{condition: "rainy", temperature: 20, templow: 9},
+	{condition: "snowy", temperature: 18, templow: 7},
+	{condition: "rainy", temperature: 17, templow: 9},
+	{condition: "partlycloudy", temperature: 21, templow: 11},
+	{condition: "sunny", temperature: 24, templow: 12},
+];
+
 const now = () => new Date().toISOString();
 
 /** Pochette de démonstration : pas de réseau, tout tient dans une URL. */
@@ -205,6 +217,56 @@ const states = {
 		state: "closed",
 		last_updated: now(),
 		attributes: {friendly_name: "Garage", device_class: "garage", supported_features: 1 + 2 + 8},
+	},
+	"weather.maison": {
+		entity_id: "weather.maison",
+		state: "cloudy",
+		last_updated: now(),
+		attributes: {
+			friendly_name: "Khushk",
+			temperature: 20.3,
+			temperature_unit: "°C",
+			humidity: 62,
+			forecast: [
+				{datetime: hourAt(1), condition: "cloudy", temperature: 16.4},
+				{datetime: hourAt(2), condition: "cloudy", temperature: 15.1},
+				{datetime: hourAt(3), condition: "cloudy", temperature: 15.9},
+				{datetime: hourAt(4), condition: "partlycloudy", temperature: 15.7},
+				{datetime: hourAt(5), condition: "cloudy", temperature: 14.8},
+				{datetime: hourAt(6), condition: "partlycloudy", temperature: 14.1},
+			],
+		},
+	},
+	"climate.piscine": {
+		entity_id: "climate.piscine",
+		state: "off",
+		last_updated: now(),
+		attributes: {
+			friendly_name: "Pompe a chaleur piscine",
+			temperature: 32,
+			current_temperature: 32,
+			min_temp: 15,
+			max_temp: 40,
+			target_temp_step: 1,
+			hvac_modes: ["off", "heat", "cool", "auto"],
+			supported_features: 1,
+		},
+	},
+	"climate.salon": {
+		entity_id: "climate.salon",
+		state: "heat",
+		last_updated: now(),
+		attributes: {
+			friendly_name: "Salon",
+			temperature: 20.5,
+			current_temperature: 18.4,
+			min_temp: 7,
+			max_temp: 30,
+			target_temp_step: 0.5,
+			hvac_action: "heating",
+			hvac_modes: ["off", "heat", "auto"],
+			supported_features: 1,
+		},
 	},
 	"sensor.grid_import": {
 		entity_id: "sensor.grid_import", state: "13", last_updated: now(),
@@ -448,6 +510,20 @@ export const hass = {
 			return;
 		}
 
+		if (domain === "climate") {
+			if (data.temperature != null) s.attributes.temperature = data.temperature;
+			if (data.hvac_mode != null) {
+				s.state = data.hvac_mode;
+				s.attributes.hvac_action = data.hvac_mode === "off" ? "off" : "heating";
+			}
+			s.last_updated = now();
+			states[id] = s;
+			cards.forEach((c) => {
+				c.hass = hass;
+			});
+			return;
+		}
+
 		if (domain === "cover") {
 			coverService(s, service, data);
 			s.last_updated = now();
@@ -511,6 +587,23 @@ export const hass = {
  * @param {string} type nom de l'élément personnalisé
  * @param {object} config
  */
+/**
+ * Depuis 2023.9, les previsions passent par un abonnement WebSocket. Le banc
+ * en fournit un minimal, pour que la carte meteo suive le meme chemin qu'en
+ * production plutot qu'un chemin de repli.
+ */
+hass.connection = {
+	subscribeMessage(callback, msg) {
+		if (msg.type !== "weather/subscribe_forecast") return Promise.resolve(() => {});
+		const list =
+			msg.forecast_type === "daily"
+				? DAILY.map((d, i) => ({...d, datetime: new Date(Date.now() + i * 86400e3).toISOString()}))
+				: [];
+		setTimeout(() => callback({forecast: list}), 0);
+		return Promise.resolve(() => {});
+	},
+};
+
 export function makeCard(type, config) {
 	const el = document.createElement(type);
 	el.setConfig(config);

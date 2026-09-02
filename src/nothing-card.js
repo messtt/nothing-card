@@ -19,6 +19,8 @@ import "./cards/media/index.js";
 import "./cards/slider/index.js";
 import "./cards/stats/index.js";
 import "./cards/text/index.js";
+import "./cards/thermostat/index.js";
+import "./cards/weather/index.js";
 
 export {NothingBatteryCard} from "./cards/battery/index.js";
 export {NothingButtonCard} from "./cards/button/index.js";
@@ -31,4 +33,6 @@ export {NothingMediaCard} from "./cards/media/index.js";
 export {NothingSliderCard} from "./cards/slider/index.js";
 export {NothingStatsCard} from "./cards/stats/index.js";
 export {NothingTextCard} from "./cards/text/index.js";
+export {NothingThermostatCard} from "./cards/thermostat/index.js";
+export {NothingWeatherCard} from "./cards/weather/index.js";
 export {VERSION} from "./var/version.js";

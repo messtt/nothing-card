@@ -81,6 +81,13 @@
         .cell.batt    { width: 340px; height: 120px; align-self: flex-start; }
         .cell.batt-sq { width: 168px; height: 184px; align-self: flex-start; }
 
+        .cell.meteo   { width: 460px; height: 376px; align-self: flex-start; }
+        .cell.meteo-sm{ width: 300px; height: 120px; align-self: flex-start; }
+        .cell.meteo-d { width: 340px; height: 184px; align-self: flex-start; }
+        .cell.meteo-t { width: 150px; height: 184px; align-self: flex-start; }
+
+        .cell.thermo  { width: 300px; height: 376px; align-self: flex-start; }
+
         .cell.clk     { width: 260px; height: 120px; align-self: flex-start; }
         .cell.clk-lg  { width: 300px; height: 184px; align-self: flex-start; }
         .cell.clk-sq  { width: 220px; height: 248px; align-self: flex-start; }
@@ -124,6 +131,12 @@
 
 <h2>Text</h2>
 <div class="row" id="text"></div>
+
+<h2>Weather</h2>
+<div class="row" id="meteo"></div>
+
+<h2>Thermostat</h2>
+<div class="row" id="thermo"></div>
 
 <h2>Clock</h2>
 <div class="row" id="clock"></div>
@@ -200,6 +213,15 @@
 	add("text", "text", "nothing-text-card", {text: "02\n22", size: "lg", align: "center"});
 	add("text", "text", "nothing-text-card", {text: "Bonne nuit", variant: "accent", size: "sm", align: "center"});
 	add("text", "text", "nothing-text-card", {text: "Sans les points", dots: false, subtitle: "typographie ordinaire"});
+
+	add("meteo", "meteo", "nothing-weather-card", {entity: "weather.maison", variant: "light"});
+	add("meteo", "meteo-sm", "nothing-weather-card", {entity: "weather.maison", layout: "compact"});
+	add("meteo", "meteo-sm", "nothing-weather-card", {entity: "weather.maison", layout: "hourly", hours: 4});
+	add("meteo", "meteo-d", "nothing-weather-card", {entity: "weather.maison", layout: "daily", days: 4});
+	add("meteo", "meteo-t", "nothing-weather-card", {entity: "weather.maison", layout: "tile"});
+
+	add("thermo", "thermo", "nothing-thermostat-card", {entity: "climate.piscine", variant: "light"});
+	add("thermo", "thermo", "nothing-thermostat-card", {entity: "climate.salon"});
 
 	add("clock", "clk-lg", "nothing-clock-card", {layout: "digital", size: "lg"});
 	add("clock", "clk", "nothing-clock-card", {layout: "digital", size: "sm", seconds: true});

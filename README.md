@@ -25,8 +25,10 @@ avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se co
 | **Battery**| `custom:nothing-battery-card`| Niveau de charge : grand chiffre et jauge en pilule de points.                       |
 | **Flow**   | `custom:nothing-flow-card`   | Flux d'énergie : tuiles autour d'un anneau, points lumineux sur les liaisons.        |
 | **Clock**  | `custom:nothing-clock-card`  | Heure, jour et date, en cinq dispositions. Aucune entité requise.                    |
+| **Thermostat** | `custom:nothing-thermostat-card` | Consigne au doigt sur un cadran gradué, modes et alimentation.           |
+| **Weather**| `custom:nothing-weather-card`| Météo en points : conditions, heures, journées. Cinq dispositions.                   |
 
-Les onze cartes sont livrées dans le même fichier : une seule ressource à déclarer.
+Les treize cartes sont livrées dans le même fichier : une seule ressource à déclarer.
 
 La typographie en matrice de points est dessinée en SVG à partir d'une police 5×7 embarquée : rien à installer côté
 client, et le rendu est identique sur tous les appareils.
@@ -561,11 +563,88 @@ qu'il change d'un pays à l'autre.
 
 ---
 
+## Nothing Thermostat Card
+
+```yaml
+type: custom:nothing-thermostat-card
+entity: climate.pompe_a_chaleur
+variant: light
+```
+
+| Option                                            | Défaut       | Description                                             |
+|---------------------------------------------------|--------------|---------------------------------------------------------|
+| `entity`                                          | —            | **Requis.** Entité `climate.*`.                         |
+| `name`                                            | nom convivial| Libellé de l'en-tête.                                   |
+| `variant`                                         | `dark`       | Fond anthracite ou blanc cassé.                         |
+| `min` / `max` / `step`                            | ceux de l'appareil | Bornes et pas de la consigne.                     |
+| `ticks`                                           | `64`         | Traits de la graduation.                                |
+| `unit`                                            | `°`          | Unité à côté de la consigne.                            |
+| `decimals`                                        | automatique  | Arrondi de la consigne.                                 |
+| `dots`                                            | `true`       | Chiffres et libellés en matrice de points.              |
+| `show_name` / `show_state` / `show_current` / `show_mode` | `true` | Masquer l'un ou l'autre.                          |
+| `accent`                                          | `#E01F26`    | Graduation et repère quand l'appareil chauffe.          |
+
+**Le cadran se règle au doigt.** Un arc de 270 degrés, ouvert en bas : l'angle du doigt autour du centre donne la
+consigne, ramenée au pas de l'appareil. Hors de l'arc — dans l'ouverture — la valeur reste à l'extrémité la plus
+proche, de sorte qu'un glissement sous le cadran ne fait pas sauter la consigne d'un bout à l'autre.
+
+La graduation **monte en intensité** jusqu'au repère puis s'efface : l'œil suit la course du réglage sans qu'il faille
+une couleur de plus. Elle passe à l'accent quand `hvac_action` vaut `heating`, au bleu quand elle vaut `cooling`.
+
+**La pilule du bas** porte l'alimentation à gauche — elle éteint, ou rallume sur le premier mode utile déclaré par
+l'appareil — et le mode courant. Un appui dessus fait défiler les modes de `hvac_modes` ; un appui long ouvre la fiche
+de l'entité.
+
+Le rendu est optimiste et les appels de service sont limités à un toutes les 200 ms, avec envoi final au relâchement.
+Les consignes doubles (`target_temp_low` / `high`) affichent la borne basse : un cadran n'a qu'un repère.
+
+---
+
+## Nothing Weather Card
+
+```yaml
+type: custom:nothing-weather-card
+entity: weather.maison
+layout: full
+variant: light
+```
+
+| Option                       | Défaut          | Description                                                  |
+|------------------------------|-----------------|--------------------------------------------------------------|
+| `entity`                     | —               | **Requis.** Entité `weather.*`.                              |
+| `name`                       | nom convivial   | Le lieu, sous la température.                                |
+| `layout`                     | `full`          | `full`, `compact`, `hourly`, `daily` ou `tile`.              |
+| `variant`                    | `dark`          | Fond anthracite ou blanc cassé.                              |
+| `hours` / `days`             | `6` / `3`       | Colonnes horaires et lignes quotidiennes.                    |
+| `dots` / `decimals` / `unit` | `true` / auto / `°` | Matrice de points, arrondi, symbole.                     |
+| `show_current`, `show_condition`, `show_range`, `show_name`, `show_hourly`, `show_daily` | selon la disposition | Forcer l'affichage d'une section, ou l'enlever. |
+
+**Les cinq dispositions.** `full` reprend l'écran complet : grand pictogramme, condition, température, bande horaire et
+lignes quotidiennes. `compact` s'en tient à l'instant. `hourly` et `daily` n'affichent qu'une bande. `tile` tient dans
+un carré : pictogramme, température, extrêmes.
+
+Les sections suivent la disposition, mais chaque `show_*` la contredit : `layout: hourly` avec `show_current: true`
+remet l'instant au-dessus de la bande.
+
+**Les barres quotidiennes partagent une seule échelle.** Une journée de 9 à 20 degrés occupe plus de largeur qu'une de
+12 à 17, et la position de chaque barre situe la journée dans l'amplitude de la semaine — c'est ce qui permet de les
+comparer d'un coup d'œil, ce qu'une barre remise à zéro sur chaque ligne ne permettrait pas.
+
+**Les prévisions passent par un abonnement.** Depuis Home Assistant 2023.9, `attributes.forecast` a disparu au profit
+de `weather/subscribe_forecast`. La carte s'y abonne pour les prévisions horaires et quotidiennes, et retombe sur
+l'ancien tableau d'attributs pour les intégrations qui le publient encore — l'écart entre deux entrées suffit à savoir
+s'il s'agit d'heures ou de jours. Une intégration qui ne fournit pas un type laisse simplement la section masquée.
+
+Les pictogrammes couvrent les conditions de Home Assistant, alias compris (`lightning-rainy`, `snowy-rainy`,
+`windy-variant`), et retombent sur un point d'exclamation pour l'inconnu.
+
+---
+
 ## Notes
 
 - **Dimensionnement** — chaque carte expose `getGridOptions()` pour la vue *sections* et ne déborde jamais de sa tuile,
   quelle que soit la taille demandée.
-- **Éditeur graphique** — les onze cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
+- **Éditeur graphique** — les treize cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
   par le YAML.
 - **Pictogrammes** — les commandes internes des cartes (flèches, lecture, pause, volume) sont dessinées en matrice de
   points, sur la même trame que la typographie. Seules les icônes d'entité restent des icônes MDI : c'est vous qui les
