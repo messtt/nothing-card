@@ -1,70 +1,72 @@
 # Nothing Cards for Home Assistant
 
-Un jeu de cartes Lovelace inspiré de l'esthétique Nothing OS : matrice de points, noir profond, blanc cassé, un seul
-rouge. Aucune dépendance à l'exécution — **un seul fichier** à déposer dans `www/`.
+A set of Lovelace cards built around the Nothing OS look: dot matrix, deep black, off-white, and a single red. No
+runtime dependencies — **one file** to drop into `www/`.
 
 ![Style](https://img.shields.io/badge/style-dot--matrix-E01F26) ![Dependencies](https://img.shields.io/badge/runtime%20deps-none-000) ![License](https://img.shields.io/badge/license-MIT-000)
 
-**[Voir les cartes en ligne](https://messtt.github.io/nothing-card/)** — la démonstration tourne sur le vrai bundle,
-avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se comportent comme chez vous.
+**English** · **[Français](README.fr.md)**
+
+**[See the cards live](https://messtt.github.io/nothing-card/)** — the demo runs the real bundle against a fake Home
+Assistant: the cards are clickable, draggable, and behave exactly as they will on your dashboard.
+
+![Card overview](docs/img/preview.png)
 
 ---
 
-## Les cartes
+## The cards
 
-| Carte      | Type YAML                    | Ce qu'elle fait                                                                     |
+| Card       | YAML type                    | What it does                                                                        |
 |------------|------------------------------|-------------------------------------------------------------------------------------|
-| **Button** | `custom:nothing-button-card` | Bouton on/off en pilule, carré ou cercle. Appui court / appui long configurables.   |
-| **Stats**  | `custom:nothing-stats-card`  | Graphique alimenté par le recorder : matrice de LED, traits fins ou courbe.         |
-| **Light**  | `custom:nothing-light-card`  | Lumière en barres empilées : allumage, luminosité, teinte, blanc, raccourcis.       |
-| **Media**  | `custom:nothing-media-card`  | Lecteur multimédia : pochette, progression, transport, quatre dispositions.          |
-| **Info**   | `custom:nothing-info-card`   | Affichage seul : pastille, valeur, libellé. Aucune commande.                        |
-| **Text**   | `custom:nothing-text-card`   | Titre en matrice de points, à poser entre deux sections.                            |
-| **Slider** | `custom:nothing-slider-card` | Grande barre à glisser. S'adapte au domaine de l'entité.                            |
-| **Cover**  | `custom:nothing-cover-card`  | Volet roulant : tablier dessiné, haut / stop / bas, position, inclinaison.           |
-| **Battery**| `custom:nothing-battery-card`| Niveau de charge : grand chiffre et jauge en pilule de points.                       |
-| **Flow**   | `custom:nothing-flow-card`   | Flux d'énergie : tuiles autour d'un anneau, points lumineux sur les liaisons.        |
-| **Clock**  | `custom:nothing-clock-card`  | Heure, jour et date, en cinq dispositions. Aucune entité requise.                    |
-| **Thermostat** | `custom:nothing-thermostat-card` | Consigne au doigt sur un cadran gradué, modes et alimentation.           |
-| **Weather**| `custom:nothing-weather-card`| Météo en points : conditions, heures, journées. Cinq dispositions.                   |
+| **Button** | `custom:nothing-button-card` | On/off button as a pill, square or circle. Configurable tap and hold actions.       |
+| **Stats**  | `custom:nothing-stats-card`  | Recorder-backed chart: LED matrix, thin bars or a line.                             |
+| **Light**  | `custom:nothing-light-card`  | Light as stacked bars: power, brightness, hue, white, presets.                      |
+| **Media**  | `custom:nothing-media-card`  | Media player: artwork, progress, transport, four layouts.                           |
+| **Info**   | `custom:nothing-info-card`   | Display only: badge, value, label. No controls.                                     |
+| **Text**   | `custom:nothing-text-card`   | Dot-matrix heading, to sit between two sections.                                    |
+| **Slider** | `custom:nothing-slider-card` | One large slider. Adapts to the entity's domain.                                    |
+| **Cover**  | `custom:nothing-cover-card`  | Roller shutter: drawn slats, up / stop / down, position, tilt.                      |
+| **Battery**| `custom:nothing-battery-card`| Charge level: large figure and a pill gauge made of dots.                           |
+| **Flow**   | `custom:nothing-flow-card`   | Energy flow: tiles around a ring, lit dots travelling along the links.              |
+| **Clock**  | `custom:nothing-clock-card`  | Time, day and date, in five layouts. No entity required.                            |
+| **Thermostat** | `custom:nothing-thermostat-card` | Setpoint set by finger on a graduated dial, modes and power.            |
+| **Weather**| `custom:nothing-weather-card`| Weather in dots: conditions, hours, days. Five layouts.                             |
 
-Les treize cartes sont livrées dans le même fichier : une seule ressource à déclarer.
+All thirteen cards ship in the same file: a single resource to declare.
 
-La typographie en matrice de points est dessinée en SVG à partir d'une police 5×7 embarquée : rien à installer côté
-client, et le rendu est identique sur tous les appareils.
+The dot-matrix type is drawn as SVG from an embedded 5×7 font — nothing to install on the client, and the result is
+identical on every device.
 
 ---
 
 ## Installation
 
-### HACS (dépôt personnalisé)
+### HACS (custom repository)
 
-1. HACS → ⋮ → **Dépôts personnalisés**
-2. URL du dépôt, catégorie **Lovelace**
-3. Installer *Nothing Cards*, puis rechargement forcé du navigateur (`Ctrl` + `F5`)
+1. HACS → ⋮ → **Custom repositories**
+2. Repository URL, category **Lovelace**
+3. Install *Nothing Cards*, then hard-refresh the browser (`Ctrl` + `F5`)
 
-### Manuelle
+### Manual
 
-1. Télécharger `nothing-card.js` depuis la dernière *release* (ou `dist/nothing-card.js` du dépôt) et le copier dans
-   `<config>/www/`
-2. **Paramètres → Tableaux de bord → ⋮ → Ressources → Ajouter une ressource**
-   URL `/local/nothing-card.js` — type **Module JavaScript**
-3. Rechargement forcé du navigateur (`Ctrl` + `F5`)
+1. Download `nothing-card.js` from the latest *release* (or `dist/nothing-card.js` from the repository) and copy it
+   into `<config>/www/`
+2. **Settings → Dashboards → ⋮ → Resources → Add resource**
+   URL `/local/nothing-card.js` — type **JavaScript Module**
+3. Hard-refresh the browser (`Ctrl` + `F5`)
 
-> Le menu Ressources n'apparaît que si le **mode avancé** est activé sur votre profil utilisateur.
-
----
+> The Resources menu only appears when **advanced mode** is enabled on your user profile.
 
 ---
 
-## Options communes
+## Shared options
 
-Deux réglages valent pour **toutes les cartes**, en plus de leurs options propres.
+Two settings apply to **every card**, on top of their own options.
 
-| Option       | Défaut  | Description                                                     |
-|--------------|---------|-----------------------------------------------------------------|
-| `name_dots`  | selon la carte | Écrit le libellé en matrice de points.                   |
-| `icon_style` | `mdi`   | `mdi` (icône classique) ou `dots` (pictogramme en points).       |
+| Option       | Default          | Description                                                     |
+|--------------|------------------|-----------------------------------------------------------------|
+| `name_dots`  | card-dependent   | Writes the label in dot matrix.                                 |
+| `icon_style` | `mdi`            | `mdi` (classic icon) or `dots` (dot-matrix pictogram).          |
 
 ```yaml
 type: custom:nothing-slider-card
@@ -73,15 +75,17 @@ name_dots: true
 icon_style: dots
 ```
 
-**`name_dots`** n'a pas de valeur fixe par défaut : sans lui, chaque carte garde le rendu qu'elle a toujours eu — les
-cartes **button** et **stats** écrivent leur libellé en points (elles suivent alors leur option `dots`), les autres en
-typographie ordinaire. Le poser à `true` ou `false` tranche partout de la même façon. La carte **text**, elle, n'en a
-pas besoin : son option `dots` fait déjà exactement cela.
+**`name_dots`** has no fixed default: left alone, each card keeps the rendering it has always had — the **button** and
+**stats** cards write their label in dots (following their own `dots` option), the others in ordinary type. Setting it
+to `true` or `false` settles it everywhere the same way. The **text** card needs none of this: its `dots` option
+already does exactly that.
 
-**`icon_style: dots`** remplace l'icône d'entité par un pictogramme dessiné sur la même grille 7×7 que les commandes.
-L'inventaire est volontairement court — ampoule, alimentation, volet, ventilateur, cadenas, note — et tout domaine non
-listé retombe sur le point Nothing. C'est le prix d'un dessin lisible sur sept points de côté : les milliers d'icônes
-MDI ne s'y transposent pas. En `mdi`, rien ne change.
+**`icon_style: dots`** replaces the entity icon with a pictogram drawn on the same 7×7 grid as the controls. The set is
+deliberately short — bulb, power, shutter, fan, lock, note — and any unlisted domain falls back to the Nothing dot.
+That is the price of a drawing that stays legible at seven dots across: the thousands of MDI icons do not transpose.
+With `mdi`, nothing changes.
+
+---
 
 ## Nothing Button Card
 
@@ -89,27 +93,31 @@ MDI ne s'y transposent pas. En `mdi`, rien ne change.
 type: custom:nothing-button-card
 entity: light.salon
 shape: pill        # pill | square | circle
-variant: dark      # apparence à l'état éteint : dark | light
+variant: dark      # off-state look: dark | light
 ```
 
-| Option                             | Défaut                 | Description                                           |
-|------------------------------------|------------------------|-------------------------------------------------------|
-| `entity`                           | —                      | **Requis.** N'importe quel domaine actionnable.       |
-| `name`                             | nom convivial          | Libellé affiché.                                      |
-| `icon`                             | icône du domaine       | Icône MDI.                                            |
-| `shape`                            | `pill`                 | `pill`, `square` ou `circle`.                         |
-| `variant`                          | `dark`                 | Apparence éteinte : anthracite ou blanc cassé.        |
-| `dots`                             | `true`                 | Typographie en matrice de points.                     |
-| `show_name` / `show_state`         | `true`                 | Libellé et sous-titre d'état.                         |
-| `show_icon` / `led`                | `true`                 | Pastille d'icône, témoin lumineux.                    |
-| `accent`                           | `#E01F26`              | Couleur de l'état allumé.                             |
-| `tap_action` / `hold_action`       | `toggle` / `more-info` | Actions standard Lovelace.                            |
+![Button card](docs/img/button_example.png)
 
-Le basculement s'adapte au domaine : `scene`, `script`, `button`, `lock`, `cover` et `media_player` reçoivent le bon
-service au lieu d'un `homeassistant.toggle` générique.
+![Square and circle shapes](docs/img/button_square_circle_exemple.png)
 
-`show_name: false` et `show_state: false` ensemble ne laissent que l'icône, recentrée dans le bouton — un raccourci
-carré ou rond, sans un mot.
+| Option                       | Default                | Description                                           |
+|------------------------------|------------------------|-------------------------------------------------------|
+| `entity`                     | —                      | **Required.** Any actionable domain.                  |
+| `name`                       | friendly name          | Displayed label.                                      |
+| `icon`                       | domain icon            | MDI icon.                                             |
+| `shape`                      | `pill`                 | `pill`, `square` or `circle`.                         |
+| `variant`                    | `dark`                 | Off state: charcoal or off-white.                     |
+| `dots`                       | `true`                 | Dot-matrix type.                                      |
+| `show_name` / `show_state`   | `true`                 | Label and state subtitle.                             |
+| `show_icon` / `led`          | `true`                 | Icon badge and status dot.                            |
+| `accent`                     | `#E01F26`              | On-state colour.                                      |
+| `tap_action` / `hold_action` | `toggle` / `more-info` | Standard Lovelace actions.                            |
+
+Toggling adapts to the domain: `scene`, `script`, `button`, `lock`, `cover` and `media_player` get the right service
+instead of a generic `homeassistant.toggle`.
+
+`show_name: false` and `show_state: false` together leave nothing but the icon, recentred in the button — a square or
+round shortcut, without a word.
 
 ---
 
@@ -117,49 +125,48 @@ carré ou rond, sans un mot.
 
 ```yaml
 type: custom:nothing-stats-card
-entity: sensor.consommation_maison
+entity: sensor.house_power
 period: hour
 points: 24
 ```
 
-| Option                               | Défaut               | Description                                           |
+| Option                               | Default              | Description                                           |
 |--------------------------------------|----------------------|-------------------------------------------------------|
-| `entity`                             | —                    | **Requis.** Capteur numérique.                        |
-| `chart`                              | `matrix`             | `matrix`, `bars` ou `line`.                           |
+| `entity`                             | —                    | **Required.** Numeric sensor.                         |
+| `chart`                              | `matrix`             | `matrix`, `bars` or `line`.                           |
 | `period`                             | `hour`               | `5minute`, `hour`, `day`, `week`, `month`.            |
-| `points`                             | `24`                 | Nombre de colonnes (4 → 64).                          |
-| `rows`                               | `8`                  | Hauteur maximale de la matrice (3 → 16).              |
+| `points`                             | `24`                 | Number of columns (4 → 64).                           |
+| `rows`                               | `8`                  | Matrix height in LEDs (3 → 16).                       |
 | `stat`                               | `mean`               | `mean`, `max`, `min`, `sum`, `change`, `state`.       |
-| `value`                              | `state`              | Ce qu'affiche le grand chiffre.                       |
-| `baseline`                           | `min`                | `min` zoome sur la plage, `zero` part de zéro.        |
-| `prefix` / `unit` / `decimals`       | —                    | Mise en forme du chiffre.                             |
-| `accent` / `up_color` / `down_color` | rouge / vert / rouge | Couleurs de la matrice et de la variation.            |
-| `labels` / `delta` / `dots`          | `true`               | Étiquettes de temps, variation, typographie à points. |
+| `value`                              | `state`              | What the large figure shows.                          |
+| `baseline`                           | `min`                | `min` zooms on the range, `zero` starts from zero.    |
+| `prefix` / `unit` / `decimals`       | —                    | Formatting of the figure.                             |
+| `accent` / `up_color` / `down_color` | red / green / red    | Chart and delta colours.                              |
+| `labels` / `delta` / `dots`          | `true`               | Time labels, delta, dot-matrix type.                  |
 
-**Trois styles de graphique.** `matrix` est la matrice de LED d'origine. `bars` pose des traits fins sur la ligne de
-base — une valeur au plancher se réduit à son bout arrondi, c'est-à-dire à un point, et la plus haute passe au rouge.
-`line` trace une courbe continue et marque la valeur courante d'un point rouge.
+**Three chart styles.** `matrix` is the original LED grid. `bars` puts thin strokes on the baseline — a value at the
+floor shrinks to its rounded cap, that is, to a dot, and the tallest one turns red. `line` draws a continuous curve and
+marks the current value with a red dot.
 
 ```yaml
 type: custom:nothing-stats-card
-entity: sensor.consommation_maison
+entity: sensor.house_power
 chart: bars
 points: 48
 labels: false
 delta: false
 ```
 
-`bars` et `line` sont dessinés **en pixels**, à l'échelle 1:1 de la boîte mesurée : les traits gardent leur épaisseur
-et les bouts restent ronds quelle que soit la tuile. Ils se redessinent au redimensionnement, là où `matrix` adapte
-plutôt son nombre de lignes de LED. Montez `points` pour resserrer les traits — 48 ou 64 donnent la trame dense des
-widgets.
+`bars` and `line` are drawn **in pixels**, at 1:1 with the measured box: strokes keep their width and caps stay round
+whatever the tile size. They redraw on resize, where `matrix` instead adapts its number of LED rows. Raise `points` to
+tighten the strokes — 48 or 64 give the dense texture of the widgets.
 
-La carte interroge d'abord `recorder/statistics_during_period` (statistiques long terme) et bascule automatiquement sur
-l'historique brut, qu'elle agrège elle-même, pour les entités sans `state_class`. Rafraîchissement toutes les 5 minutes,
-plus à chaque changement d'état, bridé à une requête par minute.
+The card queries `recorder/statistics_during_period` (long-term statistics) first and falls back to raw history, which
+it aggregates itself, for entities without a `state_class`. It refreshes every 5 minutes plus on every state change,
+throttled to one request per minute.
 
-Le nombre de lignes de LED s'adapte à la hauteur réellement disponible : la matrice remplit la tuile sans jamais la
-faire déborder, et les points restent ronds.
+The number of LED rows adapts to the height actually available: the matrix fills the tile without ever overflowing it,
+and the dots stay round.
 
 ---
 
@@ -170,30 +177,32 @@ type: custom:nothing-light-card
 entity: light.salon
 ```
 
-| Option                                   | Défaut        | Description                                        |
+![Light card](docs/img/light_example.png)
+
+| Option                                   | Default       | Description                                        |
 |------------------------------------------|---------------|----------------------------------------------------|
-| `entity`                                 | —             | **Requis.** Entité `light.*`.                      |
-| `name`                                   | nom convivial | Libellé affiché.                                   |
-| `tint`                                   | `true`        | Les barres prennent la couleur réelle de la lampe. |
-| `min_brightness`                         | `1`           | Luminosité minimale atteignable au glisser.        |
-| `accent`                                 | `#E01F26`     | Couleur de repli quand `tint` est désactivé.       |
-| `dots`                                   | `true`        | Pourcentage en matrice de points.                  |
-| `show_icon` / `show_name` / `show_value` | `true`        | Les trois morceaux de l'en-tête, séparément.       |
-| `toggle`                                 | `true`        | Barre d'interrupteur.                              |
-| `brightness`                             | `true`        | Barre de luminosité.                               |
-| `color`                                  | `true`        | Bande de teintes.                                  |
-| `white`                                  | `true`        | Bande de température de blanc.                     |
-| `presets`                                | `true`        | Rangée de raccourcis couleur / blanc.              |
+| `entity`                                 | —             | **Required.** A `light.*` entity.                  |
+| `name`                                   | friendly name | Displayed label.                                   |
+| `tint`                                   | `true`        | Bars take the lamp's real colour.                  |
+| `min_brightness`                         | `1`           | Lowest brightness reachable by dragging.           |
+| `accent`                                 | `#E01F26`     | Fallback colour when `tint` is off.                |
+| `dots`                                   | `true`        | Percentage in dot matrix.                          |
+| `show_icon` / `show_name` / `show_value` | `true`        | The three parts of the header, separately.         |
+| `toggle`                                 | `true`        | Power bar.                                         |
+| `brightness`                             | `true`        | Brightness bar.                                    |
+| `color`                                  | `true`        | Hue strip.                                         |
+| `white`                                  | `true`        | White temperature strip.                           |
+| `presets`                                | `true`        | Row of colour / white shortcuts.                   |
 
-La carte est une pile de barres, sans onglet : un **interrupteur** dont le pavé glisse d'un bord à l'autre, la
-**luminosité**, la **teinte**, le **blanc**, puis la rangée de **raccourcis**.
+The card is a stack of bars, with no tabs: a **power switch** whose block slides from one edge to the other, then
+**brightness**, **hue**, **white**, and the row of **presets**.
 
-Chaque élément se coupe séparément, et la tuile se redimensionne toute seule : `getGridOptions()` mesure ce qui reste
-réellement à afficher. Une barre disparaît soit parce que `supported_color_modes` ne l'annonce pas, soit parce que vous
-l'avez mise à `false`.
+Every element can be switched off on its own, and the tile resizes by itself: `getGridOptions()` measures what is
+actually left to show. A bar disappears either because `supported_color_modes` does not announce it, or because you set
+it to `false`.
 
 ```yaml
-# une lampe réduite à son interrupteur et sa luminosité
+# a light reduced to its switch and its brightness
 type: custom:nothing-light-card
 entity: light.salon
 show_icon: false
@@ -204,22 +213,22 @@ white: false
 presets: false
 ```
 
-| Configuration                                   | Rangées de grille |
+| Configuration                                   | Grid rows         |
 |-------------------------------------------------|-------------------|
-| RGBWW complète                                  | 6 (376 px)        |
-| RGBWW sans teinte ni blanc                      | 4 (248 px)        |
-| Ampoule simplement dimmable                     | 3 (184 px)        |
-| Deux barres seules, sans en-tête (ci-dessus)    | 2 (120 px)        |
+| Full RGBWW                                      | 6 (376 px)        |
+| RGBWW without hue or white                      | 4 (248 px)        |
+| Brightness-only bulb                            | 3 (184 px)        |
+| Two bars alone, no header (above)               | 2 (120 px)        |
 
-La bande de teintes couvre les 360 degrés à saturation pleine : elle donne des couleurs franches, et les raccourcis
-apportent les teintes plus douces et les blancs. Les quatre premiers raccourcis sont des températures (2000, 2700,
-4000 et 6500 K), les quatre suivants des couleurs ; seuls ceux que la lampe sait rendre sont affichés.
+The hue strip spans all 360 degrees at full saturation: it gives frank colours, and the presets bring the softer tints
+and the whites. The first four presets are temperatures (2000, 2700, 4000 and 6500 K), the next four are colours; only
+those the lamp can actually render are shown.
 
-Le rendu est optimiste et les appels de service sont limités à un toutes les 180 ms, avec envoi final au relâchement —
-l'interface suit le doigt sans saturer le bus.
+Rendering is optimistic and service calls are throttled to one every 180 ms, with a final call on release — the
+interface follows the finger without flooding the bus.
 
-> L'option `wheel_max` des versions précédentes n'a plus d'effet : la roue de couleur a laissé place à la bande de
-> teintes. Une configuration qui la mentionne encore reste valide.
+> The `wheel_max` option from earlier versions no longer has any effect: the colour wheel gave way to the hue strip. A
+> configuration that still mentions it stays valid.
 
 ---
 
@@ -228,111 +237,119 @@ l'interface suit le doigt sans saturer le bus.
 ```yaml
 type: custom:nothing-media-card
 entity: media_player.salon
-layout: bar        # bar | tile | art
+layout: bar        # bar | wide | tile | art
 ```
 
-| Option                       | Défaut                    | Description                                               |
+![Media card](docs/img/media_example.png)
+
+![Art layout](docs/img/media_art_example.png)
+
+| Option                       | Default                   | Description                                               |
 |------------------------------|---------------------------|-----------------------------------------------------------|
-| `entity`                     | —                         | **Requis.** Entité `media_player.*`.                      |
-| `name`                       | nom convivial             | Libellé affiché quand rien n'est en cours.                |
-| `layout`                     | `bar`                     | `bar`, `wide`, `tile` ou `art`.                           |
-| `variant`                    | `dark`                    | Fond anthracite ou blanc cassé.                           |
-| `art`                        | `true`                    | Pochette — note en matrice de points à défaut.            |
-| `controls`                   | `true`                    | Précédent / lecture / suivant.                            |
-| `progress` / `times`         | `true`                    | Barre de progression, position et durée.                  |
-| `volume`                     | `false`                   | Rangée de volume avec coupure du son.                     |
-| `play_text` / `pause_text`   | `Play` / `Pause`          | Libellé du bouton, en disposition `wide`.                 |
-| `dots`                       | `true`                    | Compteurs en matrice de points.                           |
-| `accent`                     | `#E01F26`                 | Couleur de la lecture et de la progression.               |
-| `tap_action` / `hold_action` | `more-info` / `more-info` | Actions sur la pochette et les titres.                    |
+| `entity`                     | —                         | **Required.** A `media_player.*` entity.                  |
+| `name`                       | friendly name             | Label shown when nothing is playing.                      |
+| `layout`                     | `bar`                     | `bar`, `wide`, `tile` or `art`.                           |
+| `variant`                    | `dark`                    | Charcoal or off-white background.                         |
+| `art`                        | `true`                    | Artwork — a dot-matrix note when there is none.           |
+| `controls`                   | `true`                    | Previous / play / next.                                   |
+| `progress` / `times`         | `true`                    | Progress bar, position and duration.                      |
+| `volume`                     | `false`                   | Volume row with mute.                                     |
+| `play_text` / `pause_text`   | `Play` / `Pause`          | Button label, in the `wide` layout.                       |
+| `dots`                       | `true`                    | Counters in dot matrix.                                   |
+| `accent`                     | `#E01F26`                 | Playback and progress colour.                             |
+| `tap_action` / `hold_action` | `more-info` / `more-info` | Actions on the artwork and the titles.                    |
 
-Les quatre dispositions reprennent les widgets Nothing : **`bar`** est la pilule large — pochette, titres et
-progression à gauche, transport à droite ; **`wide`** met la pochette en haut à droite, le titre à gauche, et pose en
-bas un bouton en pilule libellé avec les pistes en chevrons doubles ; **`tile`** est la tuile carrée, pochette en haut
-et commandes en bas ; **`art`** étale la pochette en fond, texte et pilule rouge posés dessus.
+The four layouts follow the Nothing widgets: **`bar`** is the wide pill — artwork, titles and progress on the left,
+transport on the right; **`wide`** puts the artwork top-right, the title on the left, and a labelled pill button with
+double-chevron track buttons at the bottom; **`tile`** is the square, artwork on top and controls at the bottom;
+**`art`** spreads the artwork as a background, text and red pill laid over it.
 
-En `wide`, la pochette est posée par-dessus la carte, et le bloc de titres **réserve sa hauteur** : tout ce qui suit —
-progression, volume — commence donc sous elle, quel que soit le nombre de rangées affichées. La barre garde ainsi
-toute la largeur sans jamais passer derrière la pochette, et la tuile réclame une rangée de plus quand le volume est
-affiché.
+In `wide`, the artwork sits over the card and the title block **reserves its height**: everything after it — progress,
+volume — therefore starts below it, whatever the number of rows shown. The bar keeps the full width without ever
+running behind the artwork, and the tile asks for one extra row when the volume is displayed.
 
-Chaque bouton n'apparaît que si le lecteur annonce l'action dans `supported_features` : pas de flèche « suivant » sur
-une radio, pas de curseur de volume sur un lecteur qui n'en a pas. La barre ne devient glissable que si le lecteur sait
-chercher (`SEEK`), avec un appel toutes les 180 ms au plus et l'envoi final au relâchement.
+Each button only appears if the player announces the action in `supported_features`: no "next" arrow on a radio, no
+volume slider on a player that has none. The bar only becomes draggable if the player can seek (`SEEK`), with at most
+one call every 180 ms and a final call on release.
 
-`media_position` est figé au dernier changement d'état : la carte extrapole la position une fois par seconde pendant la
-lecture, ce qui fait avancer la barre sans réveiller Home Assistant. Les séries affichent le titre de la série puis la
-saison et l'épisode ; la musique affiche le titre puis l'artiste.
+`media_position` is frozen at the last state change: the card extrapolates the position once a second while playing,
+which advances the bar without waking Home Assistant. Series show the show title, then the season and episode; music
+shows the track, then the artist.
 
 ---
 
 ## Nothing Info Card
 
-La carte qui ne fait qu'afficher : une pastille, une valeur, un libellé. Pas de bouton, pas de curseur.
+The card that only displays: a badge, a value, a label. No button, no slider.
 
 ```yaml
 type: custom:nothing-info-card
-entity: sensor.temperature_bureau
+entity: sensor.office_temperature
 ```
 
-| Option                       | Défaut                | Description                                                    |
+![Info card](docs/img/info_example.png)
+
+| Option                       | Default               | Description                                                    |
 |------------------------------|-----------------------|----------------------------------------------------------------|
-| `entity`                     | —                     | **Requis.** N'importe quel domaine.                            |
-| `name`                       | nom convivial         | Libellé sous la valeur.                                        |
-| `icon`                       | icône de l'entité     | Icône MDI de la pastille.                                      |
-| `attribute`                  | —                     | Affiche un attribut plutôt que l'état.                         |
-| `layout`                     | `bar`                 | `bar`, `tile` ou `pill`.                                       |
-| `variant`                    | `dark`                | Fond anthracite ou blanc cassé.                                |
-| `badge`                      | `filled`              | `filled` (pastille rouge), `plain` (icône seule), `none`.      |
-| `unit` / `decimals`          | ceux de l'entité      | Remplacent l'unité et l'arrondi.                               |
-| `dots`                       | `true`                | Valeur en matrice de points.                                   |
-| `show_value` / `show_name`   | `true`                | Masquer l'un ou l'autre.                                       |
-| `accent`                     | `#E01F26`             | Couleur de la pastille.                                        |
-| `tap_action` / `hold_action` | `more-info` / `none`  | Actions standard Lovelace.                                     |
+| `entity`                     | —                     | **Required.** Any domain.                                      |
+| `name`                       | friendly name         | Label under the value.                                         |
+| `icon`                       | entity icon           | MDI icon of the badge.                                         |
+| `attribute`                  | —                     | Shows an attribute rather than the state.                      |
+| `layout`                     | `bar`                 | `bar`, `tile` or `pill`.                                       |
+| `variant`                    | `dark`                | Charcoal or off-white background.                              |
+| `badge`                      | `filled`              | `filled` (red badge), `plain` (icon only), `none`.             |
+| `unit` / `decimals`          | the entity's          | Override unit and rounding.                                    |
+| `dots`                       | `true`                | Value in dot matrix.                                           |
+| `show_value` / `show_name`   | `true`                | Hide either one.                                               |
+| `accent`                     | `#E01F26`             | Badge colour.                                                  |
+| `tap_action` / `hold_action` | `more-info` / `none`  | Standard Lovelace actions.                                     |
 
-`bar` tient sur une rangée de grille : pastille à gauche, valeur puis libellé à droite. `tile` empile le tout dans un
-carré, valeur en grand. `pill` centre le groupe dans une pilule très arrondie — avec `show_value: false` et
-`badge: plain`, c'est le raccourci d'application des widgets Nothing.
+`bar` fits one grid row: badge on the left, value then label on the right. `tile` stacks everything in a square, value
+large. `pill` centres the group in a fully rounded pill — with `show_value: false` and `badge: plain`, that is the app
+shortcut of the Nothing widgets.
 
-Une valeur numérique est mise en forme selon la locale de Home Assistant (`26.0` devient `26,0`) ; un état textuel
-passe par sa traduction (`on` devient `Allumé`). La police à points ne connaissant que les majuscules non accentuées,
-`dots: false` convient mieux aux états en toutes lettres.
+A numeric value is formatted using the Home Assistant locale (`26.0` becomes `26,0` in French); a textual state goes
+through its translation (`on` becomes `Allumé`). Since the dot font only knows unaccented capitals, `dots: false` suits
+spelled-out states better.
 
 ---
 
 ## Nothing Text Card
 
-Un titre, rien d'autre. C'est la seule carte du lot qui n'observe aucune entité : son contenu vient de la configuration.
+A heading, nothing else. It is the only card in the set that observes no entity: its content comes from the
+configuration.
 
 ```yaml
 type: custom:nothing-text-card
-text: Salon
-subtitle: 6 appareils
+text: Living room
+subtitle: 6 devices
 rule: true
 ```
 
-| Option                       | Défaut           | Description                                                       |
+![Text card](docs/img/text_example.png)
+
+| Option                       | Default          | Description                                                       |
 |------------------------------|------------------|-------------------------------------------------------------------|
-| `text`                       | —                | **Requis.** Le titre. Un saut de ligne fait une ligne de plus.    |
-| `subtitle`                   | —                | Ligne secondaire, toujours en typographie ordinaire.              |
-| `align`                      | `left`           | `left`, `center` ou `right`.                                      |
-| `size`                       | `md`             | `sm`, `md` ou `lg`.                                               |
-| `variant`                    | `none`           | `none` (transparent), `dark`, `light` ou `accent`.                |
-| `color`                      | couleur du thème | Couleur du texte.                                                 |
-| `accent`                     | `#E01F26`        | Fond de la variante `accent`.                                     |
-| `dots`                       | `true`           | Matrice de points, sinon typographie ordinaire.                   |
-| `rule`                       | `false`          | Filet pointillé sous le titre.                                    |
-| `tap_action` / `hold_action` | `none`           | Sans action configurée, la carte ne reçoit aucun écouteur.        |
+| `text`                       | —                | **Required.** The heading. A line break adds a line.              |
+| `subtitle`                   | —                | Secondary line, always in ordinary type.                          |
+| `align`                      | `left`           | `left`, `center` or `right`.                                      |
+| `size`                       | `md`             | `sm`, `md` or `lg`.                                               |
+| `variant`                    | `none`           | `none` (transparent), `dark`, `light` or `accent`.                |
+| `color`                      | theme colour     | Text colour.                                                      |
+| `accent`                     | `#E01F26`        | Background of the `accent` variant.                               |
+| `dots`                       | `true`           | Dot matrix, otherwise ordinary type.                              |
+| `rule`                       | `false`          | Dotted rule under the heading.                                    |
+| `tap_action` / `hold_action` | `none`           | With no action configured, the card gets no listener at all.      |
 
-En `variant: none` — le défaut — la carte est transparente et prend la couleur de texte du thème : elle se pose entre
-deux sections comme un intertitre, et reste lisible sur un tableau de bord clair comme sombre. Les autres variantes en
-font une vraie tuile pleine.
+With `variant: none` — the default — the card is transparent and takes the theme's text colour: it sits between two
+sections like a subheading, and stays legible on a light dashboard as well as a dark one. The other variants turn it
+into a real filled tile.
 
-`getGridOptions()` mesure le contenu (lignes, sous-titre, filet, rembourrage) et ne demande que les rangées
-nécessaires : une pour un titre simple, deux dès qu'il y a un sous-titre en grande taille.
+`getGridOptions()` measures the content (lines, subtitle, rule, padding) and only asks for the rows it needs: one for a
+plain heading, two as soon as there is a subtitle at a large size.
 
-Deux réserves sur la police à points : elle ne connaît que les majuscules non accentuées (`É` devient `E`), et un titre
-long finit par se réduire pour tenir dans la largeur. Pour une phrase entière, `dots: false` reste plus lisible.
+Two caveats about the dot font: it only knows unaccented capitals (`É` becomes `E`), and a long heading eventually
+shrinks to fit the width. For a full sentence, `dots: false` stays more readable.
 
 ---
 
@@ -343,40 +360,42 @@ type: custom:nothing-slider-card
 entity: light.salon
 ```
 
-| Option                       | Défaut                    | Description                                             |
+![Slider card](docs/img/slider_example.png)
+
+| Option                       | Default                   | Description                                             |
 |------------------------------|---------------------------|---------------------------------------------------------|
-| `entity`                     | —                         | **Requis.** Un domaine réglable (voir plus bas).        |
-| `name` / `icon`              | ceux de l'entité          | Libellé et icône de la pastille.                        |
-| `layout`                     | `bar`                     | `bar` (en-tête + barre) ou `compact` (barre seule).     |
-| `variant`                    | `dark`                    | Fond anthracite ou blanc cassé.                         |
-| `tint`                       | `true`                    | La jauge prend la couleur réelle de la lampe.           |
-| `min` / `max` / `step`       | ceux de l'entité          | Bornes et pas, quand ceux de l'entité ne conviennent pas. |
-| `unit`                       | celle de l'entité         | Remplace l'unité affichée.                              |
-| `dots`                       | `true`                    | Valeur en matrice de points.                            |
-| `show_icon` / `show_name` / `show_value` | `true`        | Masquer l'un ou l'autre.                                |
-| `accent`                     | `#E01F26`                 | Couleur de la jauge, quand `tint` ne s'applique pas.    |
-| `tap_action` / `hold_action` | `more-info` / `more-info` | Actions sur le libellé.                                 |
+| `entity`                     | —                         | **Required.** An adjustable domain (see below).         |
+| `name` / `icon`              | the entity's              | Label and badge icon.                                   |
+| `layout`                     | `bar`                     | `bar` (header + bar) or `compact` (bar only).           |
+| `variant`                    | `dark`                    | Charcoal or off-white background.                       |
+| `tint`                       | `true`                    | The gauge takes the lamp's real colour.                 |
+| `min` / `max` / `step`       | the entity's              | Bounds and step, when the entity's do not suit.         |
+| `unit`                       | the entity's              | Overrides the displayed unit.                           |
+| `dots`                       | `true`                    | Value in dot matrix.                                    |
+| `show_icon` / `show_name` / `show_value` | `true`        | Hide any of them.                                       |
+| `accent`                     | `#E01F26`                 | Gauge colour when `tint` does not apply.                |
+| `tap_action` / `hold_action` | `more-info` / `more-info` | Actions on the label.                                   |
 
-Ce que le curseur règle dépend du domaine, et la carte va chercher les bornes au bon endroit :
+What the slider adjusts depends on the domain, and the card reads the bounds from the right place:
 
-| Domaine                  | Ce qui est réglé      | Service appelé                 | Bornes                                  |
-|--------------------------|-----------------------|--------------------------------|-----------------------------------------|
-| `light`                  | Luminosité            | `light.turn_on`                | 1 – 100 %                               |
-| `fan`                    | Vitesse               | `fan.set_percentage`           | 0 – 100 %, au pas de `percentage_step`  |
-| `cover`                  | Ouverture             | `cover.set_cover_position`     | 0 – 100 %                               |
-| `media_player`           | Volume                | `media_player.volume_set`      | 0 – 100 %                               |
-| `number`, `input_number` | Valeur                | `<domaine>.set_value`          | `min`, `max`, `step` de l'entité        |
-| `climate`                | Consigne              | `climate.set_temperature`      | `min_temp`, `max_temp`, `target_temp_step` |
+| Domain                   | What it sets      | Service called                 | Bounds                                  |
+|--------------------------|-------------------|--------------------------------|-----------------------------------------|
+| `light`                  | Brightness        | `light.turn_on`                | 1 – 100 %                               |
+| `fan`                    | Speed             | `fan.set_percentage`           | 0 – 100 %, stepped by `percentage_step` |
+| `cover`                  | Position          | `cover.set_cover_position`     | 0 – 100 %                               |
+| `media_player`           | Volume            | `media_player.volume_set`      | 0 – 100 %                               |
+| `number`, `input_number` | Value             | `<domain>.set_value`           | the entity's `min`, `max`, `step`       |
+| `climate`                | Setpoint          | `climate.set_temperature`      | `min_temp`, `max_temp`, `target_temp_step` |
 
-Tout autre domaine est refusé à la configuration, avec un message qui dit lesquels sont acceptés.
+Any other domain is rejected at configuration time, with a message naming the accepted ones.
 
-Un appui sur la **pastille** bascule l'entité, un appui sur le **libellé** ouvre sa fiche, et la **barre** se glisse.
-Le rendu est optimiste et les appels de service sont limités à un toutes les 180 ms, avec envoi final au relâchement :
-l'interface suit le doigt sans saturer le bus. La valeur est ramenée sur le pas de l'entité — un ventilateur au pas de
-10 s'arrête sur 40, jamais sur 44.
+Tapping the **badge** toggles the entity, tapping the **label** opens its more-info dialog, and the **bar** is dragged.
+Rendering is optimistic and service calls are throttled to one every 180 ms, with a final call on release: the
+interface follows the finger without flooding the bus. The value is snapped to the entity's step — a fan stepped by 10
+lands on 40, never on 44.
 
-`layout: compact` réduit la carte à la barre elle-même, pastille à gauche et pourcentage à droite posés dessus : la
-pilule des widgets Nothing, sur une seule rangée de grille.
+`layout: compact` reduces the card to the bar itself, badge on the left and percentage on the right laid over it: the
+percentage pill of the Nothing widgets, on a single grid row.
 
 ---
 
@@ -384,40 +403,42 @@ pilule des widgets Nothing, sur une seule rangée de grille.
 
 ```yaml
 type: custom:nothing-cover-card
-entity: cover.volet_salon
+entity: cover.living_room_shutter
 ```
 
-| Option                       | Défaut                    | Description                                          |
+![Cover card](docs/img/cover_example.png)
+
+| Option                       | Default                   | Description                                          |
 |------------------------------|---------------------------|------------------------------------------------------|
-| `entity`                     | —                         | **Requis.** Entité `cover.*`.                        |
-| `name` / `icon`              | ceux de l'entité          | Libellé et icône de la pastille.                     |
-| `variant`                    | `dark`                    | Fond anthracite ou blanc cassé.                      |
-| `dots`                       | `true`                    | Position en matrice de points.                       |
-| `show_icon` / `show_name` / `show_value` | `true`        | Les trois morceaux de l'en-tête, séparément.         |
-| `shutter`                    | `true`                    | Le tablier dessiné.                                  |
-| `buttons`                    | `true`                    | Colonne haut / stop / bas.                           |
-| `slider`                     | `true`                    | Curseur de position.                                 |
-| `tilt`                       | `true`                    | Curseur d'inclinaison des lamelles.                  |
-| `accent`                     | `#E01F26`                 | Couleur du remplissage et des flèches en mouvement.  |
-| `tap_action` / `hold_action` | `more-info` / `more-info` | Actions sur le libellé.                              |
+| `entity`                     | —                         | **Required.** A `cover.*` entity.                    |
+| `name` / `icon`              | the entity's              | Label and badge icon.                                |
+| `variant`                    | `dark`                    | Charcoal or off-white background.                    |
+| `dots`                       | `true`                    | Position in dot matrix.                              |
+| `show_icon` / `show_name` / `show_value` | `true`        | The three parts of the header, separately.           |
+| `shutter`                    | `true`                    | The drawn slats.                                     |
+| `buttons`                    | `true`                    | Up / stop / down column.                             |
+| `slider`                     | `true`                    | Position slider.                                     |
+| `tilt`                       | `true`                    | Slat tilt slider.                                    |
+| `accent`                     | `#E01F26`                 | Fill colour and moving arrows.                       |
+| `tap_action` / `hold_action` | `more-info` / `more-info` | Actions on the label.                                |
 
-**Le tablier est dessiné, pas photographié** : un cadre, du vitrage en trame de points, et des lamelles en traits fins
-qui descendent du haut. Sa hauteur suit `current_position` — 30 % d'ouverture, 70 % de tablier. Pendant un mouvement,
-la flèche concernée passe au rouge et le tablier respire.
+**The shutter is drawn, not photographed**: a frame, dotted glazing, and thin slats coming down from the top. Its
+height follows `current_position` — 30 % open means 70 % of slats. While it moves, the relevant arrow turns red and the
+slats breathe.
 
-Quand le moteur gère l'inclinaison, **l'épaisseur des lamelles la reproduit** : refermées elles se touchent et le volet
-devient opaque, à plat elles laissent passer le jour entre deux traits. Le second curseur les règle.
+When the motor supports tilt, **the slat thickness reproduces it**: closed, they touch and the shutter goes opaque;
+flat, they let daylight through between two thin lines. The second slider adjusts them.
 
-Chaque bouton n'apparaît que si `supported_features` l'annonce, et chaque élément se coupe dans la config. Sans le
-tablier, la colonne de boutons se met à l'horizontale et la carte tient sur deux rangées de grille.
+Each button only appears if `supported_features` announces it, and every element can be switched off in the
+configuration. Without the slats, the button column turns horizontal and the card fits two grid rows.
 
-| Configuration                                   | Rangées de grille |
+| Configuration                                   | Grid rows         |
 |-------------------------------------------------|-------------------|
-| Volet à lamelles orientables, tout affiché      | 5 (312 px)        |
-| Volet roulant avec position                     | 4 (248 px)        |
-| Boutons seuls, sans tablier ni position         | 2 (120 px)        |
+| Venetian blind, everything shown                | 5 (312 px)        |
+| Roller shutter with position                    | 4 (248 px)        |
+| Buttons only, no slats and no position          | 2 (120 px)        |
 
-Le rendu est optimiste et les appels de service sont limités à un toutes les 180 ms, avec envoi final au relâchement.
+Rendering is optimistic and service calls are throttled to one every 180 ms, with a final call on release.
 
 ---
 
@@ -425,35 +446,34 @@ Le rendu est optimiste et les appels de service sont limités à un toutes les 1
 
 ```yaml
 type: custom:nothing-battery-card
-entity: sensor.telephone_batterie
+entity: sensor.phone_battery
 ```
 
-| Option                       | Défaut                    | Description                                              |
+| Option                       | Default                   | Description                                              |
 |------------------------------|---------------------------|----------------------------------------------------------|
-| `entity`                     | —                         | **Requis.** Capteur de batterie, ou entité qui porte `battery_level`. |
-| `name`                       | nom convivial             | Libellé au-dessus du chiffre.                            |
-| `attribute`                  | —                         | Attribut à lire plutôt que l'état.                       |
-| `charging_entity`            | —                         | Entité qui dit si l'appareil charge.                     |
-| `layout`                     | `bar`                     | `bar` (chiffre et jauge côte à côte) ou `tile` (empilés).|
-| `variant`                    | `dark`                    | Fond anthracite ou blanc cassé.                          |
-| `columns` / `rows`           | `20` / `3`                | Grille de points de la jauge.                            |
-| `low`                        | `20`                      | En dessous, le chiffre passe au rouge.                   |
-| `unit`                       | `%`                       | Unité à côté du chiffre.                                 |
-| `dots`                       | `true`                    | Niveau en matrice de points.                             |
-| `show_name` / `show_value` / `show_gauge` | `true`       | Masquer l'un ou l'autre.                                 |
-| `accent`                     | `#E01F26`                 | Couleur des points allumés.                              |
-| `tap_action` / `hold_action` | `more-info` / `more-info` | Actions standard Lovelace.                               |
+| `entity`                     | —                         | **Required.** A battery sensor, or an entity carrying `battery_level`. |
+| `name`                       | friendly name             | Label above the figure.                                  |
+| `attribute`                  | —                         | Attribute to read rather than the state.                 |
+| `charging_entity`            | —                         | Entity telling whether the device is charging.           |
+| `layout`                     | `bar`                     | `bar` (figure and gauge side by side) or `tile` (stacked). |
+| `variant`                    | `dark`                    | Charcoal or off-white background.                        |
+| `columns` / `rows`           | `20` / `3`                | Dot grid of the gauge.                                   |
+| `low`                        | `20`                      | Below this, the figure turns red.                        |
+| `unit`                       | `%`                       | Unit next to the figure.                                 |
+| `dots`                       | `true`                    | Level in dot matrix.                                     |
+| `show_name` / `show_value` / `show_gauge` | `true`       | Hide any of them.                                        |
+| `accent`                     | `#E01F26`                 | Colour of the lit dots.                                  |
+| `tap_action` / `hold_action` | `more-info` / `more-info` | Standard Lovelace actions.                               |
 
-Le niveau se lit dans l'ordre où Home Assistant le publie : l'attribut nommé dans la configuration, sinon
-`battery_level` — que posent la plupart des intégrations d'appareils —, sinon l'état lui-même pour un capteur
-`device_class: battery`.
+The level is read in the order Home Assistant publishes it: the attribute named in the configuration, otherwise
+`battery_level` — which most device integrations set — otherwise the state itself for a `device_class: battery` sensor.
 
-**Le remplissage ne ment pas.** Une batterie non vide garde au moins une colonne allumée, une batterie non pleine en
-laisse au moins une éteinte : à 99 % la jauge affiche 19 colonnes sur 20, jamais 20. C'est ce qui évite de croire une
-batterie pleine alors qu'elle ne l'est pas.
+**The fill does not lie.** A battery that is not empty keeps at least one lit column, and one that is not full leaves
+at least one unlit: at 99 % the gauge shows 19 columns out of 20, never 20. That is what prevents reading a battery as
+full when it is not.
 
-**En charge**, un éclair en points s'affiche à côté du chiffre et la jauge respire. L'état vient de `charging_entity`
-si vous en donnez une, sinon des attributs `is_charging` ou `battery_state` de l'entité.
+**While charging**, a dot-matrix bolt appears next to the figure and the gauge breathes. The state comes from
+`charging_entity` if you provide one, otherwise from the entity's `is_charging` or `battery_state` attributes.
 
 ---
 
@@ -462,75 +482,75 @@ si vous en donnez une, sinon des attributs `is_charging` ou `battery_state` de l
 ```yaml
 type: custom:nothing-flow-card
 home:
-  entity: sensor.maison_puissance
-  energy: sensor.maison_energie
-  ring: sensor.autoconsommation      # le pourcentage dans l'anneau
+  entity: sensor.house_power
+  energy: sensor.house_energy
+  ring: sensor.self_consumption      # the percentage inside the ring
 sources:
-  - entity: sensor.import_reseau
+  - entity: sensor.grid_import
     name: Import grid
     icon: pylon
-    energy: sensor.import_reseau_kwh
-  - entity: sensor.solaire
-    name: Solaire
+    energy: sensor.grid_import_kwh
+  - entity: sensor.solar
+    name: Solar
     icon: sun
-    energy: sensor.solaire_kwh
+    energy: sensor.solar_kwh
 consumers:
-  - entity: sensor.cumulus
-    name: Cumulus
+  - entity: sensor.water_heater
+    name: Water heater
     icon: cloud
     slot: ml
-  - entity: sensor.voiture
-    name: Voiture
+  - entity: sensor.car
+    name: Car
     icon: car
-  - entity: sensor.frigo
-    name: Frigo
+  - entity: sensor.fridge
+    name: Fridge
     icon: fridge
-  - entity: sensor.export_reseau
+  - entity: sensor.grid_export
     name: Export grid
     icon: bolt
 ```
 
-| Option                    | Défaut       | Description                                                       |
+| Option                    | Default      | Description                                                       |
 |---------------------------|--------------|-------------------------------------------------------------------|
-| `sources` / `consumers`   | —            | **Au moins une entrée.** Les listes de tuiles, avant et après le centre. |
-| `home`                    | —            | `{entity, energy, ring, icon}` du centre. Sans `entity`, la somme des sources. |
-| `max_power`               | `3000`       | Puissance considérée comme « pleine vitesse ».                    |
-| `speed`                   | `1`          | Vitesse des points : `2` va deux fois plus vite, `0.5` deux fois moins. |
-| `dots_per_line`           | `2`          | Points en vol sur chaque liaison.                                 |
-| `ring_dots`               | `56`         | Points de l'anneau central.                                       |
-| `decimals` / `energy_decimals` | `0` / `1` | Arrondi des puissances et des énergies.                          |
-| `variant`                 | `dark`       | Fond anthracite ou blanc cassé.                                   |
-| `dots`                    | `true`       | Valeurs en matrice de points.                                     |
-| `footer` / `footer_text`  | `true` / vide | Le pied de carte et le texte libre à gauche de l'heure.           |
-| `accent`                  | `#E01F26`    | Couleur des points qui circulent.                                 |
+| `sources` / `consumers`   | —            | **At least one entry.** The tile lists, before and after the centre. |
+| `home`                    | —            | `{entity, energy, ring, icon}` of the centre. Without `entity`, the sum of the sources. |
+| `max_power`               | `3000`       | Power considered "full speed".                                    |
+| `speed`                   | `1`          | Dot speed: `2` is twice as fast, `0.5` twice as slow.             |
+| `dots_per_line`           | `2`          | Dots in flight on each link.                                      |
+| `ring_dots`               | `56`         | Dots of the centre ring.                                          |
+| `decimals` / `energy_decimals` | `0` / `1` | Rounding of powers and energies.                                 |
+| `variant`                 | `dark`       | Charcoal or off-white background.                                 |
+| `dots`                    | `true`       | Values in dot matrix.                                             |
+| `footer` / `footer_text`  | `true` / empty | The card footer and the free text left of the clock.            |
+| `accent`                  | `#E01F26`    | Colour of the travelling dots.                                    |
 
-Chaque tuile prend `entity` (la puissance), et facultativement `name`, `icon`, `energy` (la ligne en kWh) et `slot`.
-Les emplacements sont `tl`, `tr`, `ml`, `mr`, `bl`, `bc`, `br` — sept au maximum autour du centre. Sans `slot`, les
-sources se placent en haut puis à gauche, les consommateurs en bas puis à droite.
+Each tile takes `entity` (the power), and optionally `name`, `icon`, `energy` (the kWh line) and `slot`. The slots are
+`tl`, `tr`, `ml`, `mr`, `bl`, `bc`, `br` — seven at most around the centre. Without `slot`, sources go to the top then
+the left, consumers to the bottom then the right.
 
-**Les icônes sont des pictogrammes en points** : `pylon`, `sun`, `house`, `car`, `fridge`, `cloud`, `bolt`, `plug`,
-`battery`… Un nom préfixé `mdi:` bascule sur l'icône classique correspondante.
+**Icons are dot-matrix pictograms**: `pylon`, `sun`, `house`, `car`, `fridge`, `cloud`, `bolt`, `plug`, `battery`… A
+name prefixed with `mdi:` switches to the matching classic icon.
 
-**L'animation.** Un point lumineux part de la source et parcourt la liaison jusqu'à sa destination. Sa vitesse suit la
-puissance, sur une échelle logarithmique — sans quoi 10 W et 3000 W donneraient deux animations impossibles à
-distinguer. En dessous de 1 W, la liaison est considérée comme inactive et les points s'effacent.
+**The animation.** A lit dot leaves the source and travels the link to its destination. Its speed follows the power, on
+a logarithmic scale — otherwise 10 W and 3000 W would give two animations impossible to tell apart. Below 1 W the link
+counts as idle and the dots fade out.
 
-`speed` règle l'allure d'ensemble sans toucher aux écarts entre liaisons : à `2`, toutes les durées sont divisées par
-deux, et la plus grosse puissance reste la plus rapide. La durée est bornée entre 150 ms et 20 s, pour qu'une valeur
-extrême ne fige pas les points ni ne les rende illisibles.
+`speed` sets the overall pace without touching the differences between links: at `2`, every duration is halved, and the
+largest power stays the fastest. The duration is bounded between 150 ms and 20 s, so an extreme value neither freezes
+the dots nor makes them unreadable.
 
-Les tracés sont calculés **en pixels**, à partir des positions réellement mesurées des tuiles et de l'anneau : ils
-touchent le bord du cercle au lieu de s'arrêter sur son carré englobant, et se retracent au redimensionnement, jamais
-à chaque changement d'état. Les points suivent exactement le même chemin que le trait, via `offset-path`.
+Paths are computed **in pixels**, from the measured positions of the tiles and the ring: they touch the edge of the
+circle rather than stopping at its bounding box, and they are re-traced on resize, never on a state change. The dots
+follow exactly the same path as the stroke, through `offset-path`.
 
-L'éditeur graphique couvre le centre et l'apparence ; `sources` et `consumers` étant des listes d'objets, elles se
-remplissent en YAML — `ha-form` ne sait pas éditer ce genre de structure.
+The visual editor covers the centre and the appearance; `sources` and `consumers` being lists of objects, they are
+filled in YAML — `ha-form` cannot edit that kind of structure.
 
 ---
 
 ## Nothing Clock Card
 
-Elle n'observe aucune entité : l'heure vient de l'appareil qui affiche le tableau de bord.
+It observes no entity: the time comes from the device showing the dashboard.
 
 ```yaml
 type: custom:nothing-clock-card
@@ -538,35 +558,33 @@ layout: digital
 size: lg
 ```
 
-| Option                       | Défaut               | Description                                                  |
-|------------------------------|----------------------|--------------------------------------------------------------|
-| `layout`                     | `digital`            | `digital`, `stack`, `ring`, `progress` ou `week`.            |
-| `size`                       | `md`                 | `sm`, `md`, `lg` — hauteur des chiffres.                     |
-| `variant`                    | `dark`               | Fond anthracite ou blanc cassé.                              |
-| `dots` / `date_dots`         | `true` / `false`     | Matrice de points sur les chiffres, et sur la ligne de date. |
-| `date` / `weekday`           | `true` / `true`      | La ligne de date, et le jour de la semaine dedans.           |
-| `seconds`                    | `false`              | Afficher les secondes.                                       |
-| `hour12`                     | selon la langue      | Forcer 12 h ou 24 h.                                         |
-| `periods`                    | jour, semaine, mois, année | Les jauges de la disposition `progress`.               |
-| `week_start`                 | `monday`             | `monday` ou `sunday`, pour la jauge de semaine.              |
-| `cells`                      | `20`                 | Points par jauge de période.                                 |
-| `days`                       | `5`                  | Jours de la bande `week`.                                    |
-| `accent`                     | `#E01F26`            | Repère de minutes, jour courant, point de tête des jauges.   |
-| `tap_action` / `hold_action` | `none`               | Sans action, la carte ne reçoit aucun écouteur.              |
+| Option                       | Default                    | Description                                                  |
+|------------------------------|----------------------------|--------------------------------------------------------------|
+| `layout`                     | `digital`                  | `digital`, `stack`, `ring`, `progress` or `week`.            |
+| `size`                       | `md`                       | `sm`, `md`, `lg` — digit height.                             |
+| `variant`                    | `dark`                     | Charcoal or off-white background.                            |
+| `dots` / `date_dots`         | `true` / `false`           | Dot matrix on the digits, and on the date line.              |
+| `date` / `weekday`           | `true` / `true`            | The date line, and the weekday inside it.                    |
+| `seconds`                    | `false`                    | Show seconds.                                                |
+| `hour12`                     | from the language          | Force 12-hour or 24-hour time.                               |
+| `periods`                    | day, week, month, year     | The gauges of the `progress` layout.                         |
+| `week_start`                 | `monday`                   | `monday` or `sunday`, for the week gauge.                    |
+| `cells`                      | `20`                       | Dots per period gauge.                                       |
+| `days`                       | `5`                        | Days in the `week` strip.                                    |
+| `accent`                     | `#E01F26`                  | Minute marker, current day, leading dot of the gauges.       |
+| `tap_action` / `hold_action` | `none`                     | With no action, the card gets no listener at all.            |
 
-**Les cinq dispositions.** `digital` écrit l'heure sur une ligne avec la date au-dessus. `stack` empile les heures
-sur les minutes. `ring` dessine un cadran de soixante points, avec l'aiguille des minutes en rouge et celle des heures
-en blanc sur l'anneau intérieur. `progress` montre où en est le jour, la semaine, le mois et l'année, chaque jauge
-terminée par un point rouge — c'est là qu'on en est. `week` déroule une bande de jours, aujourd'hui en rouge sous son
-repère.
+**The five layouts.** `digital` writes the time on one line with the date above. `stack` piles the hours over the
+minutes. `ring` draws a sixty-dot dial, with the minute hand in red and the hour hand in white on the inner ring.
+`progress` shows how far along the day, the week, the month and the year are, each gauge ending on a red dot — that is
+where we stand. `week` unrolls a strip of days, today in red under its marker.
 
-**Le rafraîchissement se cale sur le prochain changement d'unité** — seconde ou minute — au lieu d'attendre un
-intervalle fixe : l'affichage bascule pile au bon moment, et une horloge sans secondes ne se réveille pas cinquante-neuf
-fois pour rien.
+**Refreshing is aligned to the next change of unit** — second or minute — instead of waiting on a fixed interval: the
+display flips at exactly the right moment, and a clock without seconds does not wake up fifty-nine times for nothing.
 
-Les noms de jours et de mois suivent la langue de Home Assistant, et le format 12 h ou 24 h s'en déduit sauf réglage
-contraire. Le numéro de semaine est celui d'ISO 8601 ; seul le jour de départ de la **jauge** suit `week_start`, parce
-qu'il change d'un pays à l'autre.
+Day and month names follow the Home Assistant language, and the 12- or 24-hour format is derived from it unless set
+otherwise. The week number is the ISO 8601 one; only the starting day of the **gauge** follows `week_start`, because
+that differs from one country to another.
 
 ---
 
@@ -574,36 +592,36 @@ qu'il change d'un pays à l'autre.
 
 ```yaml
 type: custom:nothing-thermostat-card
-entity: climate.pompe_a_chaleur
+entity: climate.heat_pump
 variant: light
 ```
 
-| Option                                            | Défaut       | Description                                             |
-|---------------------------------------------------|--------------|---------------------------------------------------------|
-| `entity`                                          | —            | **Requis.** Entité `climate.*`.                         |
-| `name`                                            | nom convivial| Libellé de l'en-tête.                                   |
-| `variant`                                         | `dark`       | Fond anthracite ou blanc cassé.                         |
-| `min` / `max` / `step`                            | ceux de l'appareil | Bornes et pas de la consigne.                     |
-| `ticks`                                           | `64`         | Traits de la graduation.                                |
-| `unit`                                            | `°`          | Unité à côté de la consigne.                            |
-| `decimals`                                        | automatique  | Arrondi de la consigne.                                 |
-| `dots`                                            | `true`       | Chiffres et libellés en matrice de points.              |
-| `show_name` / `show_state` / `show_current` / `show_mode` | `true` | Masquer l'un ou l'autre.                          |
-| `accent`                                          | `#E01F26`    | Graduation et repère quand l'appareil chauffe.          |
+| Option                                            | Default            | Description                                             |
+|---------------------------------------------------|--------------------|---------------------------------------------------------|
+| `entity`                                          | —                  | **Required.** A `climate.*` entity.                     |
+| `name`                                            | friendly name      | Header label.                                           |
+| `variant`                                         | `dark`             | Charcoal or off-white background.                       |
+| `min` / `max` / `step`                            | the device's       | Setpoint bounds and step.                               |
+| `ticks`                                           | `64`               | Strokes of the graduation.                              |
+| `unit`                                            | `°`                | Unit next to the setpoint.                              |
+| `decimals`                                        | automatic          | Setpoint rounding.                                      |
+| `dots`                                            | `true`             | Figures and labels in dot matrix.                       |
+| `show_name` / `show_state` / `show_current` / `show_mode` | `true`     | Hide any of them.                                       |
+| `accent`                                          | `#E01F26`          | Graduation and marker while the device heats.           |
 
-**Le cadran se règle au doigt.** Un arc de 270 degrés, ouvert en bas : l'angle du doigt autour du centre donne la
-consigne, ramenée au pas de l'appareil. Hors de l'arc — dans l'ouverture — la valeur reste à l'extrémité la plus
-proche, de sorte qu'un glissement sous le cadran ne fait pas sauter la consigne d'un bout à l'autre.
+**The dial is set by finger.** A 270-degree arc, open at the bottom: the angle of the finger around the centre gives
+the setpoint, snapped to the device's step. Outside the arc — in the opening — the value stays at the nearest end, so a
+drag below the dial does not send the setpoint from one extreme to the other.
 
-La graduation **monte en intensité** jusqu'au repère puis s'efface : l'œil suit la course du réglage sans qu'il faille
-une couleur de plus. Elle passe à l'accent quand `hvac_action` vaut `heating`, au bleu quand elle vaut `cooling`.
+The graduation **ramps up in intensity** to the marker then fades: the eye follows the travel of the setting without
+needing one more colour. It turns accent when `hvac_action` is `heating`, blue when it is `cooling`.
 
-**La pilule du bas** porte l'alimentation à gauche — elle éteint, ou rallume sur le premier mode utile déclaré par
-l'appareil — et le mode courant. Un appui dessus fait défiler les modes de `hvac_modes` ; un appui long ouvre la fiche
-de l'entité.
+**The bottom pill** carries power on the left — it switches off, or back on to the first useful mode the device
+declares — and the current mode. Tapping it cycles through `hvac_modes`; holding it opens the entity's more-info
+dialog.
 
-Le rendu est optimiste et les appels de service sont limités à un toutes les 200 ms, avec envoi final au relâchement.
-Les consignes doubles (`target_temp_low` / `high`) affichent la borne basse : un cadran n'a qu'un repère.
+Rendering is optimistic and service calls are throttled to one every 200 ms, with a final call on release. Dual
+setpoints (`target_temp_low` / `high`) show the low bound: a dial has only one marker.
 
 ---
 
@@ -611,72 +629,69 @@ Les consignes doubles (`target_temp_low` / `high`) affichent la borne basse : un
 
 ```yaml
 type: custom:nothing-weather-card
-entity: weather.maison
+entity: weather.home
 layout: full
 variant: light
 ```
 
-| Option                       | Défaut          | Description                                                  |
-|------------------------------|-----------------|--------------------------------------------------------------|
-| `entity`                     | —               | **Requis.** Entité `weather.*`.                              |
-| `name`                       | nom convivial   | Le lieu, sous la température.                                |
-| `layout`                     | `full`          | `full`, `compact`, `hourly`, `daily` ou `tile`.              |
-| `variant`                    | `dark`          | Fond anthracite ou blanc cassé.                              |
-| `hours` / `days`             | `6` / `3`       | Colonnes horaires et lignes quotidiennes.                    |
-| `dots` / `decimals` / `unit` | `true` / auto / `°` | Matrice de points, arrondi, symbole.                     |
-| `show_current`, `show_condition`, `show_range`, `show_name`, `show_hourly`, `show_daily` | selon la disposition | Forcer l'affichage d'une section, ou l'enlever. |
+| Option                       | Default             | Description                                                  |
+|------------------------------|---------------------|--------------------------------------------------------------|
+| `entity`                     | —                   | **Required.** A `weather.*` entity.                          |
+| `name`                       | friendly name       | The place, under the temperature.                            |
+| `layout`                     | `full`              | `full`, `compact`, `hourly`, `daily` or `tile`.              |
+| `variant`                    | `dark`              | Charcoal or off-white background.                            |
+| `hours` / `days`             | `6` / `3`           | Hourly columns and daily rows.                               |
+| `dots` / `decimals` / `unit` | `true` / auto / `°` | Dot matrix, rounding, symbol.                                |
+| `show_current`, `show_condition`, `show_range`, `show_name`, `show_hourly`, `show_daily` | layout-dependent | Force a section on, or take it away. |
 
-**Les cinq dispositions.** `full` reprend l'écran complet : grand pictogramme, condition, température, bande horaire et
-lignes quotidiennes. `compact` s'en tient à l'instant. `hourly` et `daily` n'affichent qu'une bande. `tile` tient dans
-un carré : pictogramme, température, extrêmes.
+**The five layouts.** `full` is the complete screen: large pictogram, condition, temperature, hourly strip and daily
+rows. `compact` sticks to the present moment. `hourly` and `daily` show a single strip. `tile` fits a square:
+pictogram, temperature, extremes.
 
-Les sections suivent la disposition, mais chaque `show_*` la contredit : `layout: hourly` avec `show_current: true`
-remet l'instant au-dessus de la bande.
+Sections follow the layout, but any `show_*` overrides it: `layout: hourly` with `show_current: true` puts the present
+moment back above the strip.
 
-**Les barres quotidiennes partagent une seule échelle.** Une journée de 9 à 20 degrés occupe plus de largeur qu'une de
-12 à 17, et la position de chaque barre situe la journée dans l'amplitude de la semaine — c'est ce qui permet de les
-comparer d'un coup d'œil, ce qu'une barre remise à zéro sur chaque ligne ne permettrait pas.
+**The daily bars share a single scale.** A day from 9 to 20 degrees takes more width than one from 12 to 17, and each
+bar's position places the day within the week's range — that is what makes them comparable at a glance, which a bar
+reset on every row would not allow.
 
-**Les prévisions passent par un abonnement.** Depuis Home Assistant 2023.9, `attributes.forecast` a disparu au profit
-de `weather/subscribe_forecast`. La carte s'y abonne pour les prévisions horaires et quotidiennes, et retombe sur
-l'ancien tableau d'attributs pour les intégrations qui le publient encore — l'écart entre deux entrées suffit à savoir
-s'il s'agit d'heures ou de jours. Une intégration qui ne fournit pas un type laisse simplement la section masquée.
+**Forecasts come through a subscription.** Since Home Assistant 2023.9, `attributes.forecast` has gone in favour of
+`weather/subscribe_forecast`. The card subscribes for both hourly and daily forecasts, and falls back to the old
+attribute array for integrations that still publish it — the gap between two entries is enough to tell hours from days.
+An integration that does not provide a type simply leaves that section hidden.
 
-Les pictogrammes couvrent les conditions de Home Assistant, alias compris (`lightning-rainy`, `snowy-rainy`,
-`windy-variant`), et retombent sur un point d'exclamation pour l'inconnu.
+The pictograms cover the Home Assistant conditions, aliases included (`lightning-rainy`, `snowy-rainy`,
+`windy-variant`), and fall back to an exclamation mark for the unknown.
 
 ---
 
 ## Notes
 
-- **Dimensionnement** — chaque carte expose `getGridOptions()` pour la vue *sections* et ne déborde jamais de sa tuile,
-  quelle que soit la taille demandée.
-- **Éditeur graphique** — les treize cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
-  par le YAML.
-- **Pictogrammes** — les commandes internes des cartes (flèches, lecture, pause, volume) sont dessinées en matrice de
-  points, sur la même trame que la typographie. Seules les icônes d'entité restent des icônes MDI : c'est vous qui les
-  choisissez, l'inventaire ne peut pas être fermé.
-- **Accents** — la police 5×7 ne comporte pas de caractères accentués (`É` devient `E`). Utilisez `dots: false` pour un
-  rendu typographique classique.
-- **Police NDot** — si la police *NDot 55* est installée sur l'appareil, les textes hors matrice l'utilisent
-  automatiquement.
+- **Sizing** — every card exposes `getGridOptions()` for the *sections* view and never overflows its tile, whatever
+  size is asked for.
+- **Visual editor** — all thirteen cards provide `getConfigForm()`: they are configured with the mouse, without going
+  through YAML.
+- **Pictograms** — the cards' internal controls (arrows, play, pause, volume) are drawn in dot matrix, on the same grid
+  as the type. Only entity icons stay MDI: you choose those, so the inventory cannot be closed.
+- **Accents** — the 5×7 font has no accented characters (`É` becomes `E`). Use `dots: false` for classic typography.
+- **NDot font** — if the *NDot 55* font is installed on the device, text outside the matrix uses it automatically.
 
 ---
 
-## Développement
+## Development
 
-Les sources vivent dans `src/`, découpées par carte, et sont assemblées en un bundle unique par Rollup.
+Sources live in `src/`, split per card, and are bundled into a single file by Rollup.
 
 ```bash
 npm install
 npm run build      # dist/nothing-card.js
-npm run preview    # banc d'essai sans Home Assistant, sur http://localhost:8137/
+npm run preview    # local test bench, on http://localhost:8137/
 ```
 
-Le banc d'essai est la page `index.html` à la racine, servie telle quelle par GitHub Pages : c'est la même que la
-démonstration en ligne.
+The test bench is the `index.html` page at the repository root, served as-is by GitHub Pages: it is the same page as
+the online demo.
 
-Voir [DEVELOPERS.md](DEVELOPERS.md) pour la carte de l'arborescence et la marche à suivre pour ajouter une carte.
+See [DEVELOPERS.md](DEVELOPERS.md) for the source tree and the steps to add a card.
 
 ## Licence
 
