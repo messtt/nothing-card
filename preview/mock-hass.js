@@ -206,6 +206,50 @@ const states = {
 		last_updated: now(),
 		attributes: {friendly_name: "Garage", device_class: "garage", supported_features: 1 + 2 + 8},
 	},
+	"sensor.grid_import": {
+		entity_id: "sensor.grid_import", state: "13", last_updated: now(),
+		attributes: {friendly_name: "Import grid", unit_of_measurement: "W", device_class: "power"},
+	},
+	"sensor.grid_import_kwh": {
+		entity_id: "sensor.grid_import_kwh", state: "2.6", last_updated: now(),
+		attributes: {friendly_name: "Import grid energie", unit_of_measurement: "kWh"},
+	},
+	"sensor.solaire": {
+		entity_id: "sensor.solaire", state: "273", last_updated: now(),
+		attributes: {friendly_name: "Solaire", unit_of_measurement: "W", device_class: "power"},
+	},
+	"sensor.solaire_kwh": {
+		entity_id: "sensor.solaire_kwh", state: "16.8", last_updated: now(),
+		attributes: {friendly_name: "Solaire energie", unit_of_measurement: "kWh"},
+	},
+	"sensor.maison": {
+		entity_id: "sensor.maison", state: "286", last_updated: now(),
+		attributes: {friendly_name: "Maison", unit_of_measurement: "W", device_class: "power"},
+	},
+	"sensor.maison_kwh": {
+		entity_id: "sensor.maison_kwh", state: "17.6", last_updated: now(),
+		attributes: {friendly_name: "Maison energie", unit_of_measurement: "kWh"},
+	},
+	"sensor.autoconso": {
+		entity_id: "sensor.autoconso", state: "85", last_updated: now(),
+		attributes: {friendly_name: "Autoconsommation", unit_of_measurement: "%"},
+	},
+	"sensor.cumulus_w": {
+		entity_id: "sensor.cumulus_w", state: "0", last_updated: now(),
+		attributes: {friendly_name: "Cumulus", unit_of_measurement: "W"},
+	},
+	"sensor.voiture_w": {
+		entity_id: "sensor.voiture_w", state: "0", last_updated: now(),
+		attributes: {friendly_name: "Voiture", unit_of_measurement: "W"},
+	},
+	"sensor.frigo_w": {
+		entity_id: "sensor.frigo_w", state: "2", last_updated: now(),
+		attributes: {friendly_name: "Frigo", unit_of_measurement: "W"},
+	},
+	"sensor.export_w": {
+		entity_id: "sensor.export_w", state: "0", last_updated: now(),
+		attributes: {friendly_name: "Export grid", unit_of_measurement: "W"},
+	},
 	"sensor.telephone_batterie": {
 		entity_id: "sensor.telephone_batterie",
 		state: "74",

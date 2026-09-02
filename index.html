@@ -81,6 +81,8 @@
         .cell.batt    { width: 340px; height: 120px; align-self: flex-start; }
         .cell.batt-sq { width: 168px; height: 184px; align-self: flex-start; }
 
+        .cell.flow    { width: 620px; height: 504px; align-self: flex-start; }
+
         .cell.stats   { width: 420px; height: 220px; align-self: flex-start; }
 
         .hint {
@@ -117,6 +119,9 @@
 
 <h2>Text</h2>
 <div class="row" id="text"></div>
+
+<h2>Flow</h2>
+<div class="row" id="flow"></div>
 
 <h2>Battery</h2>
 <div class="row" id="battery"></div>
@@ -187,6 +192,20 @@
 	add("text", "text", "nothing-text-card", {text: "02\n22", size: "lg", align: "center"});
 	add("text", "text", "nothing-text-card", {text: "Bonne nuit", variant: "accent", size: "sm", align: "center"});
 	add("text", "text", "nothing-text-card", {text: "Sans les points", dots: false, subtitle: "typographie ordinaire"});
+
+	add("flow", "flow", "nothing-flow-card", {
+		home: {entity: "sensor.maison", energy: "sensor.maison_kwh", ring: "sensor.autoconso"},
+		sources: [
+			{entity: "sensor.grid_import", name: "Import grid", icon: "pylon", energy: "sensor.grid_import_kwh"},
+			{entity: "sensor.solaire", name: "Solaire", icon: "sun", energy: "sensor.solaire_kwh"},
+		],
+		consumers: [
+			{entity: "sensor.cumulus_w", name: "Cumulus", icon: "cloud", slot: "ml"},
+			{entity: "sensor.voiture_w", name: "Voiture", icon: "car"},
+			{entity: "sensor.frigo_w", name: "Frigo", icon: "fridge"},
+			{entity: "sensor.export_w", name: "Export grid", icon: "bolt"},
+		],
+	});
 
 	add("battery", "batt", "nothing-battery-card", {entity: "sensor.telephone_batterie"});
 	add("battery", "batt", "nothing-battery-card", {entity: "sensor.tablette_batterie"});

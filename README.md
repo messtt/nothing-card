@@ -23,8 +23,9 @@ avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se co
 | **Slider** | `custom:nothing-slider-card` | Grande barre à glisser. S'adapte au domaine de l'entité.                            |
 | **Cover**  | `custom:nothing-cover-card`  | Volet roulant : tablier dessiné, haut / stop / bas, position, inclinaison.           |
 | **Battery**| `custom:nothing-battery-card`| Niveau de charge : grand chiffre et jauge en pilule de points.                       |
+| **Flow**   | `custom:nothing-flow-card`   | Flux d'énergie : tuiles autour d'un anneau, points lumineux sur les liaisons.        |
 
-Les neuf cartes sont livrées dans le même fichier : une seule ressource à déclarer.
+Les dix cartes sont livrées dans le même fichier : une seule ressource à déclarer.
 
 La typographie en matrice de points est dessinée en SVG à partir d'une police 5×7 embarquée : rien à installer côté
 client, et le rendu est identique sur tous les appareils.
@@ -446,11 +447,77 @@ si vous en donnez une, sinon des attributs `is_charging` ou `battery_state` de l
 
 ---
 
+## Nothing Flow Card
+
+```yaml
+type: custom:nothing-flow-card
+home:
+  entity: sensor.maison_puissance
+  energy: sensor.maison_energie
+  ring: sensor.autoconsommation      # le pourcentage dans l'anneau
+sources:
+  - entity: sensor.import_reseau
+    name: Import grid
+    icon: pylon
+    energy: sensor.import_reseau_kwh
+  - entity: sensor.solaire
+    name: Solaire
+    icon: sun
+    energy: sensor.solaire_kwh
+consumers:
+  - entity: sensor.cumulus
+    name: Cumulus
+    icon: cloud
+    slot: ml
+  - entity: sensor.voiture
+    name: Voiture
+    icon: car
+  - entity: sensor.frigo
+    name: Frigo
+    icon: fridge
+  - entity: sensor.export_reseau
+    name: Export grid
+    icon: bolt
+```
+
+| Option                    | Défaut       | Description                                                       |
+|---------------------------|--------------|-------------------------------------------------------------------|
+| `sources` / `consumers`   | —            | **Au moins une entrée.** Les listes de tuiles, avant et après le centre. |
+| `home`                    | —            | `{entity, energy, ring, icon}` du centre. Sans `entity`, la somme des sources. |
+| `max_power`               | `3000`       | Puissance considérée comme « pleine vitesse ».                    |
+| `dots_per_line`           | `2`          | Points en vol sur chaque liaison.                                 |
+| `ring_dots`               | `56`         | Points de l'anneau central.                                       |
+| `decimals` / `energy_decimals` | `0` / `1` | Arrondi des puissances et des énergies.                          |
+| `variant`                 | `dark`       | Fond anthracite ou blanc cassé.                                   |
+| `dots`                    | `true`       | Valeurs en matrice de points.                                     |
+| `footer` / `brand`        | `true` / `NOTHING OS` | Le pied de carte et son libellé.                        |
+| `accent`                  | `#E01F26`    | Couleur des points qui circulent.                                 |
+
+Chaque tuile prend `entity` (la puissance), et facultativement `name`, `icon`, `energy` (la ligne en kWh) et `slot`.
+Les emplacements sont `tl`, `tr`, `ml`, `mr`, `bl`, `bc`, `br` — sept au maximum autour du centre. Sans `slot`, les
+sources se placent en haut puis à gauche, les consommateurs en bas puis à droite.
+
+**Les icônes sont des pictogrammes en points** : `pylon`, `sun`, `house`, `car`, `fridge`, `cloud`, `bolt`, `plug`,
+`battery`… Un nom préfixé `mdi:` bascule sur l'icône classique correspondante.
+
+**L'animation.** Un point lumineux part de la source et parcourt la liaison jusqu'à sa destination. Sa vitesse suit la
+puissance, sur une échelle logarithmique — sans quoi 10 W et 3000 W donneraient deux animations impossibles à
+distinguer. En dessous de 1 W, la liaison est considérée comme inactive et les points s'effacent.
+
+Les tracés sont calculés **en pixels**, à partir des positions réellement mesurées des tuiles et de l'anneau : ils
+touchent le bord du cercle au lieu de s'arrêter sur son carré englobant, et se retracent au redimensionnement, jamais
+à chaque changement d'état. Les points suivent exactement le même chemin que le trait, via `offset-path`.
+
+L'éditeur graphique couvre le centre et l'apparence ; `sources` et `consumers` étant des listes d'objets, elles se
+remplissent en YAML — `ha-form` ne sait pas éditer ce genre de structure.
+
+---
+
 ## Notes
 
 - **Dimensionnement** — chaque carte expose `getGridOptions()` pour la vue *sections* et ne déborde jamais de sa tuile,
   quelle que soit la taille demandée.
-- **Éditeur graphique** — les neuf cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
+- **Éditeur graphique** — les dix cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
   par le YAML.
 - **Pictogrammes** — les commandes internes des cartes (flèches, lecture, pause, volume) sont dessinées en matrice de
   points, sur la même trame que la typographie. Seules les icônes d'entité restent des icônes MDI : c'est vous qui les

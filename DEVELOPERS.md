@@ -12,7 +12,7 @@ npm run watch      # reconstruit à chaque enregistrement
 npm run preview    # http://localhost:8137/
 ```
 
-Le banc d'essai monte les neuf cartes avec un faux objet `hass` : états, `callService`, `callWS`. C'est le moyen le
+Le banc d'essai monte les dix cartes avec un faux objet `hass` : états, `callService`, `callWS`. C'est le moyen le
 plus rapide de voir une modification sans redémarrer Home Assistant.
 
 La page vit à la racine (`index.html`) et ses accessoires dans `preview/` : c'est ce qui permet à GitHub Pages de la
@@ -47,6 +47,7 @@ src/
     ├── battery/
     ├── button/
     ├── cover/
+    ├── flow/
     ├── info/
     ├── light/
     ├── media/
