@@ -206,6 +206,24 @@ const states = {
 		last_updated: now(),
 		attributes: {friendly_name: "Garage", device_class: "garage", supported_features: 1 + 2 + 8},
 	},
+	"sensor.telephone_batterie": {
+		entity_id: "sensor.telephone_batterie",
+		state: "74",
+		last_updated: now(),
+		attributes: {friendly_name: "Battery", device_class: "battery", unit_of_measurement: "%"},
+	},
+	"sensor.tablette_batterie": {
+		entity_id: "sensor.tablette_batterie",
+		state: "12",
+		last_updated: now(),
+		attributes: {friendly_name: "Tablette", device_class: "battery", unit_of_measurement: "%"},
+	},
+	"sensor.montre_batterie": {
+		entity_id: "sensor.montre_batterie",
+		state: "43",
+		last_updated: now(),
+		attributes: {friendly_name: "Montre", device_class: "battery", is_charging: true},
+	},
 	"sensor.temperature_bureau": {
 		entity_id: "sensor.temperature_bureau",
 		state: "26.0",

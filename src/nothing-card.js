@@ -8,6 +8,7 @@
  *   /local/nothing-card.js   —   type : Module JavaScript
  */
 
+import "./cards/battery/index.js";
 import "./cards/button/index.js";
 import "./cards/cover/index.js";
 import "./cards/info/index.js";
@@ -17,6 +18,7 @@ import "./cards/slider/index.js";
 import "./cards/stats/index.js";
 import "./cards/text/index.js";
 
+export {NothingBatteryCard} from "./cards/battery/index.js";
 export {NothingButtonCard} from "./cards/button/index.js";
 export {NothingCoverCard} from "./cards/cover/index.js";
 export {NothingInfoCard} from "./cards/info/index.js";

@@ -22,8 +22,9 @@ avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se co
 | **Text**   | `custom:nothing-text-card`   | Titre en matrice de points, à poser entre deux sections.                            |
 | **Slider** | `custom:nothing-slider-card` | Grande barre à glisser. S'adapte au domaine de l'entité.                            |
 | **Cover**  | `custom:nothing-cover-card`  | Volet roulant : tablier dessiné, haut / stop / bas, position, inclinaison.           |
+| **Battery**| `custom:nothing-battery-card`| Niveau de charge : grand chiffre et jauge en pilule de points.                       |
 
-Les huit cartes sont livrées dans le même fichier : une seule ressource à déclarer.
+Les neuf cartes sont livrées dans le même fichier : une seule ressource à déclarer.
 
 La typographie en matrice de points est dessinée en SVG à partir d'une police 5×7 embarquée : rien à installer côté
 client, et le rendu est identique sur tous les appareils.
@@ -409,11 +410,47 @@ Le rendu est optimiste et les appels de service sont limités à un toutes les 1
 
 ---
 
+## Nothing Battery Card
+
+```yaml
+type: custom:nothing-battery-card
+entity: sensor.telephone_batterie
+```
+
+| Option                       | Défaut                    | Description                                              |
+|------------------------------|---------------------------|----------------------------------------------------------|
+| `entity`                     | —                         | **Requis.** Capteur de batterie, ou entité qui porte `battery_level`. |
+| `name`                       | nom convivial             | Libellé au-dessus du chiffre.                            |
+| `attribute`                  | —                         | Attribut à lire plutôt que l'état.                       |
+| `charging_entity`            | —                         | Entité qui dit si l'appareil charge.                     |
+| `layout`                     | `bar`                     | `bar` (chiffre et jauge côte à côte) ou `tile` (empilés).|
+| `variant`                    | `dark`                    | Fond anthracite ou blanc cassé.                          |
+| `columns` / `rows`           | `20` / `3`                | Grille de points de la jauge.                            |
+| `low`                        | `20`                      | En dessous, le chiffre passe au rouge.                   |
+| `unit`                       | `%`                       | Unité à côté du chiffre.                                 |
+| `dots`                       | `true`                    | Niveau en matrice de points.                             |
+| `show_name` / `show_value` / `show_gauge` | `true`       | Masquer l'un ou l'autre.                                 |
+| `accent`                     | `#E01F26`                 | Couleur des points allumés.                              |
+| `tap_action` / `hold_action` | `more-info` / `more-info` | Actions standard Lovelace.                               |
+
+Le niveau se lit dans l'ordre où Home Assistant le publie : l'attribut nommé dans la configuration, sinon
+`battery_level` — que posent la plupart des intégrations d'appareils —, sinon l'état lui-même pour un capteur
+`device_class: battery`.
+
+**Le remplissage ne ment pas.** Une batterie non vide garde au moins une colonne allumée, une batterie non pleine en
+laisse au moins une éteinte : à 99 % la jauge affiche 19 colonnes sur 20, jamais 20. C'est ce qui évite de croire une
+batterie pleine alors qu'elle ne l'est pas.
+
+**En charge**, un éclair en points s'affiche à côté du chiffre et la jauge respire. L'état vient de `charging_entity`
+si vous en donnez une, sinon des attributs `is_charging` ou `battery_state` de l'entité.
+
+---
+
 ## Notes
 
 - **Dimensionnement** — chaque carte expose `getGridOptions()` pour la vue *sections* et ne déborde jamais de sa tuile,
   quelle que soit la taille demandée.
-- **Éditeur graphique** — les huit cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
+- **Éditeur graphique** — les neuf cartes fournissent `getConfigForm()` : elles se configurent à la souris, sans passer
   par le YAML.
 - **Pictogrammes** — les commandes internes des cartes (flèches, lecture, pause, volume) sont dessinées en matrice de
   points, sur la même trame que la typographie. Seules les icônes d'entité restent des icônes MDI : c'est vous qui les
