@@ -4,8 +4,10 @@ A set of Lovelace cards built around the Nothing OS look: dot matrix, deep black
 runtime dependencies — **one file** to drop into `www/`.
 
 ![Style](https://img.shields.io/badge/style-dot--matrix-E01F26) ![Dependencies](https://img.shields.io/badge/runtime%20deps-none-000) ![License](https://img.shields.io/badge/license-MIT-000)
-
+___
 **English** · **[Français](README.fr.md)**
+
+View the live cards: https://messtt.github.io/nothing-card/
 
 **[See the cards live](https://messtt.github.io/nothing-card/)** — the demo runs the real bundle against a fake Home
 Assistant: the cards are clickable, draggable, and behave exactly as they will on your dashboard.

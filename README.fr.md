@@ -4,8 +4,10 @@ Un jeu de cartes Lovelace inspiré de l'esthétique Nothing OS : matrice de poin
 rouge. Aucune dépendance à l'exécution — **un seul fichier** à déposer dans `www/`.
 
 ![Style](https://img.shields.io/badge/style-dot--matrix-E01F26) ![Dependencies](https://img.shields.io/badge/runtime%20deps-none-000) ![License](https://img.shields.io/badge/license-MIT-000)
-
+___
 **[English](README.md)** · **Français**
+
+View the live cards: https://messtt.github.io/nothing-card/
 
 **[Voir les cartes en ligne](https://messtt.github.io/nothing-card/)** — la démonstration tourne sur le vrai bundle,
 avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se comportent comme chez vous.
