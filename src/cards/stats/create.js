@@ -21,7 +21,10 @@ export const template = () => `
     </ha-card>
 `;
 
-/** @param {import("./index.js").NothingStatsCard} card */
+/**
+ * @param {import("./index.js").NothingStatsCard} card
+ * @returns {Object<string, HTMLElement>} références DOM
+ */
 export const collect = (card) => ({
 	card: card.$("ha-card"),
 	title: card.$(".title"),

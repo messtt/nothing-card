@@ -161,7 +161,9 @@ export class NothingCoverCard extends NothingBaseCard {
 		this._throttler.flush();
 	}
 
-	/** @param {string} service @param {object} [data] */
+	/** @param {string} service @param {object} [data]
+	 * @param data
+	 */
 	callCover(service, data) {
 		if (!this._hass) return;
 		this._hass.callService("cover", service, {entity_id: this._config.entity, ...data});

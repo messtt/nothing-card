@@ -18,7 +18,7 @@ export const template = () => `
 
 /**
  * @param {import("./index.js").NothingButtonCard} card
- * @returns {object} références DOM
+ * @returns {Object<string, HTMLElement>} références DOM
  */
 export const collect = (card) => ({
 	btn: card.$(".btn"),

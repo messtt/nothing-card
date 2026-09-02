@@ -44,7 +44,7 @@ export const template = () => `
 
 /**
  * @param {import("./index.js").NothingCoverCard} card
- * @returns {object} références DOM
+ * @returns {Object<string, HTMLElement>} références DOM
  */
 export const collect = (card) => ({
 	card: card.$("ha-card"),

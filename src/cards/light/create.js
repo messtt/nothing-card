@@ -39,7 +39,10 @@ export const template = () => `
   </ha-card>
 `;
 
-/** @param {import("./index.js").NothingLightCard} card */
+/**
+ * @param {import("./index.js").NothingLightCard} card
+ * @returns {Object<string, HTMLElement>} références DOM
+ */
 export const collect = (card) => ({
 	card: card.$("ha-card"),
 	head: card.$(".head"),

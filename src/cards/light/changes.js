@@ -90,7 +90,8 @@ export function updateChanges(card) {
 
 /**
  * @param {import("./index.js").NothingLightCard} card
- * @param {number} pct @param {boolean} [off]
+ * @param {number} pct
+ * @param {boolean} [off]
  */
 export function paintBrightness(card, pct, off) {
 	const el = card.el;
@@ -111,7 +112,8 @@ export function paintBrightness(card, pct, off) {
  * et prend la couleur qu'elle désigne.
  *
  * @param {import("./index.js").NothingLightCard} card
- * @param {number} h @param {number} s
+ * @param {number} h
+ * @param s
  */
 export function paintHue(card, h, s) {
 	const handle = card.el.hueHandle;
@@ -119,7 +121,9 @@ export function paintHue(card, h, s) {
 	handle.style.background = rgbCss(hsvToRgb(h, s || HUE_SATURATION, 100));
 }
 
-/** @param {import("./index.js").NothingLightCard} card @param {number} k */
+/** @param {import("./index.js").NothingLightCard} card
+ * @param {number} k
+*/
 export function paintTemp(card, k) {
 	const {min, max} = kelvinRange(card.stateObj);
 	const handle = card.el.tempHandle;
