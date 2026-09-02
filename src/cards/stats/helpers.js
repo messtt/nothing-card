@@ -1,5 +1,8 @@
 /** Calculs propres à la carte stats : grand chiffre et variation. */
 
+/** Styles de graphique proposés. */
+export const CHARTS = ["matrix", "bars", "line"];
+
 /** Intervalle de rafraîchissement automatique (ms). */
 export const REFRESH_MS = 5 * 60e3;
 /** Délai minimal entre deux requêtes déclenchées par un changement d'état (ms). */

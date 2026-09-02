@@ -15,7 +15,7 @@ import styles from "./styles.js";
 import {template, collect, bind} from "./create.js";
 import {updateHeader, drawChart} from "./changes.js";
 import {configForm, stubConfig} from "./editor.js";
-import {REFRESH_MS, MIN_FETCH_GAP} from "./helpers.js";
+import {REFRESH_MS, MIN_FETCH_GAP, CHARTS} from "./helpers.js";
 
 export class NothingStatsCard extends NothingBaseCard {
 	static cardType = "nothing-stats-card";
@@ -25,7 +25,8 @@ export class NothingStatsCard extends NothingBaseCard {
 	static defaults = {
 		period: "hour",       // 5minute | hour | day | week | month
 		points: 24,           // nombre de colonnes
-		rows: 8,              // hauteur de la matrice en LED
+		chart: "matrix",      // matrix | bars | line
+		rows: 8,              // hauteur de la matrice en LED (style matrix)
 		stat: "mean",         // mean | max | min | sum | change | state
 		value: "state",       // state | last | max | min | mean | sum (grand chiffre)
 		decimals: null,
@@ -47,6 +48,7 @@ export class NothingStatsCard extends NothingBaseCard {
 	normalizeConfig(config) {
 		config.points = clamp(config.points, 4, 64);
 		config.rows = clamp(config.rows, 3, 16);
+		if (!CHARTS.includes(config.chart)) config.chart = "matrix";
 	}
 
 	applyColors() {
@@ -58,6 +60,7 @@ export class NothingStatsCard extends NothingBaseCard {
 	reset() {
 		this._buckets = null;
 		this._grid = null;
+		this._box = null;
 		// une nouvelle configuration mérite une nouvelle série
 		this._started = false;
 		this._fetchedAt = 0;
@@ -145,7 +148,19 @@ export class NothingStatsCard extends NothingBaseCard {
 	 * minuscule perdu au centre.
 	 */
 	fit() {
-		if (!this._grid || !this.el) return;
+		if (!this.el) return;
+
+		// Les styles `bars` et `line` sont dessinés en pixels : un changement de
+		// taille ne demande pas d'adapter une échelle, seulement de redessiner.
+		if (this._config.chart !== "matrix") {
+			const box = this.el.chart.clientWidth + "x" + this.el.chart.clientHeight;
+			if (box === this._box) return;
+			this._box = box;
+			drawChart(this);
+			return;
+		}
+
+		if (!this._grid) return;
 		const chart = this.el.chart;
 		const w = chart.clientWidth;
 		if (w < 8) return;

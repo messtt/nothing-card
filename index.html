@@ -48,6 +48,38 @@
             align-items: stretch;
         }
 
+        /* Chaque tuile prend la taille que la carte demande a Home Assistant
+           (N rangees = 64N - 8 px), pour que le banc montre le vrai rendu. */
+        .cell {
+            width: 260px;
+            flex: 0 0 auto;
+        }
+
+        .cell.sq { width: 168px; }
+        .cell.ci { width: 138px; }
+
+        .cell.light      { width: 300px; height: 376px; align-self: flex-start; }
+        .cell.light-tint { width: 300px; height: 248px; align-self: flex-start; }
+        .cell.light-dim  { width: 300px; height: 184px; align-self: flex-start; }
+        .cell.light-min  { width: 300px; height: 120px; align-self: flex-start; }
+
+        .cell.cover      { width: 260px; height: 312px; align-self: flex-start; }
+        .cell.cover-sm   { width: 260px; height: 248px; align-self: flex-start; }
+        .cell.cover-mini { width: 260px; height: 120px; align-self: flex-start; }
+
+        .cell.slider  { width: 380px; height: 120px; align-self: flex-start; }
+        .cell.compact { width: 380px; height: 56px;  align-self: flex-start; }
+
+        .cell.text    { width: 420px; }
+        .cell.info    { width: 300px; height: 56px;  align-self: flex-start; }
+        .cell.sq-info { width: 168px; height: 120px; align-self: flex-start; }
+
+        .cell.media   { width: 380px; }
+        .cell.tile    { width: 210px; height: 248px; align-self: flex-start; }
+        .cell.artwork { width: 340px; height: 190px; align-self: flex-start; }
+
+        .cell.stats   { width: 420px; height: 220px; align-self: flex-start; }
+
         .hint {
             margin-top: 40px;
             font-size: 11px;
@@ -97,6 +129,9 @@
 
 <h2>Stats</h2>
 <div class="row" id="stats"></div>
+
+<h2>Stats &middot; traits et courbe</h2>
+<div class="row" id="stats2"></div>
 
 <p class="hint">
     Les cartes sont les vraies : elles viennent de <code>dist/nothing-card.js</code>, le fichier même qu'installe
@@ -166,6 +201,10 @@
 	add("mediaShapes", "artwork", "nothing-media-card", {entity: "media_player.salon", layout: "art"});
 
 	add("stats", "stats", "nothing-stats-card", {entity: "sensor.consommation", period: "hour", points: 24});
+
+	add("stats2", "stats", "nothing-stats-card", {entity: "sensor.consommation", chart: "bars", points: 48, labels: false, delta: false, name: "Sales Growth"});
+	add("stats2", "stats", "nothing-stats-card", {entity: "sensor.consommation", chart: "bars", points: 24, name_dots: true});
+	add("stats2", "stats", "nothing-stats-card", {entity: "sensor.consommation", chart: "line", points: 48, labels: false});
 </script>
 </body>
 </html>

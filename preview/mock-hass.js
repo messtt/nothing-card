@@ -427,7 +427,9 @@ export const hass = {
 	/** Répond comme le recorder, avec une série inventée. */
 	async callWS(msg) {
 		if (msg.type !== "recorder/statistics_during_period") throw new Error("non supporté");
-		const points = fakeHistory(24);
+		// On renvoie large : la carte ne garde que les derniers seaux qu'elle a
+		// demandés, et un graphique en traits fins en réclame plus que la matrice.
+		const points = fakeHistory(96);
 		const step = 3600e3;
 		const start = Date.now() - points.length * step;
 		return {

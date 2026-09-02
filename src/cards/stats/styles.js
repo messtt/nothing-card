@@ -3,6 +3,7 @@ export default `
 :host {
   --ns-bg: #0a0a0a;
   --ns-fg: #f0efeb;
+  --ns-bar: rgba(240,239,235,.85);
   --ha-card-border-width: 0;
   display: block;
   /* Hauteur de la tuile : Home Assistant la donne au host, et c'est sur elle
@@ -70,6 +71,16 @@ ha-card {
   max-height: min(200px, calc(var(--nsc-rows, 8) * 24px));
 }
 .chart svg { display: block; width: 100%; height: 100%; }
+
+/* Traits fins et courbe : pas de ratio à tenir, le dessin remplit la boîte
+   et se recalcule en pixels à chaque changement de taille. */
+:host([data-chart="bars"]) .chart,
+:host([data-chart="line"]) .chart {
+  aspect-ratio: auto;
+  max-height: none;
+  flex: 1 1 auto;
+  min-height: 34px;
+}
 .empty {
   font-size: 11px; letter-spacing: .12em;
   color: rgba(240,239,235,.35);

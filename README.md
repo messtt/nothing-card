@@ -15,7 +15,7 @@ avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se co
 | Carte      | Type YAML                    | Ce qu'elle fait                                                                     |
 |------------|------------------------------|-------------------------------------------------------------------------------------|
 | **Button** | `custom:nothing-button-card` | Bouton on/off en pilule, carré ou cercle. Appui court / appui long configurables.   |
-| **Stats**  | `custom:nothing-stats-card`  | Histogramme en LED alimenté par le recorder, avec variation sur la période.         |
+| **Stats**  | `custom:nothing-stats-card`  | Graphique alimenté par le recorder : matrice de LED, traits fins ou courbe.         |
 | **Light**  | `custom:nothing-light-card`  | Lumière en barres empilées : allumage, luminosité, teinte, blanc, raccourcis.       |
 | **Media**  | `custom:nothing-media-card`  | Lecteur multimédia : pochette, progression, transport, trois dispositions.           |
 | **Info**   | `custom:nothing-info-card`   | Affichage seul : pastille, valeur, libellé. Aucune commande.                        |
@@ -120,6 +120,7 @@ points: 24
 | Option                               | Défaut               | Description                                           |
 |--------------------------------------|----------------------|-------------------------------------------------------|
 | `entity`                             | —                    | **Requis.** Capteur numérique.                        |
+| `chart`                              | `matrix`             | `matrix`, `bars` ou `line`.                           |
 | `period`                             | `hour`               | `5minute`, `hour`, `day`, `week`, `month`.            |
 | `points`                             | `24`                 | Nombre de colonnes (4 → 64).                          |
 | `rows`                               | `8`                  | Hauteur maximale de la matrice (3 → 16).              |
@@ -129,6 +130,24 @@ points: 24
 | `prefix` / `unit` / `decimals`       | —                    | Mise en forme du chiffre.                             |
 | `accent` / `up_color` / `down_color` | rouge / vert / rouge | Couleurs de la matrice et de la variation.            |
 | `labels` / `delta` / `dots`          | `true`               | Étiquettes de temps, variation, typographie à points. |
+
+**Trois styles de graphique.** `matrix` est la matrice de LED d'origine. `bars` pose des traits fins sur la ligne de
+base — une valeur au plancher se réduit à son bout arrondi, c'est-à-dire à un point, et la plus haute passe au rouge.
+`line` trace une courbe continue et marque la valeur courante d'un point rouge.
+
+```yaml
+type: custom:nothing-stats-card
+entity: sensor.consommation_maison
+chart: bars
+points: 48
+labels: false
+delta: false
+```
+
+`bars` et `line` sont dessinés **en pixels**, à l'échelle 1:1 de la boîte mesurée : les traits gardent leur épaisseur
+et les bouts restent ronds quelle que soit la tuile. Ils se redessinent au redimensionnement, là où `matrix` adapte
+plutôt son nombre de lignes de LED. Montez `points` pour resserrer les traits — 48 ou 64 donnent la trame dense des
+widgets.
 
 La carte interroge d'abord `recorder/statistics_during_period` (statistiques long terme) et bascule automatiquement sur
 l'historique brut, qu'elle agrège elle-même, pour les entités sans `state_class`. Rafraîchissement toutes les 5 minutes,
