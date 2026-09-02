@@ -303,8 +303,18 @@ button svg { display: block; width: 18px; height: 18px; fill: currentColor; }
   border-radius: 12px;
 }
 :host([data-layout="wide"]) .eq { right: 4px; bottom: 4px; }
-:host([data-layout="wide"]) .main { flex: 1 1 auto; gap: 12px; justify-content: space-between; }
-:host([data-layout="wide"]) .grip { padding-right: 80px; }
+/* Les rangées s'empilent depuis le haut, et le bloc de titres réserve la
+   hauteur de la pochette : ce qui suit commence donc toujours sous elle,
+   quel que soit le nombre de rangées. Les répartir ferait remonter la barre
+   de progression derrière la pochette dès qu'on ajoute le volume. */
+:host([data-layout="wide"]) .main { flex: 1 1 auto; gap: 12px; justify-content: flex-start; }
+:host([data-layout="wide"]) .grip {
+  min-height: 68px;
+  padding-right: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 :host([data-layout="wide"]) .title { font-size: 17px; }
 :host([data-layout="wide"]) .title svg { height: 15px; }
 :host([data-layout="wide"]) .times { display: none; }
