@@ -8,7 +8,7 @@ import {snap} from "./helpers.js";
 export const template = () => `
   <ha-card>
     <div class="head">
-      <button class="badge" type="button"><ha-icon></ha-icon></button>
+      <button class="badge" type="button"></button>
       <div class="titles">
         <div class="name"></div>
         <div class="value"><span class="num"></span><span class="unit"></span></div>
@@ -31,7 +31,6 @@ export const collect = (card) => ({
 	card: card.$("ha-card"),
 	head: card.$(".head"),
 	badge: card.$(".badge"),
-	icon: card.$("ha-icon"),
 	titles: card.$(".titles"),
 	name: card.$(".name"),
 	value: card.$(".value"),

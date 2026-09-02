@@ -1,7 +1,8 @@
 /** Mise à jour de la carte slider : en-tête, jauge, poignée. */
 
 import {paintText} from "../../tools/dot-matrix.js";
-import {entityIcon, entityName, isOn, isUnavailable} from "../../tools/entity.js";
+import {domainOf, entityIcon, entityName, isOn, isUnavailable} from "../../tools/entity.js";
+import {paintIcon} from "../../tools/glyphs.js";
 import {formatNumber} from "../../tools/utils.js";
 import {rgbCss} from "../../tools/color.js";
 import {decimalsOf, liveRgb} from "./helpers.js";
@@ -26,16 +27,17 @@ export function updateChanges(card) {
 
 	// Icône
 	el.badge.hidden = !c.show_icon;
-	const icon = entityIcon(c, st);
-	if (el.icon.getAttribute("icon") !== icon) el.icon.setAttribute("icon", icon);
+	if (c.show_icon) paintIcon(el.badge, card.iconStyle, entityIcon(c, st), domainOf(c.entity));
 
 	// Nom — texte simple : la matrice de points est réservée à la valeur
 	el.name.hidden = !c.show_name;
 	const name = entityName(c, st);
-	if (card.memo.name !== name) {
-		el.name.textContent = name;
+	const nameDots = card.nameDots();
+	if (card.memo.name !== name || card.memo.nameDots !== nameDots) {
+		paintText(el.name, name, nameDots);
 		el.name.title = name;
 		card.memo.name = name;
+		card.memo.nameDots = nameDots;
 	}
 
 	// La jauge prend la couleur réelle de la lampe, sinon l'accent

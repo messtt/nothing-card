@@ -65,6 +65,7 @@ ha-card:active { transform: scale(.985); }
   color: #ffffff;
 }
 .badge ha-icon { --mdc-icon-size: 19px; }
+.badge svg { display: block; width: 18px; height: 18px; fill: currentColor; }
 :host([data-badge="plain"]) .badge {
   background: transparent;
   color: var(--ni-fg);
@@ -72,6 +73,7 @@ ha-card:active { transform: scale(.985); }
   height: 30px;
 }
 :host([data-badge="plain"]) .badge ha-icon { --mdc-icon-size: 24px; }
+:host([data-badge="plain"]) .badge svg { width: 22px; height: 22px; }
 
 /* ---- textes ---- */
 .body {
@@ -93,6 +95,7 @@ ha-card:active { transform: scale(.985); }
   text-overflow: ellipsis;
 }
 .unit { flex: 0 0 auto; font-size: 11px; letter-spacing: .08em; color: var(--ni-dim); }
+.name svg { display: block; height: 9px; width: auto; max-width: 100%; }
 .name {
   font-size: 10.5px;
   line-height: 1.2;

@@ -32,10 +32,12 @@ export function updateChanges(card) {
 	// Titres — en typographie ordinaire : un titre de piste en matrice de
 	// points serait deux fois plus long que la tuile.
 	const info = trackInfo(c, st, card.hass);
-	if (card.memo.title !== info.title) {
-		el.title.textContent = info.title;
+	const nameDots = card.nameDots();
+	if (card.memo.title !== info.title || card.memo.nameDots !== nameDots) {
+		paintText(el.title, info.title, nameDots);
 		el.title.title = info.title;
 		card.memo.title = info.title;
+		card.memo.nameDots = nameDots;
 	}
 	if (card.memo.sub !== info.sub) {
 		el.artist.textContent = info.sub;

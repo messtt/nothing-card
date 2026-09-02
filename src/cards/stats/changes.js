@@ -15,9 +15,11 @@ export function updateHeader(card) {
 	const buckets = card._buckets || [];
 
 	const name = entityName(c, st);
-	if (card.memo.title !== name) {
-		paintText(el.title, name, c.dots);
+	const nameDots = card.nameDots(c.dots);
+	if (card.memo.title !== name || card.memo.nameDots !== nameDots) {
+		paintText(el.title, name, nameDots);
 		card.memo.title = name;
+		card.memo.nameDots = nameDots;
 	}
 
 	const val = headlineValue(buckets, st, c);

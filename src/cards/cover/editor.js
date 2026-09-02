@@ -1,5 +1,7 @@
 /** Éditeur graphique et configuration d'exemple de la carte volet. */
 
+import {COMMON_GRID} from "../../tools/editor.js";
+
 export const configForm = () => ({
 	schema: [
 		{name: "entity", required: true, selector: {entity: {domain: "cover"}}},
@@ -27,6 +29,7 @@ export const configForm = () => ({
 				{name: "dots", selector: {boolean: {}}},
 			],
 		},
+		COMMON_GRID,
 	],
 });
 

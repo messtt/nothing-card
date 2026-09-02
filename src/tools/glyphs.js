@@ -102,10 +102,120 @@ export const GLYPHS = {
 		"0011100",
 		"0001000",
 	],
+	power: [
+		"0001000",
+		"0101010",
+		"1001001",
+		"1000001",
+		"1000001",
+		"0100010",
+		"0011100",
+	],
+	shutter: [
+		"1111111",
+		"0000000",
+		"1111111",
+		"0000000",
+		"1111111",
+		"0000000",
+		"1111111",
+	],
+	fan: [
+		"0111110",
+		"1100011",
+		"1011101",
+		"1010101",
+		"1011101",
+		"1100011",
+		"0111110",
+	],
+	lock: [
+		"0011100",
+		"0100010",
+		"0100010",
+		"1111111",
+		"1110111",
+		"1110111",
+		"1111111",
+	],
+	note: [
+		"0011111",
+		"0011111",
+		"0010001",
+		"0010001",
+		"0010001",
+		"0010001",
+		"1110111",
+		"1110111",
+	],
+	/** Le repli universel : le point Nothing. */
+	dot: [
+		"0000000",
+		"0011100",
+		"0111110",
+		"0111110",
+		"0111110",
+		"0011100",
+		"0000000",
+	],
 };
 
 /**
  * @param {keyof GLYPHS} name
  * @returns {string} balise <svg> ; la couleur suit `currentColor`
  */
-export const glyph = (name) => dotGridSvg(GLYPHS[name] || GLYPHS.stop);
+export const glyph = (name) => dotGridSvg(GLYPHS[name] || GLYPHS.dot);
+
+/**
+ * Pictogramme retenu pour un domaine. L'inventaire est volontairement court :
+ * une icône d'entité peut être n'importe laquelle des milliers d'icônes MDI,
+ * alors qu'un dessin en points doit rester lisible sur sept points de côté.
+ * Tout ce qui n'est pas listé retombe sur le point.
+ */
+export const DOMAIN_GLYPHS = {
+	light: "bulb",
+	switch: "power",
+	input_boolean: "power",
+	automation: "power",
+	script: "play",
+	scene: "play",
+	button: "power",
+	input_button: "power",
+	cover: "shutter",
+	fan: "fan",
+	lock: "lock",
+	media_player: "note",
+};
+
+/** @param {string} domain @returns {keyof GLYPHS} */
+export const glyphForDomain = (domain) => DOMAIN_GLYPHS[domain] || "dot";
+
+/**
+ * Peint l'icône d'une entité dans `el` : icône MDI, ou pictogramme en points.
+ *
+ * Le rendu n'est refait que si la clé change — reconstruire un `<ha-icon>` à
+ * chaque tick d'état coûterait cher pour un dessin identique.
+ *
+ * @param {HTMLElement} el conteneur (la pastille)
+ * @param {"mdi"|"dots"} style
+ * @param {string} icon nom de l'icône MDI
+ * @param {string} domain domaine de l'entité
+ */
+export function paintIcon(el, style, icon, domain) {
+	const dots = style === "dots";
+	const key = dots ? "dots:" + glyphForDomain(domain) : "mdi:" + icon;
+	if (el.dataset.icon === key) return;
+	el.dataset.icon = key;
+
+	if (dots) {
+		el.innerHTML = glyph(glyphForDomain(domain));
+		return;
+	}
+
+	// `icon` vient de la config ou de l'entité : on passe par setAttribute,
+	// jamais par une interpolation dans du HTML.
+	const node = document.createElement("ha-icon");
+	node.setAttribute("icon", icon);
+	el.textContent = "";
+	el.appendChild(node);
+}

@@ -28,11 +28,24 @@ export class NothingBaseCard extends HTMLElement {
 	static defaults = {};
 	static accentVar = "--nb-accent";
 
+	/**
+	 * Options communes à toutes les cartes, fusionnées avant leurs propres
+	 * valeurs par défaut — une carte reste libre de les redéfinir.
+	 *
+	 *   name_dots   libellé en matrice de points ; `null` = le rendu habituel
+	 *               de la carte
+	 *   icon_style  "mdi" (icône classique) ou "dots" (pictogramme en points)
+	 */
+	static common = {
+		name_dots: null,
+		icon_style: "mdi",
+	};
+
 	/** Lovelace appelle ceci à chaque modification de la configuration. */
 	setConfig(config) {
 		this.validateConfig(config);
 
-		this._config = {...this.constructor.defaults, ...config};
+		this._config = {...NothingBaseCard.common, ...this.constructor.defaults, ...config};
 		this.normalizeConfig(this._config);
 
 		if (!this.shadowRoot) {
@@ -63,6 +76,24 @@ export class NothingBaseCard extends HTMLElement {
 
 	get hass() {
 		return this._hass;
+	}
+
+	/**
+	 * Le libellé doit-il être écrit en matrice de points ?
+	 * `name_dots` tranche quand il est posé ; sinon la carte garde son rendu
+	 * d'origine, que chaque appelant passe en repli.
+	 *
+	 * @param {boolean} [fallback]
+	 * @returns {boolean}
+	 */
+	nameDots(fallback = false) {
+		const v = this._config.name_dots;
+		return v == null ? fallback : !!v;
+	}
+
+	/** Style d'icône retenu : "mdi" ou "dots". */
+	get iconStyle() {
+		return this._config.icon_style === "dots" ? "dots" : "mdi";
 	}
 
 	/** État de l'entité configurée, ou `undefined`. */

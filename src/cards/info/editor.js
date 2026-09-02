@@ -1,5 +1,7 @@
 /** Éditeur graphique et configuration d'exemple de la carte info. */
 
+import {COMMON_GRID} from "../../tools/editor.js";
+
 export const configForm = () => ({
 	schema: [
 		{name: "entity", required: true, selector: {entity: {}}},
@@ -21,6 +23,7 @@ export const configForm = () => ({
 				{name: "show_name", selector: {boolean: {}}},
 			],
 		},
+		COMMON_GRID,
 	],
 });
 

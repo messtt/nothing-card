@@ -1,5 +1,7 @@
 /** Éditeur graphique et configuration d'exemple de la carte média. */
 
+import {NAME_DOTS} from "../../tools/editor.js";
+
 export const configForm = () => ({
 	schema: [
 		{name: "entity", required: true, selector: {entity: {domain: "media_player"}}},
@@ -19,6 +21,7 @@ export const configForm = () => ({
 				{name: "volume", selector: {boolean: {}}},
 			],
 		},
+		NAME_DOTS,
 	],
 });
 

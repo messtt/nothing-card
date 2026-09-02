@@ -30,7 +30,8 @@ src/
 │
 ├── tools/                   code partagé, sans état, testable isolément
 │   ├── dot-matrix.js        police 5x7 et rendu SVG des points
-│   ├── glyphs.js            pictogrammes des commandes, dessinés sur une grille 7x7
+│   ├── glyphs.js            pictogrammes 7x7 et peinture des icônes d'entité
+│   ├── editor.js            fragments de schéma `ha-form` communs aux éditeurs
 │   ├── color.js             TSV -> RVB, Kelvin -> RVB, analyse de couleurs CSS
 │   ├── entity.js            état, nom, icône, bascule adaptée au domaine
 │   ├── tap-actions.js       actions Lovelace, appui court/long, glisser

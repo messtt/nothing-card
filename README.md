@@ -50,6 +50,34 @@ client, et le rendu est identique sur tous les appareils.
 
 ---
 
+---
+
+## Options communes
+
+Deux réglages valent pour **toutes les cartes**, en plus de leurs options propres.
+
+| Option       | Défaut  | Description                                                     |
+|--------------|---------|-----------------------------------------------------------------|
+| `name_dots`  | selon la carte | Écrit le libellé en matrice de points.                   |
+| `icon_style` | `mdi`   | `mdi` (icône classique) ou `dots` (pictogramme en points).       |
+
+```yaml
+type: custom:nothing-slider-card
+entity: light.salon
+name_dots: true
+icon_style: dots
+```
+
+**`name_dots`** n'a pas de valeur fixe par défaut : sans lui, chaque carte garde le rendu qu'elle a toujours eu — les
+cartes **button** et **stats** écrivent leur libellé en points (elles suivent alors leur option `dots`), les autres en
+typographie ordinaire. Le poser à `true` ou `false` tranche partout de la même façon. La carte **text**, elle, n'en a
+pas besoin : son option `dots` fait déjà exactement cela.
+
+**`icon_style: dots`** remplace l'icône d'entité par un pictogramme dessiné sur la même grille 7×7 que les commandes.
+L'inventaire est volontairement court — ampoule, alimentation, volet, ventilateur, cadenas, note — et tout domaine non
+listé retombe sur le point Nothing. C'est le prix d'un dessin lisible sur sept points de côté : les milliers d'icônes
+MDI ne s'y transposent pas. En `mdi`, rien ne change.
+
 ## Nothing Button Card
 
 ```yaml

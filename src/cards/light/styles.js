@@ -56,9 +56,11 @@ ha-card {
 }
 .badge:active { transform: scale(.92); }
 .badge ha-icon { --mdc-icon-size: 20px; }
+.badge svg { display: block; width: 19px; height: 19px; fill: currentColor; }
 :host(:not([data-off])) .badge { background: var(--nl-live); color: #0d0d0d; }
 
 .titles { min-width: 0; flex: 1 1 auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.name svg { display: block; height: 13px; width: auto; max-width: 100%; }
 .name {
   font-size: 15px;
   font-weight: 600;

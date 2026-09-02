@@ -5,7 +5,7 @@ import {bindTapHold} from "../../tools/tap-actions.js";
 export const template = () => `
   <ha-card>
     <span class="grain"></span>
-    <span class="badge"><ha-icon></ha-icon></span>
+    <span class="badge"></span>
     <span class="body">
       <span class="value"><span class="num"></span><span class="unit"></span></span>
       <span class="name"></span>
@@ -20,7 +20,6 @@ export const template = () => `
 export const collect = (card) => ({
 	card: card.$("ha-card"),
 	badge: card.$(".badge"),
-	icon: card.$("ha-icon"),
 	value: card.$(".value"),
 	num: card.$(".num"),
 	unit: card.$(".unit"),

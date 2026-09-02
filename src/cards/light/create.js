@@ -8,9 +8,7 @@ import {kelvinRange, HUE_SATURATION} from "./helpers.js";
 export const template = () => `
   <ha-card>
     <div class="head">
-      <button class="badge" type="button" title="Allumer / éteindre">
-        <ha-icon icon="mdi:lightbulb"></ha-icon>
-      </button>
+      <button class="badge" type="button" title="Allumer / éteindre"></button>
       <div class="titles">
         <div class="name"></div>
         <div class="value"></div>

@@ -1,5 +1,7 @@
 /** Éditeur graphique et configuration d'exemple de la carte slider. */
 
+import {COMMON_GRID} from "../../tools/editor.js";
+
 export const configForm = () => ({
 	schema: [
 		{name: "entity", required: true, selector: {entity: {domain: ["light", "fan", "cover", "media_player", "number", "input_number", "climate"]}}},
@@ -29,6 +31,7 @@ export const configForm = () => ({
 				{name: "show_value", selector: {boolean: {}}},
 			],
 		},
+		COMMON_GRID,
 	],
 });
 

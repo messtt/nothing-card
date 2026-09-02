@@ -10,7 +10,7 @@ const button = (cls, title, name) => `
 export const template = () => `
   <ha-card>
     <div class="head">
-      <button class="badge" type="button"><ha-icon icon="mdi:window-shutter"></ha-icon></button>
+      <button class="badge" type="button"></button>
       <div class="titles">
         <div class="name"></div>
         <div class="value"></div>
@@ -50,7 +50,6 @@ export const collect = (card) => ({
 	card: card.$("ha-card"),
 	head: card.$(".head"),
 	badge: card.$(".badge"),
-	icon: card.$("ha-icon"),
 	titles: card.$(".titles"),
 	name: card.$(".name"),
 	value: card.$(".value"),

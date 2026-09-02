@@ -3,7 +3,8 @@
 import {paintText} from "../../tools/dot-matrix.js";
 import {haptic, clamp} from "../../tools/utils.js";
 import {hsvToRgb, kelvinToRgb, rgbCss} from "../../tools/color.js";
-import {entityName, entityIcon, isUnavailable} from "../../tools/entity.js";
+import {domainOf, entityName, entityIcon, isUnavailable} from "../../tools/entity.js";
+import {paintIcon} from "../../tools/glyphs.js";
 import {PRESETS, HUE_SATURATION, supportedModes, kelvinRange} from "./helpers.js";
 
 /** Position d'une poignée qui reste entièrement dans sa barre, de 0 à 1. */
@@ -33,18 +34,15 @@ export function updateChanges(card) {
 	el.value.hidden = !c.show_value;
 	el.head.hidden = !(c.show_icon || c.show_name || c.show_value);
 
-	if (c.show_icon) {
-		const icon = entityIcon(c, st);
-		if (el.badge.firstElementChild.getAttribute("icon") !== icon) {
-			el.badge.firstElementChild.setAttribute("icon", icon);
-		}
-	}
+	if (c.show_icon) paintIcon(el.badge, card.iconStyle, entityIcon(c, st), domainOf(c.entity));
 
 	const name = entityName(c, st);
-	if (c.show_name && card.memo.name !== name) {
-		el.name.textContent = name;
+	const nameDots = card.nameDots();
+	if (c.show_name && (card.memo.name !== name || card.memo.nameDots !== nameDots)) {
+		paintText(el.name, name, nameDots);
 		el.name.title = name;
 		card.memo.name = name;
+		card.memo.nameDots = nameDots;
 	}
 
 	// La jauge prend la couleur réelle de la lampe

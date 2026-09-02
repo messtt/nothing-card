@@ -1,5 +1,7 @@
 /** Éditeur graphique (formulaire `ha-form`) et configuration d'exemple. */
 
+import {COMMON_GRID} from "../../tools/editor.js";
+
 export const configForm = () => ({
 	schema: [
 		{name: "entity", required: true, selector: {entity: {}}},
@@ -19,6 +21,7 @@ export const configForm = () => ({
 				{name: "led", selector: {boolean: {}}},
 			],
 		},
+		COMMON_GRID,
 	],
 });
 

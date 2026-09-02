@@ -109,6 +109,7 @@ ha-card {
   gap: 10px;
 }
 .grip { min-width: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.title svg { display: block; height: 13px; width: auto; max-width: 100%; }
 .title {
   font-size: 15px;
   font-weight: 600;

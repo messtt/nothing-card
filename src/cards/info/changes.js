@@ -1,7 +1,8 @@
 /** Mise à jour de la carte info à chaque changement d'état. */
 
 import {paintText} from "../../tools/dot-matrix.js";
-import {entityIcon, entityName, isUnavailable} from "../../tools/entity.js";
+import {domainOf, entityIcon, entityName, isUnavailable} from "../../tools/entity.js";
+import {paintIcon} from "../../tools/glyphs.js";
 import {readValue} from "./helpers.js";
 
 /** @param {import("./index.js").NothingInfoCard} card */
@@ -18,17 +19,18 @@ export function updateChanges(card) {
 	// Pastille d'icône
 	el.badge.hidden = c.badge === "none";
 	if (!el.badge.hidden) {
-		const icon = entityIcon(c, st);
-		if (el.icon.getAttribute("icon") !== icon) el.icon.setAttribute("icon", icon);
+		paintIcon(el.badge, card.iconStyle, entityIcon(c, st), domainOf(c.entity));
 	}
 
 	// Libellé — texte simple : un nom de pièce en points serait deux fois trop long
 	el.name.hidden = !c.show_name;
 	const name = entityName(c, st);
-	if (card.memo.name !== name) {
-		el.name.textContent = name;
+	const nameDots = card.nameDots();
+	if (card.memo.name !== name || card.memo.nameDots !== nameDots) {
+		paintText(el.name, name, nameDots);
 		el.name.title = name;
 		card.memo.name = name;
+		card.memo.nameDots = nameDots;
 	}
 
 	// Valeur — le SVG de points ne se regénère que si elle a bougé

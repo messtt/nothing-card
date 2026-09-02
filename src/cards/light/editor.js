@@ -1,5 +1,7 @@
 /** Éditeur graphique et configuration d'exemple de la carte light. */
 
+import {COMMON_GRID} from "../../tools/editor.js";
+
 export const configForm = () => ({
 	schema: [
 		{name: "entity", required: true, selector: {entity: {domain: "light"}}},
@@ -36,6 +38,7 @@ export const configForm = () => ({
 				{name: "presets", selector: {boolean: {}}},
 			],
 		},
+		COMMON_GRID,
 	],
 });
 

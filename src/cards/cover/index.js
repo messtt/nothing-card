@@ -107,9 +107,12 @@ export class NothingCoverCard extends NothingBaseCard {
 		const stage = c.shutter
 			? Math.max(WINDOW, c.buttons ? BUTTONS : 0)
 			: c.buttons ? BUTTON_ROW : 0;
+		// Sans état — Home Assistant appelle cette méthode avant de fournir
+		// `hass` — on suppose la rangée présente : mieux vaut une tuile un peu
+		// large qu'un curseur rogné le temps que l'entité arrive.
 		const slider = c.slider && (!st || supports(st, FEATURE.SET_POSITION)) ? BAR + GAP : 0;
 		const tilt =
-			c.tilt && st && supports(st, FEATURE.SET_TILT) && positionOf(st).tilt != null
+			c.tilt && (!st || (supports(st, FEATURE.SET_TILT) && positionOf(st).tilt != null))
 				? BAR + GAP
 				: 0;
 

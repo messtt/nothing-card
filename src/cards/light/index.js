@@ -91,27 +91,29 @@ export class NothingLightCard extends NothingBaseCard {
 	/**
 	 * La tuile ne réclame que les rangées des barres réellement affichées :
 	 * une ampoule simplement dimmable est deux fois plus courte qu'une RGBWW.
+	 *
+	 * Le calcul part de la **configuration**, jamais de l'état : Home Assistant
+	 * appelle cette méthode juste après `setConfig()`, avant de fournir `hass`.
+	 * Une valeur de repli fixe resterait donc gravée, et couper des rangées ne
+	 * rétrécirait jamais la carte. L'entité ne sert qu'à retirer en plus ce
+	 * qu'elle ne sait pas faire, quand elle est déjà connue.
 	 */
 	getGridOptions() {
+		const c = this._config;
 		const st = this.stateObj;
-		let rows = 6;
+		const modes = st ? supportedModes(st) : {bright: true, color: true, white: true};
 
-		if (st) {
-			const c = this._config;
-			const modes = supportedModes(st);
+		const bars =
+			(c.toggle ? 1 : 0) +
+			(c.brightness && modes.bright ? 1 : 0) +
+			(c.color && modes.color ? 1 : 0) +
+			(c.white && modes.white ? 1 : 0);
 
-			const bars =
-				(c.toggle ? 1 : 0) +
-				(c.brightness && modes.bright ? 1 : 0) +
-				(c.color && modes.color ? 1 : 0) +
-				(c.white && modes.white ? 1 : 0);
+		const head = c.show_icon || c.show_name || c.show_value ? HEAD + GAP : 0;
+		const presets = c.presets && (modes.color || modes.white) ? GAP + PRESETS : 0;
 
-			const head = c.show_icon || c.show_name || c.show_value ? HEAD + GAP : 0;
-			const presets = c.presets && (modes.color || modes.white) ? GAP + PRESETS : 0;
-
-			const px = PADDING + head + (bars ? bars * BAR + (bars - 1) * GAP : 0) + presets;
-			rows = Math.max(1, Math.ceil((px + 8) / 64));
-		}
+		const px = PADDING + head + (bars ? bars * BAR + (bars - 1) * GAP : 0) + presets;
+		const rows = Math.max(1, Math.ceil((px + 8) / 64));
 
 		return {rows, columns: 6, min_rows: Math.max(1, Math.min(2, rows)), min_columns: 3};
 	}

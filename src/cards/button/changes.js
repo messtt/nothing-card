@@ -2,6 +2,7 @@
 
 import {paintText} from "../../tools/dot-matrix.js";
 import {isOn, isUnavailable, entityName, entityIcon, domainOf} from "../../tools/entity.js";
+import {paintIcon} from "../../tools/glyphs.js";
 
 /** @param {import("./index.js").NothingButtonCard} card */
 export function updateChanges(card) {
@@ -17,7 +18,7 @@ export function updateChanges(card) {
 		// message d'erreur : il passe avant le réglage show_name
 		card.removeAttribute("data-notext");
 		el.name.style.display = "";
-		paintText(el.name, "INTROUVABLE", c.dots);
+		paintText(el.name, "INTROUVABLE", card.nameDots(c.dots));
 		el.state.innerHTML = "";
 		return;
 	}
@@ -28,16 +29,18 @@ export function updateChanges(card) {
 
 	// Icône
 	el.iconWrap.style.display = c.show_icon ? "" : "none";
-	const icon = entityIcon(c, stateObj);
-	if (el.icon.getAttribute("icon") !== icon) el.icon.setAttribute("icon", icon);
+	if (c.show_icon) {
+		paintIcon(el.iconWrap, card.iconStyle, entityIcon(c, stateObj), domainOf(c.entity));
+	}
 
 	// Libellé — repeint seulement quand il change (le SVG coûte cher)
 	el.name.style.display = c.show_name ? "" : "none";
 	const name = entityName(c, stateObj);
-	if (c.show_name && (card.memo.name !== name || card.memo.dots !== c.dots)) {
-		paintText(el.name, name, c.dots);
+	const nameDots = card.nameDots(c.dots);
+	if (c.show_name && (card.memo.name !== name || card.memo.nameDots !== nameDots)) {
+		paintText(el.name, name, nameDots);
 		card.memo.name = name;
-		card.memo.dots = c.dots;
+		card.memo.nameDots = nameDots;
 	}
 
 	// Sous-titre d'état, enrichi selon le domaine

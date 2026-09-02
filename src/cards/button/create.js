@@ -6,7 +6,7 @@ export const template = () => `
   <ha-card>
     <button class="btn" type="button">
       <span class="grain"></span>
-      <span class="icon"><ha-icon></ha-icon></span>
+      <span class="icon"></span>
       <span class="labels">
         <span class="name"></span>
         <span class="state"></span>
@@ -23,7 +23,6 @@ export const template = () => `
 export const collect = (card) => ({
 	btn: card.$(".btn"),
 	iconWrap: card.$(".icon"),
-	icon: card.$("ha-icon"),
 	name: card.$(".name"),
 	state: card.$(".state"),
 });

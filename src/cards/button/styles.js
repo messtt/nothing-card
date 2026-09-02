@@ -119,8 +119,11 @@ ha-card {
   --mdc-icon-size: 20px;
   color: var(--nb-bg-dark);
 }
-:host([data-variant="light"]) .icon ha-icon { color: var(--nb-bg-light); }
-:host([data-on]) .icon ha-icon { color: var(--nb-accent); }
+.icon svg { display: block; width: 19px; height: 19px; fill: var(--nb-bg-dark); }
+:host([data-variant="light"]) .icon ha-icon,
+:host([data-variant="light"]) .icon svg { color: var(--nb-bg-light); fill: var(--nb-bg-light); }
+:host([data-on]) .icon ha-icon,
+:host([data-on]) .icon svg { color: var(--nb-accent); fill: var(--nb-accent); }
 :host([data-shape="circle"]) .icon { width: 30px; height: 30px; }
 
 /* --- textes --- */

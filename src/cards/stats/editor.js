@@ -1,5 +1,7 @@
 /** Éditeur graphique et configuration d'exemple de la carte stats. */
 
+import {NAME_DOTS} from "../../tools/editor.js";
+
 export const configForm = () => ({
 	schema: [
 		{
@@ -36,6 +38,7 @@ export const configForm = () => ({
 				{name: "delta", selector: {boolean: {}}},
 			],
 		},
+		NAME_DOTS,
 	],
 });
 
