@@ -11,6 +11,10 @@ export const configForm = () => ({
 		},
 		{name: "name", selector: {text: {}}},
 		{
+			name: "chart",
+			selector: {select: {mode: "dropdown", options: ["matrix", "bars", "line"]}},
+		},
+		{
 			type: "grid",
 			name: "",
 			schema: [
