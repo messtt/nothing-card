@@ -16,7 +16,6 @@ import "./cards/light/index.js";
 import "./cards/media/index.js";
 import "./cards/slider/index.js";
 import "./cards/stats/index.js";
-import "./cards/stats/variants.js";
 import "./cards/text/index.js";
 
 export {NothingBatteryCard} from "./cards/battery/index.js";

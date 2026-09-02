@@ -58,8 +58,7 @@ src/
         ├── changes.js       tout ce qui se remet à jour quand l'état change
         ├── editor.js        schéma `ha-form` + configuration d'exemple
         ├── helpers.js       calculs propres à la carte
-        ├── styles.js        la feuille de style, en chaîne
-        └── variants.js      sous-classes inscrites au sélecteur (bars, line)
+        └── styles.js        la feuille de style, en chaîne
 ```
 
 La règle : **`create.js` construit une fois, `changes.js` met à jour souvent.**
@@ -88,10 +87,6 @@ Rien d'autre : le bundle, l'entrée du sélecteur de cartes et la bannière cons
 4. remise à zéro des mémos de rendu (`this.memo`) et de l'état interne (`reset()`) ;
 5. report des couleurs de config dans les variables CSS de l'hôte (`applyColors()`) ;
 6. `template()` → `collect()` → `bind()` → `render()`.
-
-Une carte peut se décliner sans se dupliquer : une sous-classe qui redéfinit `static cardType` et `static defaults`
-suffit (voir `cards/stats/variants.js`). Elle déclare `static styleKey` avec le nom de la carte d'origine pour
-partager sa `CSSStyleSheet` au lieu d'en analyser une copie.
 
 Le setter `hass` n'appelle que `render()`. Les cartes gardent leurs comparaisons (`this.memo.name !== name`) pour ne
 repeindre que ce qui a bougé : un SVG de matrice de points coûte cher à regénérer à chaque tick d'état.

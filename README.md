@@ -23,10 +23,8 @@ avec un faux Home Assistant : les cartes y sont cliquables, glissables, et se co
 | **Slider** | `custom:nothing-slider-card` | Grande barre à glisser. S'adapte au domaine de l'entité.                            |
 | **Cover**  | `custom:nothing-cover-card`  | Volet roulant : tablier dessiné, haut / stop / bas, position, inclinaison.           |
 | **Battery**| `custom:nothing-battery-card`| Niveau de charge : grand chiffre et jauge en pilule de points.                       |
-| **Bars**   | `custom:nothing-stats-bars-card` | La carte Stats en traits fins, prête à l'emploi.                                |
-| **Line**   | `custom:nothing-stats-line-card` | La carte Stats en courbe continue, prête à l'emploi.                            |
 
-Les onze entrées sont livrées dans le même fichier : une seule ressource à déclarer.
+Les neuf cartes sont livrées dans le même fichier : une seule ressource à déclarer.
 
 La typographie en matrice de points est dessinée en SVG à partir d'une police 5×7 embarquée : rien à installer côté
 client, et le rendu est identique sur tous les appareils.
@@ -146,17 +144,6 @@ points: 48
 labels: false
 delta: false
 ```
-
-Les deux nouveaux styles ont aussi **leur propre entrée dans le sélecteur de cartes**, pour ne pas dépendre d'une
-option enfouie dans un formulaire :
-
-```yaml
-type: custom:nothing-stats-bars-card    # identique à chart: bars
-type: custom:nothing-stats-line-card    # identique à chart: line
-```
-
-Ce sont la même carte, avec une autre valeur par défaut pour `chart` et 48 points au lieu de 24 : toutes les options
-de la carte Stats s'y appliquent, `chart` compris si vous voulez repasser à la matrice.
 
 `bars` et `line` sont dessinés **en pixels**, à l'échelle 1:1 de la boîte mesurée : les traits gardent leur épaisseur
 et les bouts restent ronds quelle que soit la tuile. Ils se redessinent au redimensionnement, là où `matrix` adapte

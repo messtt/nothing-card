@@ -29,13 +29,6 @@ export class NothingBaseCard extends HTMLElement {
 	static accentVar = "--nb-accent";
 
 	/**
-	 * Clé de cache de la feuille de style. Deux cartes qui partagent la même
-	 * feuille — une carte et ses variantes — partagent aussi sa `CSSStyleSheet`
-	 * au lieu de l'analyser deux fois. Par défaut, chacune la sienne.
-	 */
-	static styleKey = null;
-
-	/**
 	 * Options communes à toutes les cartes, fusionnées avant leurs propres
 	 * valeurs par défaut — une carte reste libre de les redéfinir.
 	 *
@@ -58,11 +51,7 @@ export class NothingBaseCard extends HTMLElement {
 		if (!this.shadowRoot) {
 			this.attachShadow({mode: "open"});
 			adoptStyles(this.shadowRoot, base, "nothing-base");
-			adoptStyles(
-				this.shadowRoot,
-				this.constructor.styles,
-				this.constructor.styleKey || this.constructor.cardType
-			);
+			adoptStyles(this.shadowRoot, this.constructor.styles, this.constructor.cardType);
 		}
 
 		// Le DOM va être reconstruit : les mémos de rendu ne valent plus rien.

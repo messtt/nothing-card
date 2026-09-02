@@ -213,9 +213,9 @@
 
 	add("stats", "stats", "nothing-stats-card", {entity: "sensor.consommation", period: "hour", points: 24});
 
-	add("stats2", "stats", "nothing-stats-bars-card", {entity: "sensor.consommation", labels: false, delta: false, name: "Sales Growth"});
+	add("stats2", "stats", "nothing-stats-card", {entity: "sensor.consommation", chart: "bars", points: 48, labels: false, delta: false, name: "Sales Growth"});
 	add("stats2", "stats", "nothing-stats-card", {entity: "sensor.consommation", chart: "bars", points: 24, name_dots: true});
-	add("stats2", "stats", "nothing-stats-line-card", {entity: "sensor.consommation", labels: false});
+	add("stats2", "stats", "nothing-stats-card", {entity: "sensor.consommation", chart: "line", points: 48, labels: false});
 </script>
 </body>
 </html>
