@@ -126,7 +126,14 @@ ha-card {
 }
 
 /* colonne haut / stop / bas */
-.buttons { flex: 0 0 auto; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
+.buttons {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
 :host(:not([data-shutter])) .stage { flex: 0 0 auto; }
 :host(:not([data-shutter])) .buttons { flex-direction: row; width: 100%; }
 :host(:not([data-shutter])) .buttons button { flex: 1 1 0; width: auto; height: 40px; border-radius: 16px; }
@@ -135,12 +142,15 @@ button {
   border: 0;
   margin: 0;
   padding: 0;
-  width: 44px;
+  /* La hauteur commande, la largeur suit : un bouton rond reste rond quelle que
+     soit la tuile. Sans grandir — un flex-grow l'étirerait en ovale dans une
+     carte haute — mais en pouvant rétrécir jusqu'à 30 px, ce qui garde la
+     colonne de trois dans la même hauteur que la fenêtre. */
+  flex: 0 1 auto;
+  width: auto;
   height: 44px;
-  /* 30 : la colonne de trois tient alors dans la même hauteur que la fenêtre,
-     et la carte ne réclame pas une rangée de grille de plus pour rien. */
   min-height: 30px;
-  flex: 1 1 0;
+  aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
   border-radius: 50%;
