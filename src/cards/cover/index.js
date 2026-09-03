@@ -10,7 +10,7 @@
 import {NothingBaseCard} from "../../components/base-card/index.js";
 import {handleAction} from "../../tools/tap-actions.js";
 import {registerCard} from "../../tools/register.js";
-import {throttler} from "../../tools/utils.js";
+import {clamp, throttler} from "../../tools/utils.js";
 import {REPO} from "../../var/version.js";
 import {ACCENT} from "../../var/consts.js";
 import styles from "./styles.js";
@@ -47,6 +47,7 @@ export class NothingCoverCard extends NothingBaseCard {
 		buttons: true,        // haut / stop / bas
 		slider: true,         // curseur de position
 		tilt: true,           // curseur d'inclinaison des lamelles
+		unknown_position: 30, // position dessinée quand le moteur n'en publie pas
 
 		accent: ACCENT,
 		tap_action: {action: "more-info"},
@@ -69,6 +70,7 @@ export class NothingCoverCard extends NothingBaseCard {
 
 	normalizeConfig(config) {
 		if (!VARIANTS.includes(config.variant)) config.variant = "dark";
+		config.unknown_position = clamp(Math.round(config.unknown_position), 0, 100);
 	}
 
 	reset() {
@@ -111,10 +113,7 @@ export class NothingCoverCard extends NothingBaseCard {
 		// `hass` — on suppose la rangée présente : mieux vaut une tuile un peu
 		// large qu'un curseur rogné le temps que l'entité arrive.
 		const slider = c.slider && (!st || supports(st, FEATURE.SET_POSITION)) ? BAR + GAP : 0;
-		const tilt =
-			c.tilt && (!st || (supports(st, FEATURE.SET_TILT) && positionOf(st).tilt != null))
-				? BAR + GAP
-				: 0;
+		const tilt = c.tilt && (!st || supports(st, FEATURE.SET_TILT)) ? BAR + GAP : 0;
 
 		const px = PADDING + head + stage + slider + tilt;
 		const rows = Math.max(1, Math.ceil((px + 8) / 64));

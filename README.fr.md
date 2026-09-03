@@ -420,6 +420,7 @@ entity: cover.volet_salon
 | `buttons`                    | `true`                    | Colonne haut / stop / bas.                           |
 | `slider`                     | `true`                    | Curseur de position.                                 |
 | `tilt`                       | `true`                    | Curseur d'inclinaison des lamelles.                  |
+| `unknown_position`           | `30`                      | Position dessinée quand le moteur n'en publie pas.   |
 | `accent`                     | `#E01F26`                 | Couleur du remplissage et des flèches en mouvement.  |
 | `tap_action` / `hold_action` | `more-info` / `more-info` | Actions sur le libellé.                              |
 
@@ -432,6 +433,15 @@ devient opaque, à plat elles laissent passer le jour entre deux traits. Le seco
 
 Chaque bouton n'apparaît que si `supported_features` l'annonce, et chaque élément se coupe dans la config. Sans le
 tablier, la colonne de boutons se met à l'horizontale et la carte tient sur deux rangées de grille.
+
+**Les commandes suivent la capacité annoncée, pas la valeur courante.** Beaucoup de moteurs déclarent savoir régler
+l'angle mais ne publient `current_tilt_position` qu'après le premier mouvement : conditionner le curseur à la valeur
+cachait une commande pourtant utilisable. La barre d'inclinaison apparaît donc dès que `SET_TILT_POSITION` est
+supporté, et affiche zéro tant que le moteur ne dit rien.
+
+**Sans position rapportée** — état `unknown`, ou moteur qui ne connaît que ouvert et fermé — le dessin donnait un cadre
+vide. `unknown_position` lui donne un repli, 30 % ouvert par défaut, pour que la carte se lise encore comme un volet.
+La barre de position, elle, ne s'y trompe pas : elle ne montre que ce que le moteur rapporte vraiment.
 
 | Configuration                                   | Rangées de grille |
 |-------------------------------------------------|-------------------|

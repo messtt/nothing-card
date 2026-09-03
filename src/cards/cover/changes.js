@@ -91,8 +91,12 @@ export function paint(card) {
 	const {position, tilt} = card.reading();
 
 	// Le volet descend depuis le haut : 100 % ouvert, c'est 0 % de tablier.
-	const shown = position != null ? position : 100;
+	// Sans position connue on ne dessine pas un cadre vide : le tablier se pose
+	// à `unknown_position`, pour que la carte reste lisible comme un volet.
+	const shown = position != null ? position : c.unknown_position;
 	card.style.setProperty("--nc-pos", shown + "%");
+	// La barre, elle, ne montre que ce que le moteur rapporte vraiment.
+	card.style.setProperty("--nc-bar", (position == null ? 0 : position) + "%");
 	card.style.setProperty("--nc-slat", slatThickness(tilt));
 
 	el.stage.hidden = !(c.shutter || c.buttons);
@@ -100,10 +104,14 @@ export function paint(card) {
 
 	const canPosition = c.slider && supports(st, FEATURE.SET_POSITION);
 	el.position.hidden = !canPosition;
-	if (canPosition) el.fill.style.width = shown + "%";
+	if (canPosition) el.fill.style.width = (position == null ? 0 : position) + "%";
 
-	const canTilt = c.tilt && supports(st, FEATURE.SET_TILT) && tilt != null;
+	// La barre suit la capacité annoncée, pas la valeur courante : beaucoup de
+	// moteurs savent régler l'angle mais ne publient `current_tilt_position`
+	// qu'après le premier mouvement.
+	const canTilt = c.tilt && supports(st, FEATURE.SET_TILT);
 	el.tilt.hidden = !canTilt;
-	if (canTilt) el.tiltFill.style.width = tilt + "%";
-	card.style.setProperty("--nc-tilt", (tilt == null ? 0 : tilt) + "%");
+	const shownTilt = tilt == null ? 0 : tilt;
+	if (canTilt) el.tiltFill.style.width = shownTilt + "%";
+	card.style.setProperty("--nc-tilt", shownTilt + "%");
 }

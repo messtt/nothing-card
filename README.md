@@ -421,6 +421,7 @@ entity: cover.living_room_shutter
 | `buttons`                    | `true`                    | Up / stop / down column.                             |
 | `slider`                     | `true`                    | Position slider.                                     |
 | `tilt`                       | `true`                    | Slat tilt slider.                                    |
+| `unknown_position`           | `30`                      | Position drawn when the motor reports none.          |
 | `accent`                     | `#E01F26`                 | Fill colour and moving arrows.                       |
 | `tap_action` / `hold_action` | `more-info` / `more-info` | Actions on the label.                                |
 
@@ -433,6 +434,15 @@ flat, they let daylight through between two thin lines. The second slider adjust
 
 Each button only appears if `supported_features` announces it, and every element can be switched off in the
 configuration. Without the slats, the button column turns horizontal and the card fits two grid rows.
+
+**Controls follow the announced capability, not the current value.** Many motors declare they can set the angle but
+only publish `current_tilt_position` after the first movement: gating the slider on the value would hide a control that
+works. The tilt slider therefore appears as soon as `SET_TILT_POSITION` is supported, and reads zero until the motor
+says otherwise.
+
+**With no position reported** — an `unknown` state, or a motor that only knows open and closed — the drawing would be
+an empty frame. `unknown_position` gives it a fallback, 30 % open by default, so the card still reads as a shutter. The
+position bar is not fooled by it: it only ever shows what the motor actually reports.
 
 | Configuration                                   | Grid rows         |
 |-------------------------------------------------|-------------------|

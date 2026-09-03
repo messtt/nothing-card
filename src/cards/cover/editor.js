@@ -27,6 +27,7 @@ export const configForm = () => ({
 				{name: "slider", selector: {boolean: {}}},
 				{name: "tilt", selector: {boolean: {}}},
 				{name: "dots", selector: {boolean: {}}},
+				{name: "unknown_position", selector: {number: {min: 0, max: 100, mode: "box"}}},
 			],
 		},
 		COMMON_GRID,

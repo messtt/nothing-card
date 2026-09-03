@@ -189,6 +189,24 @@ const states = {
 		last_updated: now(),
 		attributes: {friendly_name: "Ventilateur", percentage: 60, percentage_step: 10, supported_features: 1},
 	},
+	"cover.raffstore": {
+		entity_id: "cover.raffstore",
+		state: "open",
+		last_updated: now(),
+		attributes: {
+			friendly_name: "Raffstore terrasse",
+			current_position: 36,
+			device_class: "blind",
+			// L'angle est reglable, mais le moteur n'a pas encore publie sa valeur.
+			supported_features: 1 + 2 + 4 + 8 + 16 + 32 + 64 + 128,
+		},
+	},
+	"cover.inconnu": {
+		entity_id: "cover.inconnu",
+		state: "unknown",
+		last_updated: now(),
+		attributes: {friendly_name: "Volet sans retour", supported_features: 1 + 2 + 8},
+	},
 	"cover.velux": {
 		entity_id: "cover.velux",
 		state: "open",

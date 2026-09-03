@@ -8,6 +8,7 @@ export default `
   --nc-glass: rgba(240,239,235,.05);
   --nc-slat-color: rgba(240,239,235,.88);
   --nc-pos: 100%;
+  --nc-bar: 0%;
   --nc-tilt: 0%;
   --nc-slat: 3px;
   --ha-card-border-width: 0;
@@ -187,7 +188,7 @@ button svg { display: block; width: 21px; height: 21px; fill: currentColor; }
 .handle {
   position: absolute;
   top: 50%;
-  left: clamp(11px, var(--nc-pos), calc(100% - 11px));
+  left: clamp(11px, var(--nc-bar), calc(100% - 11px));
   transform: translate(-50%, -50%);
   width: 5px;
   height: 46%;
