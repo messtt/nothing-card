@@ -266,9 +266,9 @@ transport on the right; **`wide`** puts the artwork top-right, the title on the 
 double-chevron track buttons at the bottom; **`tile`** is the square, artwork on top and controls at the bottom;
 **`art`** spreads the artwork as a background, text and red pill laid over it.
 
-In `wide`, the artwork sits over the card and the title block **reserves its height**: everything after it — progress,
-volume — therefore starts below it, whatever the number of rows shown. The bar keeps the full width without ever
-running behind the artwork, and the tile asks for one extra row when the volume is displayed.
+`wide` is laid out as a two-column grid: the artwork gets its own column, the titles and bars the other, the controls
+the full width at the bottom. Overlap is therefore impossible by construction — the progress bar stops at the artwork's
+edge whatever the number of rows shown, and three grid rows cover every combination, volume included.
 
 Each button only appears if the player announces the action in `supported_features`: no "next" arrow on a radio, no
 volume slider on a player that has none. The bar only becomes draggable if the player can seek (`SEEK`), with at most

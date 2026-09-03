@@ -94,13 +94,11 @@ export class NothingMediaCard extends NothingBaseCard {
 				return {rows: 4, columns: 6, min_rows: 3, min_columns: 3};
 			case "art":
 				return {rows: 5, columns: 8, min_rows: 3, min_columns: 4};
-			case "wide": {
-				// 32 de rembourrage, 68 de titres (la hauteur de la pochette),
-				// 38 de commandes, plus les gouttières et la rangée de volume.
-				const px = 32 + 68 + 12 + 4 + 12 + 38 + (this._config.volume ? 12 + 28 : 0);
-				const rows = Math.max(3, Math.ceil((px + 8) / 64));
-				return {rows, columns: 8, min_rows: 3, min_columns: 5};
-			}
+			case "wide":
+				// La pochette a sa propre colonne : la hauteur ne dépend plus que
+				// de la plus grande des deux, et trois rangées suffisent à toutes
+				// les combinaisons — volume compris.
+				return {rows: 3, columns: 8, min_rows: 3, min_columns: 5};
 			default:
 				return {rows: 2, columns: 12, min_rows: 2, min_columns: 6};
 		}

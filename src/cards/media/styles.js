@@ -65,7 +65,19 @@ ha-card {
   background-size: 7px 7px;
 }
 .art.has-art::before { display: none; }
-.cover { display: none; width: 100%; height: 100%; object-fit: cover; }
+/* Positionnement absolu, et non height: 100% : dans une rangée de grille en
+   hauteur automatique, le pourcentage ne se résout pas, retombe sur auto, et
+   l'image prend sa hauteur intrinsèque — on n'en voyait alors que le haut.
+   Calée sur la boîte, object-fit: cover recadre bien depuis le centre. */
+.cover {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 .art.has-art .cover { display: block; }
 .art.has-art .glyph { display: none; }
 .glyph { display: block; width: 100%; height: 100%; padding: 26%; box-sizing: border-box; opacity: .8; }
@@ -284,37 +296,30 @@ button svg { display: block; width: 18px; height: 18px; fill: currentColor; }
 :host([data-layout="art"]) .play { width: 38px; height: 38px; background: transparent; }
 
 /* =================== disposition « wide » =================== */
-/* Pochette en haut à droite, posée par-dessus : la barre de progression garde
-   ainsi toute la largeur de la carte, et seuls les titres lui cèdent la place. */
+/* Grille à deux colonnes : la pochette occupe la sienne, les titres et les
+   barres l'autre, les commandes toute la largeur en bas. Le chevauchement
+   devient impossible par construction — inutile de réserver une hauteur ni de
+   compter sur l'ordre des rangées. */
 :host([data-layout="wide"]) ha-card {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "main art"
+    "controls controls";
+  align-items: start;
+  gap: 14px;
   padding: 16px;
   border-radius: 24px;
 }
 :host([data-layout="wide"]) .art {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 2;
+  grid-area: art;
   width: 68px;
   height: 68px;
   border-radius: 12px;
 }
 :host([data-layout="wide"]) .eq { right: 4px; bottom: 4px; }
-/* Les rangées s'empilent depuis le haut, et le bloc de titres réserve la
-   hauteur de la pochette : ce qui suit commence donc toujours sous elle,
-   quel que soit le nombre de rangées. Les répartir ferait remonter la barre
-   de progression derrière la pochette dès qu'on ajoute le volume. */
-:host([data-layout="wide"]) .main { flex: 1 1 auto; gap: 12px; justify-content: flex-start; }
-:host([data-layout="wide"]) .grip {
-  min-height: 68px;
-  padding-right: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+:host([data-layout="wide"]) .main { grid-area: main; gap: 12px; justify-content: flex-start; }
+:host([data-layout="wide"]) .controls { grid-area: controls; }
 :host([data-layout="wide"]) .title { font-size: 17px; }
 :host([data-layout="wide"]) .title svg { height: 15px; }
 :host([data-layout="wide"]) .times { display: none; }

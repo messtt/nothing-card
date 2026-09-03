@@ -265,10 +265,10 @@ progression à gauche, transport à droite ; **`wide`** met la pochette en haut 
 bas un bouton en pilule libellé avec les pistes en chevrons doubles ; **`tile`** est la tuile carrée, pochette en haut
 et commandes en bas ; **`art`** étale la pochette en fond, texte et pilule rouge posés dessus.
 
-En `wide`, la pochette est posée par-dessus la carte, et le bloc de titres **réserve sa hauteur** : tout ce qui suit —
-progression, volume — commence donc sous elle, quel que soit le nombre de rangées affichées. La barre garde ainsi
-toute la largeur sans jamais passer derrière la pochette, et la tuile réclame une rangée de plus quand le volume est
-affiché.
+`wide` est une grille à deux colonnes : la pochette occupe la sienne, les titres et les barres l'autre, les commandes
+toute la largeur en bas. Le chevauchement est donc impossible par construction — la barre de progression s'arrête au
+bord de la pochette quel que soit le nombre de rangées affichées, et trois rangées de grille couvrent toutes les
+combinaisons, volume compris.
 
 Chaque bouton n'apparaît que si le lecteur annonce l'action dans `supported_features` : pas de flèche « suivant » sur
 une radio, pas de curseur de volume sur un lecteur qui n'en a pas. La barre ne devient glissable que si le lecteur sait
