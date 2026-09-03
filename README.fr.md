@@ -255,7 +255,7 @@ layout: bar        # bar | tile | art
 | `controls`                   | `true`                    | Précédent / lecture / suivant.                            |
 | `progress` / `times`         | `true`                    | Barre de progression, position et durée.                  |
 | `volume`                     | `false`                   | Rangée de volume avec coupure du son.                     |
-| `play_text` / `pause_text`   | `Play` / `Pause`          | Libellé du bouton, en disposition `wide`.                 |
+| `play_text` / `pause_text`   | vides                     | Libellé facultatif du bouton, en disposition `wide`.      |
 | `dots`                       | `true`                    | Compteurs en matrice de points.                           |
 | `accent`                     | `#E01F26`                 | Couleur de la lecture et de la progression.               |
 | `tap_action` / `hold_action` | `more-info` / `more-info` | Actions sur la pochette et les titres.                    |
@@ -269,6 +269,9 @@ et commandes en bas ; **`art`** étale la pochette en fond, texte et pilule roug
 toute la largeur en bas. Le chevauchement est donc impossible par construction — la barre de progression s'arrête au
 bord de la pochette quel que soit le nombre de rangées affichées, et trois rangées de grille couvrent toutes les
 combinaisons, volume compris.
+
+Son bouton principal est rond et porte le pictogramme, comme dans toutes les autres dispositions ; renseignez
+`play_text` ou `pause_text` et il devient une pilule libellée.
 
 Chaque bouton n'apparaît que si le lecteur annonce l'action dans `supported_features` : pas de flèche « suivant » sur
 une radio, pas de curseur de volume sur un lecteur qui n'en a pas. La barre ne devient glissable que si le lecteur sait

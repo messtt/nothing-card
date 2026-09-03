@@ -325,29 +325,35 @@ button svg { display: block; width: 18px; height: 18px; fill: currentColor; }
 :host([data-layout="wide"]) .times { display: none; }
 
 :host([data-layout="wide"]) .controls { width: 100%; justify-content: space-between; gap: 10px; }
-:host([data-layout="wide"]) .plabel {
+/* Le bouton principal reste rond, comme dans les autres dispositions ; l'ordre
+   le place à gauche et renvoie les pistes à droite. */
+:host([data-layout="wide"]) .play {
+  order: -1;
+  margin-right: auto;
+  width: 46px;
+  height: 46px;
+}
+:host([data-layout="wide"]) .prev,
+:host([data-layout="wide"]) .next { width: 38px; height: 38px; }
+
+/* Un libellé configuré le transforme en pilule, et remplace le pictogramme. */
+:host([data-layout="wide"][data-play-label]) .play {
+  width: auto;
+  height: 38px;
+  min-width: 84px;
+  padding: 0 22px;
+  border-radius: 999px;
+  gap: 8px;
+  grid-auto-flow: column;
+}
+:host([data-layout="wide"][data-play-label]) .play svg { display: none; }
+:host([data-layout="wide"][data-play-label]) .plabel {
   display: block;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: .04em;
   line-height: 1;
 }
-/* Le bouton principal devient une pilule libellée ; l'ordre place les pistes
-   à droite, comme sur la référence. */
-:host([data-layout="wide"]) .play {
-  order: -1;
-  width: auto;
-  height: 38px;
-  min-width: 84px;
-  padding: 0 22px;
-  margin-right: auto;
-  border-radius: 999px;
-  gap: 8px;
-  grid-auto-flow: column;
-}
-:host([data-layout="wide"]) .play svg { display: none; }
-:host([data-layout="wide"]) .prev,
-:host([data-layout="wide"]) .next { width: 38px; height: 38px; }
 :host([data-layout="wide"]) .i-one { display: none; }
 :host([data-layout="wide"]) .i-alt { display: block; }
 `;

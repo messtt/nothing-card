@@ -256,7 +256,7 @@ layout: bar        # bar | wide | tile | art
 | `controls`                   | `true`                    | Previous / play / next.                                   |
 | `progress` / `times`         | `true`                    | Progress bar, position and duration.                      |
 | `volume`                     | `false`                   | Volume row with mute.                                     |
-| `play_text` / `pause_text`   | `Play` / `Pause`          | Button label, in the `wide` layout.                       |
+| `play_text` / `pause_text`   | empty                     | Optional button label in the `wide` layout.               |
 | `dots`                       | `true`                    | Counters in dot matrix.                                   |
 | `accent`                     | `#E01F26`                 | Playback and progress colour.                             |
 | `tap_action` / `hold_action` | `more-info` / `more-info` | Actions on the artwork and the titles.                    |
@@ -267,8 +267,11 @@ double-chevron track buttons at the bottom; **`tile`** is the square, artwork on
 **`art`** spreads the artwork as a background, text and red pill laid over it.
 
 `wide` is laid out as a two-column grid: the artwork gets its own column, the titles and bars the other, the controls
-the full width at the bottom. Overlap is therefore impossible by construction — the progress bar stops at the artwork's
-edge whatever the number of rows shown, and three grid rows cover every combination, volume included.
+the full width at the bottom. Overlap is therefore impossible by construction — the progress bar stops at the
+artwork's edge whatever the number of rows shown, and three grid rows cover every combination, volume included.
+
+Its main button is round and carries the pictogram, like every other layout; give it a `play_text` or a `pause_text`
+and it becomes a labelled pill instead.
 
 Each button only appears if the player announces the action in `supported_features`: no "next" arrow on a radio, no
 volume slider on a player that has none. The bar only becomes draggable if the player can seek (`SEEK`), with at most

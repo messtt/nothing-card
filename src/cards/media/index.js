@@ -35,8 +35,10 @@ export class NothingMediaCard extends NothingBaseCard {
 		progress: true,       // barre de progression (glisser si le lecteur sait chercher)
 		times: true,          // position et durée sous la barre
 		volume: false,        // rangée de volume
-		play_text: "Play",    // libellé du bouton en disposition « wide »
-		pause_text: "Pause",
+		// Libellés du bouton en disposition « wide ». Vides, il porte le
+		// pictogramme comme partout ailleurs ; renseignés, il devient une pilule.
+		play_text: "",
+		pause_text: "",
 		accent: ACCENT,
 		tap_action: {action: "more-info"},
 		hold_action: {action: "more-info"},

@@ -76,13 +76,17 @@ function paintControls(card, st) {
 	el.next.hidden = !supports(st, FEATURE.NEXT);
 	el.play.hidden = !(supports(st, FEATURE.PLAY) || supports(st, FEATURE.PAUSE));
 
-	// Le libellé du bouton ne sert qu'à la disposition « wide », mais il se
-	// remplit toujours : la feuille de style décide seule de le montrer.
+	// Le bouton porte un libellé seulement si la configuration en donne un ;
+	// sinon il garde le pictogramme, comme dans les autres dispositions.
+	// L'attribut se pose sur la présence d'un texte, pas sur celui de l'instant :
+	// sans quoi le bouton changerait de forme entre lecture et pause.
 	const c = card._config;
+	card.toggleAttribute("data-play-label", !!(c.play_text || c.pause_text));
+
 	const label = st.state === "playing" ? c.pause_text : c.play_text;
 	if (card.memo.plabel !== label) {
 		card.memo.plabel = label;
-		el.plabel.textContent = label;
+		el.plabel.textContent = label || "";
 	}
 }
 
