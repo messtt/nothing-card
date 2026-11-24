@@ -134,11 +134,15 @@ function drawLine(card, buckets) {
 	const vals = buckets.map((x) => x.v);
 	const {min, span} = scale(vals, card._config.baseline);
 
-	const pad = 4;                       // le trait ne doit pas être coupé aux bords
-	const usable = Math.max(1, h - pad * 2);
+	// Marge sur les quatre côtés : ni le trait ni le point rouge (r = 3,5) ne
+	// sont coupés aux bords. Le dernier point du trait est donc toujours
+	// visible, et le point rouge se pose exactement dessus.
+	const pad = 4;
+	const usableW = Math.max(1, w - pad * 2);
+	const usableH = Math.max(1, h - pad * 2);
 	const at = (v, i) => [
-		vals.length < 2 ? w / 2 : (i / (vals.length - 1)) * w,
-		pad + (1 - (v - min) / span) * usable,
+		pad + (vals.length < 2 ? usableW / 2 : (i / (vals.length - 1)) * usableW),
+		pad + (1 - (v - min) / span) * usableH,
 	];
 
 	const points = vals.map((v, i) => at(v, i).map((n) => n.toFixed(1)).join(",")).join(" ");
@@ -148,7 +152,7 @@ function drawLine(card, buckets) {
     <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img">
       <polyline points="${points}" fill="none" stroke="var(--ns-bar)" stroke-width="2"
                 stroke-linejoin="round" stroke-linecap="round"/>
-      <circle cx="${Math.min(lx, w - 4).toFixed(1)}" cy="${ly.toFixed(1)}" r="3.5" fill="var(--ns-accent)"/>
+      <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="3.5" fill="var(--ns-accent)"/>
     </svg>`;
 }
 
