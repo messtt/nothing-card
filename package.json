@@ -28,7 +28,7 @@
     "version": "npm run sync-version && npm run build && git add src/var/version.js dist"
   },
   "devDependencies": {
-    "@rollup/plugin-terser": "^0.4.4",
-    "rollup": "^4.24.0"
+    "@rollup/plugin-terser": "^1.0.2",
+    "rollup": "^4.68.8"
   }
 }
