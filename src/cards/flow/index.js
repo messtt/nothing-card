@@ -125,21 +125,32 @@ export class NothingFlowCard extends NothingBaseCard {
 		}
 	}
 
-	/** (Re)branche l'observateur : `setConfig` remplace le nœud observé. */
+	/** Plateau, anneau et tuiles : tout ce dont dépend le tracé des liaisons. */
+	measured() {
+		return [this.el.stage, this.el.center, ...this.el.stage.querySelectorAll(".node")];
+	}
+
+	/**
+	 * (Re)branche l'observateur : `setConfig` remplace les nœuds observés.
+	 * Les tuiles épousent leur contenu, elles sont donc observées elles aussi :
+	 * une valeur qui s'allonge peut déplacer une liaison sans toucher au plateau.
+	 */
 	observeStage() {
 		if (!this.el || !this.isConnected) return;
 		if (this._resize) this._resize.disconnect();
-		this._resize = observeResize(this.el.stage, () => this.fit());
+		this._resize = observeResize(this.measured(), () => this.fit());
 	}
 
 	/**
 	 * Les liaisons sont calculées en pixels : elles se retracent quand le
-	 * plateau change de taille, jamais à chaque changement d'état.
+	 * plateau, l'anneau ou une tuile change de taille ou de place, jamais à
+	 * chaque changement d'état.
 	 */
 	fit() {
 		if (!this.el) return;
-		const stage = this.el.stage;
-		const box = `${Math.round(stage.clientWidth)}x${Math.round(stage.clientHeight)}`;
+		const box = this.measured()
+			.map((n) => `${n.offsetLeft},${n.offsetTop},${n.offsetWidth},${n.offsetHeight}`)
+			.join("|");
 		if (box === this._box) return;
 		this._box = box;
 		layoutLinks(this);

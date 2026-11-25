@@ -54,9 +54,20 @@ ha-card {
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 1.25fr 1fr;
-  grid-template-rows: 1fr 1.4fr 1fr;
-  gap: 10px;
+  /* Colonnes : les tuiles des côtés laissent la part belle à l'anneau, sans
+     descendre sous ~80 px (un libellé comme « CHAUFFAGE » doit tenir). */
+  grid-template-columns:
+    minmax(min(80px, 30%), 1fr) minmax(0, 1.5fr) minmax(min(80px, 30%), 1fr);
+  /* Rangées : celles du haut et du bas épousent leurs tuiles ; celle du
+     milieu prend l'anneau à la largeur de sa colonne, et rétrécit si la
+     carte manque de hauteur. L'ensemble reste groupé au centre. */
+  grid-template-rows: auto minmax(0, auto) auto;
+  align-content: center;
+  /* Les liaisons du haut et du bas courent dans la gouttière entre les
+     rangées : assez large pour qu'un point lumineux y passe sans toucher
+     les tuiles. */
+  gap: 16px 10px;
+  container: nf-stage / inline-size;
 }
 .links, .dots {
   position: absolute;
@@ -76,7 +87,7 @@ ha-card {
   justify-content: center;
   gap: 4px;
   padding: 10px 12px;
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--nf-tile);
   box-shadow: inset 0 0 0 1px var(--nf-hair);
   cursor: pointer;
@@ -84,8 +95,9 @@ ha-card {
 }
 .node[data-slot="tl"] { grid-area: 1 / 1; }
 .node[data-slot="tr"] { grid-area: 1 / 3; }
-.node[data-slot="ml"] { grid-area: 2 / 1; }
-.node[data-slot="mr"] { grid-area: 2 / 3; }
+/* Les tuiles du milieu ne s'étirent pas à la hauteur de l'anneau. */
+.node[data-slot="ml"] { grid-area: 2 / 1; align-self: center; }
+.node[data-slot="mr"] { grid-area: 2 / 3; align-self: center; }
 .node[data-slot="bl"] { grid-area: 3 / 1; }
 .node[data-slot="bc"] { grid-area: 3 / 2; }
 .node[data-slot="br"] { grid-area: 3 / 3; }
@@ -114,30 +126,58 @@ ha-card {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* Plateau étroit (téléphone) : les tuiles empilent le pictogramme au-dessus
+   du libellé au lieu de le tronquer — toutes ensemble, pour garder une
+   carte homogène. */
+@container nf-stage (max-width: 440px) {
+  .node { padding: 9px 10px; gap: 3px; border-radius: 14px; }
+  .head { flex-direction: column; align-items: flex-start; gap: 5px; }
+  .nm { max-width: 100%; letter-spacing: .1em; }
+  .sub { letter-spacing: .06em; }
+}
 
-/* ---- le centre ---- */
+/* ---- le centre ----
+   Il remplit sa case sans jamais l'élargir : l'anneau prend le plus petit des
+   deux côtés (le tracé SVG reste rond, centré). Auparavant, un anneau carré à
+   la hauteur de la rangée élargissait la colonne du milieu et écrasait les
+   tuiles des côtés sur un écran étroit. */
 .center {
   position: relative;
   z-index: 1;
   grid-area: 2 / 2;
-  place-self: center;
-  aspect-ratio: 1 / 1;
+  width: 100%;
   height: 100%;
-  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  /* Seulement quand la carte n'a pas de hauteur imposée (vue maçonnerie) :
+     la rangée prend alors la largeur de la colonne. */
+  aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
   cursor: pointer;
+  container: nf-center / size;
 }
 .ring { position: absolute; inset: 0; width: 100%; height: 100%; }
-.core { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+/* Le contenu suit le diamètre de l'anneau (cqmin) : format habituel vers
+   ~185 px, réduit en dessous pour rester dans le cercle, un peu plus grand
+   au-dessus quand l'anneau a de la place. */
+.core {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1px, 1.6cqmin, 3px);
+  max-width: 72cqmin;
+}
 .hicon { display: block; color: var(--nf-fg); }
-.hicon svg { display: block; width: 22px; height: 22px; fill: currentColor; }
+.hicon svg { display: block; width: clamp(14px, 12cqmin, 26px); height: clamp(14px, 12cqmin, 26px); fill: currentColor; }
 .ratio { color: var(--nf-dim); }
-.ratio svg { display: block; height: 11px; width: auto; }
-.ratio.txt { font-size: 13px; letter-spacing: .06em; }
-.power svg { display: block; height: 22px; width: auto; }
-.power.txt { font-size: 26px; font-weight: 700; letter-spacing: .03em; }
-.energy { font-size: 10px; letter-spacing: .1em; color: var(--nf-dim); }
+.ratio svg { display: block; height: clamp(7px, 6cqmin, 13px); width: auto; max-width: 100%; }
+.ratio.txt { font-size: clamp(9px, 7cqmin, 15px); letter-spacing: .06em; }
+.power { max-width: 100%; }
+.power svg { display: block; height: clamp(11px, 12cqmin, 28px); width: auto; max-width: 100%; }
+.power.txt { font-size: clamp(14px, 14cqmin, 32px); font-weight: 700; letter-spacing: .03em; }
+.energy { font-size: clamp(8px, 5.4cqmin, 12px); letter-spacing: .1em; color: var(--nf-dim); white-space: nowrap; }
 
 /* ---- les points qui circulent ---- */
 .dots i {

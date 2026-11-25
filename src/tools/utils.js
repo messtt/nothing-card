@@ -75,9 +75,10 @@ export function throttler(delay) {
 }
 
 /**
- * Observe le redimensionnement d'un élément, au plus une fois par frame.
+ * Observe le redimensionnement d'un ou plusieurs éléments, au plus une fois
+ * par frame.
  *
- * @param {Element} el
+ * @param {Element|Element[]} el
  * @param {() => void} onResize
  * @returns {{ disconnect: () => void }}
  */
@@ -94,7 +95,7 @@ export function observeResize(el, onResize) {
 			onResize();
 		});
 	});
-	ro.observe(el);
+	[].concat(el).forEach((e) => e && ro.observe(e));
 	return {
 		disconnect() {
 			ro.disconnect();

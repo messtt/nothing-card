@@ -206,6 +206,7 @@ export function layoutLinks(card) {
 		cy: box.top - stage.top + box.height / 2,
 		r: Math.min(box.width, box.height) / 2,
 	};
+	const gap = parseFloat(getComputedStyle(el.stage).rowGap) || 0;
 
 	let svg = "";
 	let dots = "";
@@ -223,7 +224,7 @@ export function layoutLinks(card) {
 			bottom: b.bottom - stage.top,
 		};
 
-		let points = routePoints(node.slot, rect, ring);
+		let points = routePoints(node.slot, rect, ring, gap);
 		if (node.kind === "consumer") points = points.slice().reverse();
 
 		const d = toPath(points);

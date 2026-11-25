@@ -128,12 +128,17 @@ function edgeX(ring, y, side) {
  * retourne pour un consommateur, de façon que le premier point soit la source
  * du flux et le dernier sa destination. La flèche se pose donc au bout.
  *
+ * Aucune liaison ne passe sur une tuile : celles du haut et du bas longent la
+ * gouttière qui sépare leur rangée de celle du milieu, puis entrent dans
+ * l'anneau par le dessus ou par le dessous, dans la case centrale qui est vide.
+ *
  * @param {string} slot
  * @param {DOMRect|{left:number,right:number,top:number,bottom:number}} box
  * @param {{cx: number, cy: number, r: number}} ring
+ * @param {number} [gap] écart entre deux rangées du plateau (px)
  * @returns {number[][]} liste de points
  */
-export function routePoints(slot, box, ring) {
+export function routePoints(slot, box, ring, gap = 0) {
 	const bx = (box.left + box.right) / 2;
 	const side = slot.endsWith("l") ? -1 : slot.endsWith("r") ? 1 : 0;
 
@@ -144,24 +149,21 @@ export function routePoints(slot, box, ring) {
 		return [[from, y], [edgeX(ring, y, side), y]];
 	}
 
-	// Rangée du haut : on descend, puis on entre par le flanc de l'anneau.
-	if (slot === "tl" || slot === "tr") {
-		const y = ring.cy - ring.r * 0.55;
-		return [[bx, box.bottom], [bx, y], [edgeX(ring, y, side || -1), y]];
-	}
-
-	// Rangée du bas : on sort par le dessous de l'anneau, on longe un rail,
-	// puis on redescend sur la tuile.
+	// Haut et bas : point d'entrée sur l'anneau, décalé du côté de la tuile
+	// pour que les deux liaisons d'une même rangée ne se croisent jamais.
+	const top = slot.startsWith("t");
 	const sx = clamp(bx, ring.cx - ring.r * 0.6, ring.cx + ring.r * 0.6);
-	const sy = ring.cy + Math.sqrt(Math.max(0, ring.r * ring.r - (sx - ring.cx) ** 2));
-	const rail = (sy + box.top) / 2;
+	const dy = Math.sqrt(Math.max(0, ring.r * ring.r - (sx - ring.cx) ** 2));
+	const sy = top ? ring.cy - dy : ring.cy + dy;
 
-	const points = [[sx, sy], [sx, rail]];
-	if (Math.abs(bx - sx) > 1) points.push([bx, rail]);
-	points.push([bx, box.top]);
+	// Le rail court au milieu de la gouttière, entre la tuile et la rangée du milieu.
+	const edge = top ? box.bottom : box.top;
+	const rail = top ? edge + gap / 2 : edge - gap / 2;
 
-	// Produit de l'anneau vers la tuile : on retourne pour respecter le contrat.
-	return points.reverse();
+	const points = [[bx, edge]];
+	if (Math.abs(bx - sx) > 1) points.push([bx, rail], [sx, rail]);
+	points.push([sx, sy]);
+	return points;
 }
 
 /** @param {number[][]} points @returns {string} attribut `d` d'un chemin SVG */
