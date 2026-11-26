@@ -75,6 +75,10 @@ ha-card {
   pointer-events: none;
   z-index: 0;
 }
+/* Les points passent au-dessus de tout : les liaisons ne croisent jamais une
+   tuile, et rien n'étant peint par-dessus une couche animée, le navigateur
+   n'a pas à créer de couches supplémentaires pour les tuiles. */
+.dots { z-index: 2; }
 .links { width: 100%; height: 100%; overflow: visible; }
 
 /* ---- une tuile ---- */
@@ -184,29 +188,22 @@ ha-card {
 .power.txt { font-size: clamp(14px, 14cqmin, 40px); font-weight: 700; letter-spacing: .03em; }
 .energy { font-size: clamp(8px, 5cqmin, 13px); letter-spacing: .1em; color: var(--nf-dim); white-space: nowrap; }
 
-/* ---- les points qui circulent ---- */
+/* ---- les points qui circulent ----
+   Animés par la carte (Web Animations) sur \`transform\` seulement : chaque
+   point vit sur sa propre couche, peinte une fois, que le GPU déplace. Le
+   halo (box-shadow) ne coûte donc plus rien à chaque image. La marge
+   négative centre le point sur le tracé, que l'animation donne en
+   coordonnées de son coin haut-gauche. */
 .dots i {
   position: absolute;
-  left: 0;
-  top: 0;
+  left: -3.5px;
+  top: -3.5px;
   width: 7px;
   height: 7px;
-  /* Pas de marge de recentrage : le tracé place déjà le centre de l'élément
-     sur le chemin. En ajouter une décalait le point d'un demi-rayon. */
   border-radius: 50%;
   background: var(--nf-flow);
   box-shadow: 0 0 8px var(--nf-flow);
-  offset-rotate: 0deg;
-  animation-name: nf-run;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-@keyframes nf-run {
-  from { offset-distance: 0%; }
-  to { offset-distance: 100%; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .dots i { animation: none; offset-distance: 50%; }
+  will-change: transform;
 }
 
 /* ---- pied ---- */

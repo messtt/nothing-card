@@ -4,11 +4,11 @@ import {paintText} from "../../tools/dot-matrix.js";
 import {glyph, GLYPHS} from "../../tools/glyphs.js";
 import {clamp} from "../../tools/utils.js";
 import {
-	IDLE_WATTS,
 	arrowHead,
 	buildNodes,
 	flowDuration,
 	formatEntity,
+	motionFrames,
 	numericState,
 	routePoints,
 	toPath,
@@ -44,12 +44,25 @@ export function buildTiles(card) {
 
 /* ==================== états ==================== */
 
+/**
+ * Entités dont dépend l'affichage : celles des tuiles et du centre.
+ *
+ * @param {import("./index.js").NothingFlowCard} card
+ * @returns {string[]}
+ */
+export function watchedEntities(card) {
+	const home = card._config.home || {};
+	const ids = [home.entity, home.energy, home.ring];
+	card._nodes.forEach((n) => ids.push(n.entity, n.energy));
+	return [...new Set(ids.filter(Boolean))];
+}
+
 /** @param {import("./index.js").NothingFlowCard} card */
 export function updateChanges(card) {
 	const c = card._config;
 	const el = card.el;
 
-	card.setAttribute("data-variant", c.variant);
+	if (card.getAttribute("data-variant") !== c.variant) card.setAttribute("data-variant", c.variant);
 	el.foot.hidden = !c.footer;
 	if (c.footer) paintFoot(card);
 
@@ -170,7 +183,7 @@ function drawRing(card, ratio) {
 }
 
 /** Pied de carte : le texte libre à gauche, l'heure à droite. */
-function paintFoot(card) {
+export function paintFoot(card) {
 	const label = card._config.footer_text || "";
 	if (card.memo.label !== label) {
 		card.memo.label = label;
@@ -330,6 +343,17 @@ function setVar(node, name, value) {
 /* ==================== liaisons ==================== */
 
 /**
+ * Durée de référence d'un aller (ms). Chaque animation tourne à cette durée,
+ * et la vitesse réelle passe par `playbackRate` : changer de vitesse garde
+ * ainsi la position des points, au lieu de les faire sauter.
+ */
+const BASE_MS = 1000;
+
+/** Préférence système « réduire les animations », lue une fois. */
+const reducedMotion =
+	typeof matchMedia === "function" ? matchMedia("(prefers-reduced-motion: reduce)") : null;
+
+/**
  * Mesure les tuiles et l'anneau, puis trace les liaisons et sème les points.
  *
  * La géométrie est calculée en pixels du plateau : le SVG a le même repère, les
@@ -350,12 +374,13 @@ export function layoutLinks(card) {
 		r: Math.min(box.width, box.height) / 2,
 	};
 	const gap = parseFloat(getComputedStyle(el.stage).rowGap) || 0;
+	const perLine = card._config.dots_per_line;
 
 	let svg = "";
 	let dots = "";
 	card._links = [];
 
-	card._nodes.forEach((node, i) => {
+	card._nodes.forEach((node) => {
 		const tile = el.stage.querySelector(`.node[data-slot="${node.slot}"]`);
 		if (!tile) return;
 
@@ -370,34 +395,49 @@ export function layoutLinks(card) {
 		let points = routePoints(node.slot, rect, ring, gap);
 		if (node.kind === "consumer") points = points.slice().reverse();
 
-		const d = toPath(points);
-		svg += `<path d="${d}" fill="none" stroke="var(--nf-line)" stroke-width="3"
+		svg += `<path d="${toPath(points)}" fill="none" stroke="var(--nf-line)" stroke-width="3"
 		              stroke-linecap="round" stroke-dasharray="0.01 11"/>`;
 		svg += `<g color="var(--nf-line)">${arrowHead(points)}</g>`;
 
-		for (let k = 0; k < card._config.dots_per_line; k++) {
-			const delay = -(k / card._config.dots_per_line);
-			dots += `<i data-link="${i}" style="offset-path:path('${d}');animation-delay:${delay.toFixed(3)}s"></i>`;
-		}
-
-		card._links.push({node, index: i});
+		// L'indice suit `_links`, pas `_nodes` : une tuile absente ne décale rien.
+		const link = card._links.length;
+		for (let k = 0; k < perLine; k++) dots += `<i data-link="${link}" hidden></i>`;
+		card._links.push({node, frames: motionFrames(points)});
 	});
+
+	// Les anciennes animations s'arrêtent avant que leurs points disparaissent.
+	(card._anims || []).forEach(({anim}) => anim.cancel());
 
 	el.links.setAttribute("viewBox", `0 0 ${Math.round(stage.width)} ${Math.round(stage.height)}`);
 	el.links.innerHTML = svg;
 	el.dots.innerHTML = dots;
+
+	// Une animation par point, à l'arrêt jusqu'à ce que `updateFlows` lui donne
+	// sa vitesse ; les points d'une même liaison sont répartis régulièrement.
+	card._anims = [...el.dots.children].map((dot, i) => {
+		const link = Number(dot.dataset.link);
+		const anim = dot.animate(card._links[link].frames, {
+			duration: BASE_MS,
+			iterations: Infinity,
+			easing: "linear",
+		});
+		anim.pause();
+		anim.currentTime = ((i % perLine) / perLine) * BASE_MS;
+		return {dot, link, anim};
+	});
+
 	card.memo.flows = null;
 	updateFlows(card);
 }
 
 /**
  * Règle la vitesse des points selon la puissance qui passe, sans recréer les
- * éléments : changer une durée ne relance pas l'animation, la recréer si.
+ * éléments ni relancer les animations : seule la cadence change.
  *
  * @param {import("./index.js").NothingFlowCard} card
  */
 export function updateFlows(card) {
-	if (!card._links) return;
+	if (!card._links || !card._anims) return;
 
 	const {max_power: scale, speed} = card._config;
 	const key = card._links
@@ -407,9 +447,22 @@ export function updateFlows(card) {
 	card.memo.flows = key;
 
 	const durations = key.split(",").map(Number);
-	card.el.dots.querySelectorAll("i").forEach((dot) => {
-		const ms = durations[Number(dot.dataset.link)] || 0;
+	const still = !!(reducedMotion && reducedMotion.matches);
+
+	card._anims.forEach(({dot, link, anim}) => {
+		const ms = durations[link] || 0;
 		dot.hidden = ms === 0;
-		dot.style.animationDuration = ms ? ms + "ms" : "0s";
+		// Rien ne passe, ou animations réduites : le point reste où il est.
+		if (!ms || still) {
+			anim.pause();
+			return;
+		}
+		const rate = BASE_MS / ms;
+		if (anim.playState === "running" && anim.updatePlaybackRate) {
+			anim.updatePlaybackRate(rate);
+		} else {
+			anim.playbackRate = rate;
+			anim.play();
+		}
 	});
 }

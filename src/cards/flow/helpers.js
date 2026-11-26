@@ -166,6 +166,30 @@ export function routePoints(slot, box, ring, gap = 0) {
 	return points;
 }
 
+/**
+ * Images clés d'un point qui parcourt le trajet à vitesse constante : une par
+ * coude, placée au prorata de la distance parcourue. Le déplacement passe par
+ * `transform`, que le navigateur confie au compositeur (GPU) : aucune
+ * peinture ni recalcul de style à chaque image, contrairement à
+ * `offset-path`, qui faisait saccader les tablettes.
+ *
+ * @param {number[][]} points
+ * @returns {Keyframe[]}
+ */
+export function motionFrames(points) {
+	const dist = [0];
+	for (let i = 1; i < points.length; i++) {
+		const [x0, y0] = points[i - 1];
+		const [x1, y1] = points[i];
+		dist.push(dist[i - 1] + Math.hypot(x1 - x0, y1 - y0));
+	}
+	const total = dist[dist.length - 1] || 1;
+	return points.map(([x, y], i) => ({
+		transform: `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`,
+		offset: dist[i] / total,
+	}));
+}
+
 /** @param {number[][]} points @returns {string} attribut `d` d'un chemin SVG */
 export const toPath = (points) =>
 	points.map((p, i) => `${i ? "L" : "M"}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" ");

@@ -17,7 +17,14 @@ import {REPO} from "../../var/version.js";
 import {ACCENT} from "../../var/consts.js";
 import styles from "./styles.js";
 import {template, collect, bind} from "./create.js";
-import {balanceLayout, buildTiles, layoutLinks, updateChanges} from "./changes.js";
+import {
+	balanceLayout,
+	buildTiles,
+	layoutLinks,
+	paintFoot,
+	updateChanges,
+	watchedEntities,
+} from "./changes.js";
 import {configForm, stubConfig} from "./editor.js";
 
 const VARIANTS = ["dark", "light"];
@@ -75,9 +82,13 @@ export class NothingFlowCard extends NothingBaseCard {
 	}
 
 	reset() {
+		(this._anims || []).forEach(({anim}) => anim.cancel());
+		this._anims = null;
 		this._nodes = [];
 		this._links = null;
 		this._box = null;
+		this._watched = null;
+		this._snap = null;
 	}
 
 	template() {
@@ -97,6 +108,17 @@ export class NothingFlowCard extends NothingBaseCard {
 	render() {
 		if (!this._hass || !this._config || !this.el) return;
 		if (!this._links) this.fit();
+
+		// Home Assistant renvoie `hass` à chaque changement d'état de toute la
+		// maison, parfois plusieurs fois par seconde. Un état modifié est un
+		// nouvel objet : on ne repeint que si l'une des entités de la carte a
+		// changé.
+		if (!this._watched) this._watched = watchedEntities(this);
+		const states = this._hass.states;
+		const snap = this._watched.map((id) => states[id]);
+		if (this._snap && snap.every((s, i) => s === this._snap[i])) return;
+		this._snap = snap;
+
 		updateChanges(this);
 	}
 
@@ -113,7 +135,10 @@ export class NothingFlowCard extends NothingBaseCard {
 		this.observeStage();
 		this.fit();
 		clearInterval(this._clock);
-		this._clock = setInterval(() => this.render(), CLOCK_MS);
+		// Seule l'heure du pied change avec le temps : inutile de tout repeindre.
+		this._clock = setInterval(() => {
+			if (this.el && this._config && this._config.footer) paintFoot(this);
+		}, CLOCK_MS);
 	}
 
 	onDisconnect() {
