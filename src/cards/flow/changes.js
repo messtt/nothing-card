@@ -184,6 +184,149 @@ function paintFoot(card) {
 	card.el.clock.textContent = txt;
 }
 
+/* ==================== répartition de la place ==================== */
+
+/** Plateau en dessous duquel les tuiles sont toujours compactes (cf. styles). */
+const NARROW = 440;
+/** Gain minimal (px de diamètre) pour préférer les tuiles compactes. */
+const COMPACT_GAIN = 12;
+/**
+ * Diamètre maximal de l'anneau, en multiple de la hauteur des tuiles du haut
+ * et du bas : au-delà, l'anneau écrase les tuiles au lieu de les relier.
+ */
+const RING_PER_TILE = 2.3;
+
+/**
+ * Répartit la place entre l'anneau et les tuiles.
+ *
+ * L'anneau prend la plus grande taille possible, dans trois limites : la
+ * hauteur libre entre les rangées du haut et du bas, la largeur laissée par
+ * les tuiles des côtés, et une proportion des tuiles (RING_PER_TILE) pour
+ * qu'il ne les écrase pas. Ce qui reste revient aux tuiles : les colonnes des
+ * côtés s'élargissent, les rangées du haut et du bas s'allongent.
+ *
+ * Carte à hauteur imposée (vue en sections) : la proportion se calcule sur
+ * la hauteur qu'auront réellement les tuiles une fois le reste partagé.
+ * Carte à hauteur libre (vue en maçonnerie) : sur leur hauteur naturelle.
+ *
+ * Sur une carte en hauteur, les tuiles passent en mode compact (pictogramme
+ * au-dessus du libellé) quand cela agrandit nettement l'anneau.
+ *
+ * Les mesures se font en forçant brièvement la taille naturelle des tuiles,
+ * dans un mode puis dans l'autre ; tout est rétabli avant la fin, donc rien
+ * ne clignote. Le résultat ne dépend que de la taille du plateau et du
+ * contenu des tuiles : un nouvel appel retombe sur les mêmes valeurs.
+ *
+ * @param {import("./index.js").NothingFlowCard} card
+ */
+export function balanceLayout(card) {
+	const stage = card.el.stage;
+	const W = stage.clientWidth;
+	const H = stage.clientHeight;
+	if (W < 60 || H < 60) return;
+
+	const cs = getComputedStyle(stage);
+	const colGap = parseFloat(cs.columnGap) || 0;
+	const rowGap = parseFloat(cs.rowGap) || 0;
+
+	const tiles = [...stage.querySelectorAll(".node")];
+	const pick = (re) => tiles.filter((t) => re.test(t.dataset.slot));
+	const sides = pick(/^(tl|tr|ml|mr|bl|br)$/);
+	const middle = pick(/^bc$/);
+	const tops = pick(/^t/);
+	const mids = pick(/^m/);
+	const bottoms = pick(/^b/);
+
+	const free = W - 2 * colGap;
+	const fixed = hasFixedHeight(stage, H);
+	const measure = (compact) => {
+		card.toggleAttribute("data-compact", compact);
+		tiles.forEach((t) => {
+			t.style.width = "max-content";
+			t.style.alignSelf = "start";
+		});
+		const widest = (list) => Math.max(0, ...list.map((t) => t.offsetWidth));
+		const tallest = (list) => Math.max(0, ...list.map((t) => t.offsetHeight));
+		const m = {
+			compact,
+			side: widest(sides) + 2,
+			mid: widest(middle),
+			top: tallest(tops),
+			midRow: tallest(mids),
+			bottom: tallest(bottoms),
+			tile: tallest(tiles),
+		};
+		tiles.forEach((t) => {
+			t.style.width = "";
+			t.style.alignSelf = "";
+		});
+		return m;
+	};
+
+	// Le plafond se règle sur les tuiles ordinaires, pour que le mode compact
+	// (tuiles plus hautes) ne serve jamais qu'à grossir l'anneau.
+	const inline = measure(false);
+	const ringFor = (m) => {
+		const rows = [m.top, m.bottom].filter(Boolean);
+		// La grille garde ses trois rangées, même vides : toujours deux intervalles.
+		const gaps = 2 * rowGap;
+		const width = free - 2 * m.side;
+		if (!fixed) return Math.min(width, inline.tile * RING_PER_TILE);
+		const height = H - gaps - rows.reduce((a, b) => a + b, 0);
+		// anneau = k × (hauteur des tuiles), les tuiles se partageant H - anneau
+		const share = rows.length ? (RING_PER_TILE * (H - gaps)) / (rows.length + RING_PER_TILE) : Infinity;
+		return Math.min(width, height, share);
+	};
+
+	inline.ring = ringFor(inline);
+	let best = inline;
+	if (W > NARROW) {
+		const compact = measure(true);
+		compact.ring = ringFor(compact);
+		if (compact.ring > best.ring + COMPACT_GAIN) best = compact;
+	}
+	card.toggleAttribute("data-compact", best.compact);
+
+	// Colonne du milieu : l'anneau, au moins la tuile du bas, au plus ce que
+	// laissent les tuiles des côtés. Rangée du milieu : l'anneau, au moins les
+	// tuiles des côtés. Rangées du haut et du bas : à la mesure de l'anneau
+	// (jamais moins que leur contenu) ; s'il reste de la hauteur — anneau
+	// limité par la largeur, sur un téléphone —, elle va aux gouttières où
+	// passent les liaisons plutôt qu'aux tuiles, qui resteraient vides.
+	// Si rien ne tient, on garde la répartition par défaut de la feuille de style.
+	const room = free - 2 * best.side;
+	const mid = clamp(best.ring, best.mid, room);
+	const fits = room >= best.mid && mid > 40;
+	const side = ((free - mid) / 2).toFixed(1);
+	const row = Math.round(Math.max(best.ring, best.midRow));
+	const edge = (h) => (h ? `${Math.round(Math.max(h, best.ring / RING_PER_TILE))}px` : "0");
+	setVar(stage, "--nf-cols", fits ? `${side}px minmax(0, 1fr) ${side}px` : "");
+	setVar(stage, "--nf-rows", fits ? `${edge(best.top)} ${row}px ${edge(best.bottom)}` : "");
+}
+
+/**
+ * La hauteur du plateau est-elle imposée de l'extérieur (vue en sections) ou
+ * dictée par son contenu (vue en maçonnerie) ? On écrase un instant les
+ * rangées : si le plateau ne bouge pas, c'est qu'on lui impose sa hauteur.
+ *
+ * @param {HTMLElement} stage @param {number} height hauteur actuelle
+ */
+function hasFixedHeight(stage, height) {
+	const prev = stage.style.getPropertyValue("--nf-rows");
+	stage.style.setProperty("--nf-rows", "0px 0px 0px");
+	const fixed = Math.abs(stage.clientHeight - height) < 1;
+	if (prev) stage.style.setProperty("--nf-rows", prev);
+	else stage.style.removeProperty("--nf-rows");
+	return fixed;
+}
+
+/** Pose (ou retire, si vide) une variable CSS, sans toucher au style si rien ne change. */
+function setVar(node, name, value) {
+	if (node.style.getPropertyValue(name) === value) return;
+	if (value) node.style.setProperty(name, value);
+	else node.style.removeProperty(name);
+}
+
 /* ==================== liaisons ==================== */
 
 /**

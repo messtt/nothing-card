@@ -54,15 +54,15 @@ ha-card {
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  /* Colonnes : les tuiles des côtés laissent la part belle à l'anneau, sans
-     descendre sous ~80 px (un libellé comme « CHAUFFAGE » doit tenir). */
-  grid-template-columns:
-    minmax(min(80px, 30%), 1fr) minmax(0, 1.5fr) minmax(min(80px, 30%), 1fr);
-  /* Rangées : celles du haut et du bas épousent leurs tuiles ; celle du
-     milieu prend l'anneau à la largeur de sa colonne, et rétrécit si la
-     carte manque de hauteur. L'ensemble reste groupé au centre. */
-  grid-template-rows: auto minmax(0, auto) auto;
-  align-content: center;
+  /* Colonnes et rangées : calculées par la carte (balanceLayout) — l'anneau
+     aussi grand que possible sans écraser les tuiles, le reste aux tuiles.
+     Les valeurs ci-dessous ne servent qu'avant la première mesure. */
+  grid-template-columns: var(--nf-cols,
+    minmax(min(80px, 30%), 1fr) minmax(0, 1.5fr) minmax(min(80px, 30%), 1fr));
+  grid-template-rows: var(--nf-rows, 1fr auto 1fr);
+  /* La hauteur en trop se loge entre les rangées : tuiles contre les bords,
+     anneau au centre, liaisons dans l'intervalle. */
+  align-content: space-between;
   /* Les liaisons du haut et du bas courent dans la gouttière entre les
      rangées : assez large pour qu'un point lumineux y passe sans toucher
      les tuiles. */
@@ -126,15 +126,20 @@ ha-card {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-/* Plateau étroit (téléphone) : les tuiles empilent le pictogramme au-dessus
-   du libellé au lieu de le tronquer — toutes ensemble, pour garder une
-   carte homogène. */
+/* Tuiles compactes : le pictogramme passe au-dessus du libellé au lieu de le
+   tronquer — toutes ensemble, pour garder une carte homogène. Toujours sur
+   un plateau étroit (téléphone) ; sur une carte en hauteur, quand la carte
+   juge que cela agrandit nettement l'anneau (attribut data-compact). */
 @container nf-stage (max-width: 440px) {
   .node { padding: 9px 10px; gap: 3px; border-radius: 14px; }
   .head { flex-direction: column; align-items: flex-start; gap: 5px; }
   .nm { max-width: 100%; letter-spacing: .1em; }
   .sub { letter-spacing: .06em; }
 }
+:host([data-compact]) .node { padding: 9px 10px; gap: 3px; border-radius: 14px; }
+:host([data-compact]) .head { flex-direction: column; align-items: flex-start; gap: 5px; }
+:host([data-compact]) .nm { max-width: 100%; letter-spacing: .1em; }
+:host([data-compact]) .sub { letter-spacing: .06em; }
 
 /* ---- le centre ----
    Il remplit sa case sans jamais l'élargir : l'anneau prend le plus petit des
@@ -170,14 +175,14 @@ ha-card {
   max-width: 72cqmin;
 }
 .hicon { display: block; color: var(--nf-fg); }
-.hicon svg { display: block; width: clamp(14px, 12cqmin, 26px); height: clamp(14px, 12cqmin, 26px); fill: currentColor; }
+.hicon svg { display: block; width: clamp(14px, 11cqmin, 32px); height: clamp(14px, 11cqmin, 32px); fill: currentColor; }
 .ratio { color: var(--nf-dim); }
-.ratio svg { display: block; height: clamp(7px, 6cqmin, 13px); width: auto; max-width: 100%; }
-.ratio.txt { font-size: clamp(9px, 7cqmin, 15px); letter-spacing: .06em; }
+.ratio svg { display: block; height: clamp(7px, 6cqmin, 16px); width: auto; max-width: 100%; }
+.ratio.txt { font-size: clamp(9px, 7cqmin, 18px); letter-spacing: .06em; }
 .power { max-width: 100%; }
-.power svg { display: block; height: clamp(11px, 12cqmin, 28px); width: auto; max-width: 100%; }
-.power.txt { font-size: clamp(14px, 14cqmin, 32px); font-weight: 700; letter-spacing: .03em; }
-.energy { font-size: clamp(8px, 5.4cqmin, 12px); letter-spacing: .1em; color: var(--nf-dim); white-space: nowrap; }
+.power svg { display: block; height: clamp(11px, 12cqmin, 36px); width: auto; max-width: 100%; }
+.power.txt { font-size: clamp(14px, 14cqmin, 40px); font-weight: 700; letter-spacing: .03em; }
+.energy { font-size: clamp(8px, 5cqmin, 13px); letter-spacing: .1em; color: var(--nf-dim); white-space: nowrap; }
 
 /* ---- les points qui circulent ---- */
 .dots i {

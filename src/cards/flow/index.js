@@ -17,7 +17,7 @@ import {REPO} from "../../var/version.js";
 import {ACCENT} from "../../var/consts.js";
 import styles from "./styles.js";
 import {template, collect, bind} from "./create.js";
-import {buildTiles, layoutLinks, updateChanges} from "./changes.js";
+import {balanceLayout, buildTiles, layoutLinks, updateChanges} from "./changes.js";
 import {configForm, stubConfig} from "./editor.js";
 
 const VARIANTS = ["dark", "light"];
@@ -148,6 +148,7 @@ export class NothingFlowCard extends NothingBaseCard {
 	 */
 	fit() {
 		if (!this.el) return;
+		balanceLayout(this);
 		const box = this.measured()
 			.map((n) => `${n.offsetLeft},${n.offsetTop},${n.offsetWidth},${n.offsetHeight}`)
 			.join("|");
